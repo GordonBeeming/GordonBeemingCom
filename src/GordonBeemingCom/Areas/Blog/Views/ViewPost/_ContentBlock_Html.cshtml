@@ -1,0 +1,9 @@
+﻿@model HtmlContentBlockContext
+@inject IUrlHelper url
+@{
+  Layout = null;
+}
+
+<div class='text-justify'>
+  @Html.Raw(Model.Html)
+</div>

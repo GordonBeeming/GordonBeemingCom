@@ -1,0 +1,13 @@
+﻿@{
+  Layout = "_SiteHeading";
+}
+
+@section Head {
+  @await RenderSectionAsync("Head", required: false)
+}
+
+@RenderBody()
+
+@section Scripts {
+  @await RenderSectionAsync("Scripts", required: false)
+}

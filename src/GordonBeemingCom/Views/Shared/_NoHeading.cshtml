@@ -1,0 +1,20 @@
+﻿@{
+  Layout = "_Layout";
+}
+
+@section Head {
+  @await RenderSectionAsync("Head", required: false)
+}
+
+<!-- Main Content-->
+<div class="container noheader px-4 px-lg-5">
+  <div class="row gx-4 gx-lg-5 justify-content-center">
+    <div class="col-md-12 col-lg-12 col-xl-12">
+      @RenderBody()
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  @await RenderSectionAsync("Scripts", required: false)
+}

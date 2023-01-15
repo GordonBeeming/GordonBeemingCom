@@ -1,0 +1,52 @@
+﻿@model RecentPostsViewModel
+@{
+  ViewData["Title"] = "Blog";
+
+  ViewData["HeadingImage"] = HomeImageRelativePath;
+  ViewData["Heading"] = "Blog";
+  ViewData["SubHeading"] = BlogSubHeading;
+}
+
+@foreach (var post in Model.RecentPosts)
+{
+  <!-- Post preview-->
+  <div class="post-preview">
+    <a asp-controller="@(ViewPostControllerName)" asp-action="Index" asp-route-slug="@(post.Slug)">
+      <h2 class="post-title">@(post.Title)</h2>
+      <h3 class="post-subtitle">@(post.SubTitle)</h3>
+    </a>
+    <p class="post-meta">
+      @if (post.PublishDate.HasValue)
+      {
+        <text>Posted on @(post.PublishDate.Value.ToString("MMMM dd, yyyy"))</text>
+      }
+      else
+      {
+        <text>🔒 NOT PUBLISHED</text>
+      }
+      -
+      @if (post.Tags.Count > 0)
+      {
+        @foreach (var tag in post.Tags)
+        {
+          <a asp-controller="TagPosts" asp-action="Index" asp-route-slug="@(tag.Slug)" class="badge tag-badge bg-secondary">@(tag.Name)</a>
+        }
+      }
+    </p>
+
+  </div>
+  if (post.AddHR)
+  {
+    <!-- Divider-->
+    <hr class="my-4" />
+  }
+}
+@if (Model.NextPostId.HasValue)
+{
+  <!-- Pager-->
+  <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" asp-action="AllPosts">All posts →</a></div>
+}
+
+@section Scripts {
+
+}

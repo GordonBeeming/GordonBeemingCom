@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://gordonbeeming.com/sitemap.xml

@@ -1,0 +1,47 @@
+﻿@model ViewPostViewModel
+@{
+  Layout = "_PostHeading";
+
+  ViewData["Title"] = "Blog";
+
+  ViewData["HeadingImage"] = Model.HeroImageUrl;
+  ViewData["Heading"] = Model.Title;
+  ViewData["SubHeading"] = Model.SubTitle;
+}
+
+<div class="tag-list">
+  @foreach (var tag in Model.Tags)
+  {
+    <a asp-controller="TagPosts" asp-action="Index" asp-route-slug="@(tag.Slug)" class="badge tag-badge bg-secondary">@(tag.Name)</a>
+  }
+</div>
+
+@foreach (var contentBlock in Model.ContentBlocks)
+{
+  if (contentBlock.AddPreSpacer)
+  {
+    <div class="content-spacer">&nbsp;</div>
+  }
+  if (contentBlock.BlockType == ContentBlockTypes.Html)
+  {
+    <partial name="_ContentBlock_Html" model="contentBlock.ContextInfoAsHtml" />
+  }
+  else if (contentBlock.BlockType == ContentBlockTypes.Image)
+  {
+    <partial name="_ContentBlock_Image" model="contentBlock.ContextInfoAsImage" />
+  }
+  else if (contentBlock.BlockType == ContentBlockTypes.Code)
+  {
+    <partial name="_ContentBlock_Code" model="contentBlock.ContextInfoAsCode" />
+  }
+  if (contentBlock.AddPostSpacer)
+  {
+    <div class="content-spacer">&nbsp;</div>
+  }
+}
+
+<div class="content-spacer">&nbsp;</div>
+
+@section Scripts {
+
+}

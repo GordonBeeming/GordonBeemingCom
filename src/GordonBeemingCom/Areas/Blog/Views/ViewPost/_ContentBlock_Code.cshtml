@@ -1,0 +1,31 @@
+﻿@model CodeContentBlockContext
+@{
+  Layout = null;
+  var instanceId = Guid.NewGuid().ToString("N");
+}
+
+<pre id='pre@(instanceId)' data-lang='@(Model.Language)'></pre>
+
+<script>
+    //monaco.editor.colorizeElement(document.getElementById('pre@(instanceId)'));
+    var codeContent = @Html.Raw(Json.Serialize(Model.Code));
+    var editor@(instanceId) = monaco.editor.create(document.getElementById('pre@(instanceId)'), {
+      value: codeContent,
+      language: "@(Model.Language)",
+      theme: "vs-dark",
+      lineNumbers: 'on',
+      glyphMargin: false,
+      vertical: 'auto',
+      horizontal: 'auto',
+      verticalScrollbarSize: 10,
+		  horizontalScrollbarSize: 10,
+      scrollBeyondLastLine: false,
+      readOnly: true,
+      automaticLayout: true,
+      minimap: {
+		    enabled: false
+      },
+      lineHeight:19,
+    });
+    $("#pre@(instanceId)").height((editor@(instanceId).getModel().getLineCount() * 19) + 10); // 19 = line height, 10 = vertical scrollbar height
+</script>

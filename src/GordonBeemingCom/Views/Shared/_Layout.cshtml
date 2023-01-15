@@ -1,0 +1,133 @@
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="Father | Husband | SSW Solution Architect | Microsoft MVP (GitHub & Azure DevOps)" />
+  <meta name="author" content="Gordon Beeming" />
+  <title>@ViewData["Title"] - Gordon Beeming</title>
+  <!-- Font Awesome icons (free version)-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/js/all.min.js" integrity="sha512-rpLlll167T5LJHwp0waJCh3ZRf7pO6IT1+LZOhAyP6phAirwchClbTZV3iqL3BMrVxIYRbzGTpli4rfxsCK6Vw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="application-name" content="Gordon Beeming" />
+
+  @await RenderSectionAsync("Head", required: false)
+
+  @Html.Raw(JavaScriptSnippet.FullScript)
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-23HZJDYHF9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-23HZJDYHF9');
+  </script>
+</head>
+<body>
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg" id="mainNav">
+    <div class="container px-4 px-lg-5">
+      @if (!ViewData.ContainsKey("HideHomeLogo"))
+      {
+        <a class="navbar-brand" asp-controller="@(HomeControllerName)" asp-action="@(IndexAction)">Gordon Beeming</a>
+      }
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto py-4 py-lg-0">
+          <li class="nav-item">
+            <span class="nav-link px-lg-3 py-3 py-lg-4">
+              <div class="g-ytsubscribe" data-channelid="UCMtMOwghQqwKFz3Xx1rd18Q" data-layout="default" data-theme="dark" data-count="hidden"></div>
+            </span>
+          </li>
+          <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Index">Profile</a></li>
+          <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="@(BlogArea)" asp-controller="Home" asp-action="Index">Blog</a></li>
+          <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="@(BlogArea)" asp-controller="Home" asp-action="AboutMe">About</a></li>
+          @*<li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>*@
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  @RenderBody()
+
+  <footer class="border-top">
+    <div class="container px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          <ul class="list-inline text-center">
+            <li class="list-inline-item">
+              <a title='LinkedIn (gordon-beeming)' target="_blank" href="https://www.linkedin.com/in/gordon-beeming" rel="nofollow"><img src="~/images/linkedin.svg" border="0" /></a>
+            </li>
+            <li class="list-inline-item">
+              <a title='youtube' target="_blank" href="https://www.youtube.com/@@gordonbeeming" rel="nofollow"><img src="~/images/youtube.svg" border="0" /></a>
+            </li>
+            <li class="list-inline-item">
+              <a title='Twitter (GordonBeeming)' target="_blank" href="https://twitter.com/GordonBeeming" rel="nofollow"><img src="~/images/twitter.svg" border="0" /></a>
+            </li>
+            <li class="list-inline-item">
+              <a title='GitHub (gordonbeeming)' target="_blank" href="https://github.com/gordonbeeming" rel="nofollow"><img src="~/images/github.svg" border="0" /></a>
+            </li>
+            <li class="list-inline-item">
+              <a title='Microsoft MVP (Azure DevOps &AMP; GitHub)' target="_blank" href="https://mvp.microsoft.com/en-us/PublicProfile/5000879" rel="nofollow"><img src="~/images/mvp.jpg" border="0" /></a>
+            </li>
+            <li class="list-inline-item">
+              <a title='SSW Solution Architect' target="_blank" href="https://ssw.com.au/people/gordon-beeming" rel="nofollow"><img src="~/images/ssw-logo-dark.png" border="0" /></a>
+            </li>
+            <li class="list-inline-item">
+              <a title='Microsoft MCP' target="_blank" href="https://learn.microsoft.com/en-us/users/gordonbeeming/transcript/vpp5bxoop636z0v?source=docs" rel="nofollow"><img src="~/images/mcp.jpg" border="0" /></a>
+            </li>
+            <li class="list-inline-item">
+              <a title='stackoverflow' target="_blank" href="https://stackoverflow.com/story/gordon-beeming" rel="nofollow"><img src="~/images/stackoverflow.svg" border="0" /></a>
+            </li>
+            <li class="list-inline-item">
+              <a title='Unsplash (@@gordonbeeming)' target="_blank" href="https://unsplash.com/@@gordonbeeming" rel="nofollow"><img src="~/images/Unsplash.svg" border="0" /></a>
+            </li>
+            <li class="list-inline-item">
+              <a title='Strava (gordon-beeming)' target="_blank" href="https://www.strava.com/athletes/gordonbeeming" rel="nofollow"><img src="~/images/strava.svg" border="0" /></a>
+            </li>
+          </ul>
+          <div class="small text-center text-muted fst-italic">
+            &copy; 2013 - @(DateTime.UtcNow.Year) - Gordon Beeming - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">Some Rights Reserved</a>
+            <br />
+            <strong>Disclaimer</strong>: Opinions are my own and not that of my company or anyone I engage with
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Bootstrap core JS-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js" integrity="sha512-Sct/LCTfkoqr7upmX9VZKEzXuRk5YulFoDTunGapYJdlCwA+Rl4RhgcPCLf7awTNLmIVrszTPNUFu4MSesep5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="~/js/scripts.js" asp-append-version="true"></script>
+  @await RenderSectionAsync("Scripts", required: false)
+  <script src="https://apis.google.com/js/platform.js"></script>
+</body>
+</html>

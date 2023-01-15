@@ -1,0 +1,34 @@
+// 
+// Typography
+// 
+// Override Bootstrap typography variables
+$font-family-base: "Segoe UI",
+"Lora",
+-apple-system,
+BlinkMacSystemFont,
+Roboto,
+"Helvetica Neue",
+Arial,
+sans-serif,
+"Apple Color Emoji",
+"Segoe UI Emoji",
+"Segoe UI Symbol",
+"Noto Color Emoji";
+$headings-font-family: "Segoe UI",
+"Open Sans",
+-apple-system,
+BlinkMacSystemFont,
+Roboto,
+"Helvetica Neue",
+Arial,
+sans-serif,
+"Apple Color Emoji",
+"Segoe UI Emoji",
+"Segoe UI Symbol",
+"Noto Color Emoji";
+// Links
+$link-color: $gray-900;
+$link-hover-color: $primary;
+$link-decoration: none;
+// Headings
+$headings-font-weight: 800;

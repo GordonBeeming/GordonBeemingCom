@@ -1,0 +1,22 @@
+﻿namespace GordonBeemingCom;
+
+public static class GlobalConstants
+{
+  public const string BlogArea = "blog";
+
+  public const string HomeControllerName = "Home";
+  public const string BlogControllerName = "Blog";
+  public const string ViewPostControllerName = "ViewPost";
+
+
+  public const string IndexAction = "Index";
+
+  public const string ProductionUrl = "https://gordonbeeming.com";
+  public const string ProductionBlogUrl = ProductionUrl + "/" + BlogArea + "/";
+  public const string HomeImageRelativePath = "/images/blog-banner.jpg";
+  public const string ProductionHomeImageUrl = ProductionUrl + HomeImageRelativePath;
+
+  public const string ProfileImageUrl = "https://en.gravatar.com/userimage/44277051/f0a721c3a3f76d28a9646a13c27eb7a7.jpeg";
+
+  public const string BlogSubHeading = "Father | Husband | SSW Solution Architect | Microsoft MVP (GitHub & Azure DevOps)";
+}

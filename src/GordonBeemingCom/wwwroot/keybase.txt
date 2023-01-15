@@ -1,0 +1,56 @@
+﻿==================================================================
+https://keybase.io/gordonbeeming
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://blog.devstarops.com
+  * I am gordonbeeming (https://keybase.io/gordonbeeming) on keybase.
+  * I have a public key ASDF5_MIcR4mNWArQvvpI5aRs_XSV7_TLMLFCFM-f3SY5Qo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120721b910383e887123f8efdcec256b90b4be6e6b717a472cda54f59bcf27584270a",
+      "host": "keybase.io",
+      "kid": "0120c5e7f308711e2635602b42fbe9239691b3f5d257bfd32cc2c508533e7f7498e50a",
+      "uid": "bd9079dcde70f8f6b3373747e7d0a719",
+      "username": "gordonbeeming"
+    },
+    "merkle_root": {
+      "ctime": 1642109032,
+      "hash": "c9cc7d5f7502a94e2022e134eea6f14d4cb8b73fd5da46bf6d71c909536a7f6d15bed5d8ec1a5ff412b4319c008640c981b93fb50aedf44a541b93fe5f6c5d71",
+      "hash_meta": "c7843ef4fce087fa455f59576c7e889f372b26733889ac2df4ec79a4580c08d4",
+      "seqno": 21629365
+    },
+    "service": {
+      "entropy": "ALgUz9Urp7qcbOcLXZeib3XQ",
+      "hostname": "blog.devstarops.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "5.9.0"
+  },
+  "ctime": 1642109063,
+  "expire_in": 504576000,
+  "prev": "2cc4384c6aa06a139002e1b4f3cda54ff7c8f6f1d95ee3542dcb6da281a81819",
+  "seqno": 49,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgxefzCHEeJjVgK0L76SOWkbP10le/0yzCxQhTPn90mOUKp3BheWxvYWTESpcCMcQgLMQ4TGqgahOQAuG0882lT/fI9vHZXuNULcttooGoGBnEIDc4Awf5v43EQgbKQFoU/DINjS0tASwD+CgQt7Z5YXUkAgHCo3NpZ8RAGD0J9PlwFA3Y0nht+rqernCiE5bVR9DzmeCQb/V06knqs3eO2q14724v/AWjoPeqlHSlRfeGaozvkEJwSaLDCKhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIJ7sMSnLe980MOViqG6paPiMcYgt+Jo906+xShk8Tly9o3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/gordonbeeming
+
+==================================================================

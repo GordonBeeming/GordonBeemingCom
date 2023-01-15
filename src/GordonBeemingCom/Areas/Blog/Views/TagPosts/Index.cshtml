@@ -1,0 +1,47 @@
+﻿@model TagPostsViewModel
+@{
+  ViewData["Title"] = $"#{Model.Title}";
+
+  ViewData["HeadingImage"] = Model.BannerImage;
+  ViewData["Heading"] = $"#{Model.Title}";
+  ViewData["SubHeading"] = Model.SubTitle;
+}
+
+@foreach (var post in Model.TagPosts)
+{
+  <!-- Post preview-->
+  <div class="post-preview">
+    <a asp-controller="@(ViewPostControllerName)" asp-route-slug="@(post.Slug)">
+      <h2 class="post-title">@(post.Title)</h2>
+      <h3 class="post-subtitle">@(post.SubTitle)</h3>
+    </a>
+    <p class="post-meta">
+      @if (post.PublishDate.HasValue)
+      {
+        <text>Posted on @(post.PublishDate.Value.ToString("MMMM dd, yyyy"))</text>
+      }
+      else
+      {
+        <text>🔒 NOT PUBLISHED</text>
+      }
+      -
+      @if (post.Tags.Count > 0)
+      {
+        @foreach (var tag in post.Tags)
+        {
+          <a asp-controller="TagPosts" asp-action="Index" asp-route-slug="@(tag.Slug)" class="badge tag-badge bg-secondary">@(tag.Name)</a>
+        }
+      }
+    </p>
+
+  </div>
+  if (post.AddHR)
+  {
+    <!-- Divider-->
+    <hr class="my-4" />
+  }
+}
+
+@section Scripts {
+
+}

@@ -1,0 +1,4 @@
+resource_group_name   = "gordonbeemingcom-prod-rg"
+storage_account_name  = "gordonbeemingcom"
+container_name        = "tfstate"
+key                   = "production.tfstate"

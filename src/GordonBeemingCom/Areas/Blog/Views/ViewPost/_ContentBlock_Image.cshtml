@@ -1,0 +1,7 @@
+﻿@model ImageContentBlockContext
+@inject IUrlHelper url
+@{
+    Layout = null;
+}
+
+<img class="lazyload" data-src='@(Model.ImageUrl)' alt='@(Model.AltText)' title='@(Model.AltText)' @Html.Raw(Model.HeightDisplayTag) @Html.Raw(Model.WidthDisplayTag) />

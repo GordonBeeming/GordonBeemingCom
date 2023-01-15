@@ -1,0 +1,17 @@
+﻿@{
+  Layout = "_PageHeading";
+  ViewData["Title"] = "404";
+  ViewData["HeadingImage"] = "/images/404-banner.jpg";
+  ViewData["Heading"] = "404";
+  ViewData["SubHeading"] = string.Empty;
+  ViewData["HideBody"] = true;
+}
+
+@section Head {
+  <meta name="robots" content="noindex nofollow" />
+}
+
+@section SubHeading {
+    Maybe this page moved? Got deleted? Is hiding out in quarantine? Never existed in the first place?
+    <p>Let's go <a asp-controller="Home" asp-action="Index">home</a> and try from there.</p>
+}

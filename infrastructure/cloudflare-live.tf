@@ -1,6 +1,8 @@
 # Create a CSR and generate a CA certificate
 resource "tls_private_key" "live" {
   algorithm = "RSA"
+  
+  depends_on = [tls_private_key.preview]
 }
 
 resource "tls_cert_request" "live" {
@@ -10,6 +12,8 @@ resource "tls_cert_request" "live" {
     common_name  = var.live_hostname
     organization = "Gordon Beeming"
   }
+  
+  depends_on = [tls_cert_request.preview]
 }
 
 resource "cloudflare_origin_ca_certificate" "live" {
@@ -18,6 +22,8 @@ resource "cloudflare_origin_ca_certificate" "live" {
   request_type       = "origin-rsa"
   requested_validity = 5475
   provider = cloudflare.cacert
+  
+  depends_on = [cloudflare_origin_ca_certificate.preview]
 }
 
 resource "cloudflare_record" "live" {
@@ -29,6 +35,8 @@ resource "cloudflare_record" "live" {
   proxied         = true
   allow_overwrite = false
   provider = cloudflare.default
+  
+  depends_on = [cloudflare_record.preview]
 }
 
 resource "cloudflare_record" "live_txt_verify" {
@@ -40,6 +48,8 @@ resource "cloudflare_record" "live_txt_verify" {
   proxied         = false
   allow_overwrite = false
   provider = cloudflare.default
+  
+  depends_on = [cloudflare_record.preview_txt_verify]
 }
 
 resource "random_uuid" "live_pfx_pass" {
@@ -49,6 +59,8 @@ resource "pkcs12_from_pem" "live_domain_pfx" {
   password        = random_uuid.live_pfx_pass.result
   cert_pem        = cloudflare_origin_ca_certificate.live.certificate
   private_key_pem = tls_private_key.live.private_key_pem
+  
+  depends_on = [pkcs12_from_pem.preview_domain_pfx]
 }
 
 variable "live_dns_record" {

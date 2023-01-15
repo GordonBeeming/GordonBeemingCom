@@ -8,4 +8,6 @@ resource "azurerm_mssql_database" "live" {
   tags = {
     environment = var.environment_name
   }
+  
+  depends_on = [azurerm_mssql_database.preview]
 }

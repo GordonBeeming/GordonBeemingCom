@@ -27,6 +27,8 @@ resource "azurerm_linux_web_app" "live" {
   }
 
   virtual_network_subnet_id = azurerm_subnet.main.id
+  
+  depends_on = [azurerm_linux_web_app.preview]
 }
 
 resource "azurerm_app_service_certificate" "live" {
@@ -35,6 +37,8 @@ resource "azurerm_app_service_certificate" "live" {
   location            = data.azurerm_resource_group.main.location
   pfx_blob            = pkcs12_from_pem.live_domain_pfx.result
   password            = random_uuid.live_pfx_pass.result
+  
+  depends_on = [azurerm_app_service_certificate.preview]
 }
 
 resource "time_sleep" "live_wait_for_txt" {
@@ -49,7 +53,7 @@ resource "azurerm_app_service_custom_hostname_binding" "live" {
   resource_group_name = data.azurerm_resource_group.main.name
 
   depends_on = [
-    time_sleep.live_wait_for_txt
+    time_sleep.live_wait_for_txt, azurerm_app_service_custom_hostname_binding.preview
   ]
 }
 
@@ -57,6 +61,8 @@ resource "azurerm_app_service_certificate_binding" "live" {
   hostname_binding_id = azurerm_app_service_custom_hostname_binding.live.id
   certificate_id      = azurerm_app_service_certificate.live.id
   ssl_state           = "SniEnabled"
+  
+  depends_on = [azurerm_app_service_certificate_binding.preview]
 }
 
 data "dns_a_record_set" "live_app_ip_address" {

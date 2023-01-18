@@ -49,7 +49,7 @@ public sealed class HomeController : BaseController
         Id = o.Id,
         Slug = o.BlogSlug,
         Title = o.BlogTitle,
-        SubTitle = o.BlurbHtml,
+        SubTitle = o.SubTitle,
         PublishDate = o.PublishDate,
         Tags = o.BlogTags
         .Select(o => new RecentPostsViewModel.Tag

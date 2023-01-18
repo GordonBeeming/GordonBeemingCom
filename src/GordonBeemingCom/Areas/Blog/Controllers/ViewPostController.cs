@@ -58,7 +58,7 @@ public sealed class ViewPostController : BaseController
     var viewModel = new ViewPostViewModel();
     viewModel.Id = post.Id;
     viewModel.Title = post.BlogTitle;
-    viewModel.SubTitle = post.BlurbHtml;
+    viewModel.SubTitle = post.SubTitle;
     viewModel.HeroImageUrl = GetRelativeImageUrl(post.HeroImageUrl, url);
     viewModel.Category = new ViewPostViewModel.CategoryInfo
     {

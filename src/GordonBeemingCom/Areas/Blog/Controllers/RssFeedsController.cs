@@ -160,7 +160,7 @@ public sealed class RssFeedsController : BaseController
   {
     if (!full)
     {
-      return post.BlurbHtml;
+      return post.SubTitle;
     }
     var contentBlocks = await _context
       .BlogContentBlocks.Where(o => o.BlogId == post.Id)

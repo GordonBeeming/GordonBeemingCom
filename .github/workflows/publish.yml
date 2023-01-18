@@ -67,22 +67,39 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           file: "src/GordonBeemingCom/Dockerfile"
 
-  # deployPreview:
-  #   name: "Deploy to Preview"
-  #   needs: build
-  #   concurrency:
-  #     group: preview
-  #     cancel-in-progress: false
-  #   environment:
-  #     name: "preview"
-  #     url: "https://preview.gordonbeeming.com/"
-  #   runs-on: ubuntu-latest
+  deployPreview:
+    name: "Deploy to Preview"
+    needs: build
+    concurrency:
+      group: preview
+      cancel-in-progress: false
+    environment:
+      name: "preview"
+      url: "https://preview.gordonbeeming.com/"
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Deploy Web App to Preview
-  #       uses: Azure/cli@v1.0.7
-  #       with:
-  #         inlineScript: |
-  #             az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name "${{ github.repository_owner }}/${{ github.repository }}:${{ github.sha }}"
+    steps:
+    
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      - name: Deploy Web App to Preview
+        uses: Azure/cli@v1.0.7
+        with:
+          inlineScript: |
+              $Tags = "${{ steps.meta.outputs.tags }}"
+              Write-Host "Tags: '$Tags'"
+              
+      - name: Azure Logout
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az logout
+              
+# az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name "${{ github.repository_owner }}/${{ github.repository }}:${{ github.sha }}"
 
           

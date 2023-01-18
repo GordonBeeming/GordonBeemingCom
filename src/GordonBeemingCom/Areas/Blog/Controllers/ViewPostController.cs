@@ -15,12 +15,10 @@ namespace GordonBeemingCom.Areas.Blog.Controllers;
 public sealed class ViewPostController : BaseController
 {
   private readonly AppDbContext _context;
-  private readonly StringHelper _stringHelper;
 
-  public ViewPostController(AppDbContext context, StringHelper stringHelper, ILogger<ViewPostController> logger) : base(logger)
+  public ViewPostController(AppDbContext context, ILogger<ViewPostController> logger) : base(logger)
   {
     _context = context;
-    _stringHelper = stringHelper;
   }
 
   [HttpGet("blogs/byid/{id}")]
@@ -60,7 +58,7 @@ public sealed class ViewPostController : BaseController
     var viewModel = new ViewPostViewModel();
     viewModel.Id = post.Id;
     viewModel.Title = post.BlogTitle;
-    viewModel.SubTitle = _stringHelper.StripHTML(post.BlurbHtml);
+    viewModel.SubTitle = post.BlurbHtml;
     viewModel.HeroImageUrl = GetRelativeImageUrl(post.HeroImageUrl, url);
     viewModel.Category = new ViewPostViewModel.CategoryInfo
     {
@@ -91,22 +89,6 @@ public sealed class ViewPostController : BaseController
       o.ContextInfo = ReplaceHtmlUrls(o.ContextInfo, Url);
       return o;
     }).ToList();
-    //viewModel.ContentBlocks = await context.BlogContentBlocks
-    //    .Where(o => o.BlogId == viewModel.BlogData.BlogId)
-    //    .OrderBy(o => o.DisplayOrder)
-    //    .Select(o => new ContentBlock
-    //    {
-    //      ContentId = o.Id,
-    //      AddPreSpacer = o.AddPreSpacer,
-    //      AddPostSpacer = o.AddPostSpacer.Value,
-    //      BlockType = (ContentBlockTypes)o.BlockType,
-
-    //      ContextInfo = ReplaceHtmlUrls(o.ContextInfo, Url),
-
-    //      DisplayOrder = o.DisplayOrder,
-    //    })
-    //    .ToListAsync();
-    //viewModel.CanonicalUrl = GetAbsoluteUri(Url.Action(nameof(ViewPost), "Blog", new { year = viewModel.BlogData.PublishYear, month = viewModel.BlogData.PublishMonth, slug = viewModel.BlogData.BlogSlug, })).ToLowerInvariant();
     return View(viewModel);
   }
 }

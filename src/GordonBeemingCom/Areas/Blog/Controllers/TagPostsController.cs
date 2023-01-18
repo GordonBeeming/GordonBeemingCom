@@ -17,13 +17,11 @@ namespace GordonBeemingCom.Areas.Blog.Controllers;
 public sealed class TagPostsController : BaseController
 {
   private readonly AppDbContext _context;
-  private readonly StringHelper _stringHelper;
   private readonly IHttpContextAccessor _httpContextAccessor;
 
-  public TagPostsController(AppDbContext context, ILogger<TagPostsController> logger, StringHelper stringHelper, IHttpContextAccessor httpContextAccessor) : base(logger)
+  public TagPostsController(AppDbContext context, ILogger<TagPostsController> logger, IHttpContextAccessor httpContextAccessor) : base(logger)
   {
     this._context = context;
-    _stringHelper = stringHelper;
     _httpContextAccessor = httpContextAccessor;
   }
 
@@ -64,7 +62,7 @@ public sealed class TagPostsController : BaseController
         Id = o.Id,
         Slug = o.BlogSlug,
         Title = o.BlogTitle,
-        SubTitle = _stringHelper.StripHTML(o.BlurbHtml),
+        SubTitle = o.BlurbHtml,
         PublishDate = o.PublishDate,
         Tags = o.BlogTags
         .Select(o => new TagPostsViewModel.Tag

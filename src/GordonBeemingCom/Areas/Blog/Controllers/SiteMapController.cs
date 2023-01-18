@@ -10,14 +10,12 @@ namespace GordonBeemingCom.Areas.Blog.Controllers;
 public sealed class SiteMapController : BaseController
 {
   private readonly AppDbContext _context;
-  private readonly StringHelper _stringHelper;
   private readonly IHttpContextAccessor _httpContextAccessor;
   private readonly SiteConfig _siteConfig;
 
-  public SiteMapController(ILogger<SiteMapController> logger, AppDbContext context, IOptions<SiteConfig> siteConfig, StringHelper stringHelper, IHttpContextAccessor httpContextAccessor) : base(logger)
+  public SiteMapController(ILogger<SiteMapController> logger, AppDbContext context, IOptions<SiteConfig> siteConfig, IHttpContextAccessor httpContextAccessor) : base(logger)
   {
     _context = context;
-    _stringHelper = stringHelper;
     _httpContextAccessor = httpContextAccessor;
     _siteConfig = siteConfig.Value;
   }

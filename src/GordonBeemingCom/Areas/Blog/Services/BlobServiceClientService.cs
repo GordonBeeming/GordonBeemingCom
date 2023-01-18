@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Identity;
+using Azure.Storage.Blobs;
 
 namespace GordonBeemingCom.Areas.Blog.Services;
 
@@ -11,5 +12,18 @@ public sealed class BlobServiceClientService : IBlobServiceClientService
     this._configuration = configuration;
   }
 
-  public BlobServiceClient GetBlobServiceClient() => new BlobServiceClient(_configuration.GetConnectionString("BlobStorage"));
+  public BlobServiceClient GetBlobServiceClient()
+  {
+    var connectionString = _configuration.GetConnectionString("BlobStorage");
+    if (!string.IsNullOrEmpty(connectionString))
+    {
+      return new BlobServiceClient(connectionString);
+    }
+    var blobStorageUrl = _configuration["BlobStorageUrl"];
+    if (!string.IsNullOrEmpty(blobStorageUrl))
+    {
+      return new BlobServiceClient(new Uri(blobStorageUrl), new DefaultAzureCredential());
+    }
+    throw new Exception("Please configure ConnectionStrings:BlobStorage or BlobStorageUrl in appsettings.json");
+  }
 }

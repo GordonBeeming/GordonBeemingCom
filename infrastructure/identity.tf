@@ -9,7 +9,7 @@ resource "azuread_service_principal" "main" {
 
 resource "azurerm_role_assignment" "rg-owner" {
   scope                = data.azurerm_resource_group.main.id
-  role_definition_name = "Owner"
+  role_definition_name = "Contributor"
   principal_id         = azuread_service_principal.main.object_id
 }
 

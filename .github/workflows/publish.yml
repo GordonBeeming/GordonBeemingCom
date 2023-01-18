@@ -86,13 +86,16 @@ jobs:
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
       - name: Deploy Web App to Preview
-        uses: Azure/cli@v1.0.7
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@0b651ed7546ecfc75024011f76944cb9b381ef1e
         with:
-          inlineScript: |
-              TAG=$(echo '${{ github.repository }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
-              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
-              
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
+
       - name: Azure Logout
         uses: azure/CLI@v1
         with:
@@ -121,13 +124,16 @@ jobs:
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      - name: Deploy Web App to Preview
-        uses: Azure/cli@v1.0.7
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
+      - name: Deploy Web App to Live
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@0b651ed7546ecfc75024011f76944cb9b381ef1e
         with:
-          inlineScript: |
-              TAG=$(echo '${{ github.repository }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
-              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
-              
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
+
       - name: Azure Logout
         uses: azure/CLI@v1
         with:

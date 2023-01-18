@@ -21,8 +21,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
       id-token: write
 
     steps:
@@ -77,6 +75,8 @@ jobs:
       name: "preview"
       url: "https://preview.gordonbeeming.com/"
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
 
     steps:
     
@@ -91,7 +91,8 @@ jobs:
         uses: Azure/cli@v1.0.7
         with:
           inlineScript: |
-              print '---${{ steps.meta.outputs.tags }}---''
+              TAG=$(echo '${{ github.repository }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
+              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               
       - name: Azure Logout
         uses: azure/CLI@v1
@@ -99,6 +100,6 @@ jobs:
           inlineScript: |
             az logout
               
-# az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name "${{ github.repository_owner }}/${{ github.repository }}:${{ github.sha }}"
+# 
 
           

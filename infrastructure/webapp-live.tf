@@ -26,6 +26,7 @@ resource "azurerm_linux_web_app" "live" {
     "ApplicationInsights__InstrumentationKey" = azurerm_application_insights.tracking.instrumentation_key
     "BlobStorageUrl" = "https://${azurerm_storage_account.content.name}.blob.core.windows.net/"
     "DOCKER_REGISTRY_SERVER_URL"="https://ghcr.io"
+    "AZURE_CLIENT_ID": azurerm_user_assigned_identity.app.client_id
   }
 
   connection_string {

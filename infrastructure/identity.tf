@@ -24,6 +24,10 @@ output "azure_app" {
   value = azuread_application.main.display_name
 }
 
-output "client_id" {
+output "app_client_id" {
   value = azuread_application.main.application_id
+}
+
+output "mi_client_id" {
+  value = azurerm_user_assigned_identity.app.client_id
 }

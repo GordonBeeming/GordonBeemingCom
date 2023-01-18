@@ -2,11 +2,11 @@
 using GordonBeemingCom.Data;
 using GordonBeemingCom.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 
 namespace GordonBeemingCom.Controllers;
 
-[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 [Route("status-code")]
 public class StatusCodeController : Controller
 {
@@ -37,6 +37,8 @@ public class StatusCodeController : Controller
     return View("Http500");
   }
 
+  [ResponseCache(Duration = 30)]
+  [OutputCache(Duration = 30)]
   [HttpGet("404")]
   public IActionResult Http404()
   {
@@ -61,6 +63,8 @@ public class StatusCodeController : Controller
     return View("Http404");
   }
 
+  [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+  [OutputCache(Duration = 0, NoStore = true)]
   [HttpGet("500")]
   public IActionResult Http500()
   {

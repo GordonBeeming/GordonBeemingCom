@@ -1,4 +1,5 @@
 ﻿using GordonBeemingCom.Areas.Blog.Services;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Net.Http.Headers;
 
 namespace GordonBeemingCom.Areas.Blog.Controllers;
@@ -13,6 +14,8 @@ public sealed class BinariesController : BaseController
   }
 
   [HttpGet("/" + BlogArea + "/" + IFileService.DownloadFile + "/{container}/{*blobName}")]
+  [OutputCache(Duration = 31536000)]
+  [ResponseCache(Duration = 31536000)]
   public async Task<IActionResult> DownloadFile(string container, string blobName)
   {
     var file = await _fileService.ReadFile(container, blobName);
@@ -25,6 +28,8 @@ public sealed class BinariesController : BaseController
   }
 
   [HttpGet("/" + BlogArea + "/" + IFileService.StreamFile + "/{container}/{*blobName}")]
+  [OutputCache(Duration = 31536000)]
+  [ResponseCache(Duration = 31536000)]
   public async Task<IActionResult> StreamFile(string container, string blobName)
   {
     var file = await _fileService.ReadFile(container, blobName);

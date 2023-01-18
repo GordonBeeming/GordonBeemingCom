@@ -93,7 +93,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@0b651ed7546ecfc75024011f76944cb9b381ef1e
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
 
       - name: Azure Logout
@@ -131,7 +131,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@0b651ed7546ecfc75024011f76944cb9b381ef1e
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
 
       - name: Azure Logout

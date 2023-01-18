@@ -25,6 +25,7 @@ resource "azurerm_linux_web_app" "live" {
     "ASPNETCORE_ENVIRONMENT" = "Production"
     "ApplicationInsights__InstrumentationKey" = azurerm_application_insights.tracking.instrumentation_key
     "BlobStorageUrl" = "https://${azurerm_storage_account.content.name}.blob.core.windows.net/"
+    "DOCKER_REGISTRY_SERVER_URL"="https://ghcr.io"
   }
 
   connection_string {

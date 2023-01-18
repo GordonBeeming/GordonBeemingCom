@@ -67,7 +67,7 @@ jobs:
         with:
           context: src/.
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ steps.meta.outputs.tags }} ${{ github.repository_owner }}/${{ github.repository }}:${{ github.sha }}"
+          tags: "${{ steps.meta.outputs.tags }} ${{ github.repository }}:${{ github.sha }}"
           file: "src/GordonBeemingCom/Dockerfile"
 
   deployPreview:

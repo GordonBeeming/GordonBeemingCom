@@ -1,6 +1,6 @@
 $SharedResourceGroup = "gordonbeemingcom-prod-rg"
 $DeployRegion = "westeurope"
-$SharedStorage = "gordonbeemingcom"
+$SharedStorage = "gordonbeemingcomshared"
 $SharedStorageContainer = "tfstate"
 
 az group create --resource-group $SharedResourceGroup --location $DeployRegion

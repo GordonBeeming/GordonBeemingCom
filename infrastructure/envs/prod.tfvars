@@ -11,3 +11,8 @@ preview_hostname = "preview.gordonbeeming.com"
 preview_dns_record = "preview"
 live_hostname = "gordonbeeming.com"
 live_dns_record = "@"
+
+preview_container_image = "ghcr.io/gordonbeeming/gordonbeemingcom"
+preview_container_image_tag = "main"
+live_container_image = "ghcr.io/gordonbeeming/gordonbeemingcom"
+live_container_image_tag = "main"

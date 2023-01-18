@@ -8,4 +8,8 @@ resource "azurerm_mssql_database" "preview" {
   tags = {
     environment = var.environment_name
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }

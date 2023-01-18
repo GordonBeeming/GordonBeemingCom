@@ -8,6 +8,10 @@ resource "azurerm_mssql_database" "live" {
   tags = {
     environment = var.environment_name
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
   
   depends_on = [azurerm_mssql_database.preview]
 }

@@ -4,11 +4,16 @@ resource "azurerm_linux_web_app" "preview" {
   resource_group_name = data.azurerm_resource_group.main.name
   service_plan_id     = azurerm_service_plan.appserviceplan.id
   https_only          = true
+  client_affinity_enabled = true
+
   site_config {
     minimum_tls_version = "1.2"
+    always_on = true
+    http2_enabled = true
 
     application_stack {
-      dotnet_version = "6.0"
+      docker_image     = var.live_container_image
+      docker_image_tag = var.live_container_image_tag
     }
   }
   identity {
@@ -18,6 +23,8 @@ resource "azurerm_linux_web_app" "preview" {
 
   app_settings = {
     "ASPNETCORE_ENVIRONMENT" = "Production"
+    "ApplicationInsights__InstrumentationKey" = azurerm_application_insights.tracking.instrumentation_key
+    "BlobStorageUrl" = "https://${azurerm_storage_account.content.name}.blob.core.windows.net/"
   }
 
   connection_string {
@@ -61,6 +68,14 @@ resource "azurerm_app_service_certificate_binding" "preview" {
 
 data "dns_a_record_set" "preview_app_ip_address" {
   host = azurerm_linux_web_app.preview.default_hostname
+}
+
+variable "preview_container_image" {
+  type = string
+}
+
+variable "preview_container_image_tag" {
+  type = string
 }
 
 output "preview-app-ip" {

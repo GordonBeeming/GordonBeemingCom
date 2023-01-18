@@ -90,7 +90,7 @@ jobs:
         uses: Azure/cli@v1.0.7
         with:
           inlineScript: |
-              TAG=$(echo 'ghcr.io/${{ github.repository }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
+              TAG=$(echo '${{ github.repository }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               
       - name: Azure Logout

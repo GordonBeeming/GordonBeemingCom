@@ -12,8 +12,8 @@ resource "azurerm_linux_web_app" "preview" {
     http2_enabled = true
 
     application_stack {
-      docker_image     = var.live_container_image
-      docker_image_tag = var.live_container_image_tag
+      docker_image     = var.preview_container_image
+      docker_image_tag = var.preview_container_image_tag
     }
   }
   identity {

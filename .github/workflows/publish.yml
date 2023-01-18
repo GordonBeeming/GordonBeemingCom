@@ -78,8 +78,7 @@ jobs:
     permissions:
       id-token: write
 
-    steps:
-    
+    steps:    
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -100,6 +99,38 @@ jobs:
           inlineScript: |
             az logout
               
-# 
 
-          
+  deployLive:
+    name: "Deploy to live"
+    needs: deployPreview
+    concurrency:
+      group: live
+      cancel-in-progress: false
+    environment:
+      name: "live"
+      url: "https://gordonbeeming.com/"
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:    
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      - name: Deploy Web App to Preview
+        uses: Azure/cli@v1.0.7
+        with:
+          inlineScript: |
+              TAG=$(echo 'ghcr.io/${{ github.repository }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
+              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
+              
+      - name: Azure Logout
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az logout
+              

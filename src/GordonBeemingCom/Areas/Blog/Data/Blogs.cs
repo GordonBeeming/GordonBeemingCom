@@ -22,9 +22,6 @@ public partial class Blogs
   public string SubTitle { get; set; } = null!;
   
   [StringLength(1024)]
-  public string BlurbImageUrl { get; set; } = null!;
-
-  [StringLength(1024)]
   public string HeroImageUrl { get; set; } = null!;
 
   public DateTime DateTimeStamp { get; set; }

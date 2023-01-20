@@ -1,5 +1,7 @@
 name: publish
 
+trigge
+
 on:
   push:
     branches: [ "main" ]
@@ -103,6 +105,7 @@ jobs:
   deployLive:
     name: "Deploy to live"
     needs: deployPreview
+    if: github.ref == 'refs/heads/main'
     concurrency:
       group: live
       cancel-in-progress: false

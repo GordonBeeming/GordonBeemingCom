@@ -7,6 +7,7 @@ public sealed class TagPostsViewModel
   public string Title { get; set; }
   public string SubTitle { get; set; }
   public string BannerImage { get; set; }
+  public string CanonicalUrl { get; set; }
 
   public sealed class Post
   {

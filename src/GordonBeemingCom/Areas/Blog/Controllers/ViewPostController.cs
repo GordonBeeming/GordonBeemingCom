@@ -60,6 +60,10 @@ public sealed class ViewPostController : BaseController
     viewModel.Title = post.BlogTitle;
     viewModel.SubTitle = post.SubTitle;
     viewModel.HeroImageUrl = GetRelativeImageUrl(post.HeroImageUrl, url);
+    viewModel.CanonicalUrl = Url.Action(IndexAction, ViewPostControllerName, new
+    {
+      slug = post.BlogSlug,
+    }, HttpContext.Request.Scheme)!;
     viewModel.Category = new ViewPostViewModel.CategoryInfo
     {
       Id = post.Category.Id,

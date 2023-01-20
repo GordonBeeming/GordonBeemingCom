@@ -9,6 +9,10 @@
   ViewData["SubHeading"] = Model.SubTitle;
 }
 
+@section Head {
+  <link rel="canonical" href="@(Model.CanonicalUrl)" />
+}
+
 <div class="tag-list">
   @foreach (var tag in Model.Tags)
   {

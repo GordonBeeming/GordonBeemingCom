@@ -6,6 +6,10 @@
   ViewData["HideHomeLogo"] = true;
 }
 
+@section Head {
+  <link rel="canonical" href="@(ProductionUrl)" />
+}
+
 <div class="profile-row row gx-4 gx-lg-5 justify-content-center">
   <div class="profile-right col-md-9 col-lg-9 col-xl-9">
     <h1>Hi... I'm <span class="highlight">Gordon Beeming</span>.</h1>

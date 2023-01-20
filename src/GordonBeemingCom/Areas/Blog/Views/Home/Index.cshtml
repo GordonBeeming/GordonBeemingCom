@@ -7,6 +7,10 @@
   ViewData["SubHeading"] = BlogSubHeading;
 }
 
+@section Head {
+  <link rel="canonical" href="@(ProductionBlogUrl)" />
+}
+
 @foreach (var post in Model.RecentPosts)
 {
   <!-- Post preview-->

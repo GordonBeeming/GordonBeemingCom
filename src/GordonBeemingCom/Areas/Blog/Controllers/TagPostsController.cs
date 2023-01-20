@@ -51,6 +51,10 @@ public sealed class TagPostsController : BaseController
     }
     viewModel.Title = tag.TagName;
     viewModel.SubTitle = string.Empty;
+    viewModel.CanonicalUrl = Url.Action(IndexAction, ViewPostControllerName, new
+    {
+      slug = tag.TagSlug,
+    }, HttpContext.Request.Scheme)!;
     viewModel.BannerImage = HomeImageRelativePath;
     viewModel.TagPosts = await _context.BlogTags
       .Where(o => o.TagId == tag.Id)

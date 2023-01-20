@@ -12,6 +12,7 @@ public sealed class ViewPostViewModel
   public CategoryInfo Category { get; set; } = new CategoryInfo();
   public List<TagInfo> Tags { get; set; } = new List<TagInfo>();
   public List<ContentBlock> ContentBlocks { get; set; } = new List<ContentBlock>();
+  public string CanonicalUrl { get; set; }
 
   public sealed class CategoryInfo
   {

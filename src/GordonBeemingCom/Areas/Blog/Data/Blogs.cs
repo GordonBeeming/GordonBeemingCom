@@ -19,11 +19,8 @@ public partial class Blogs
   [StringLength(256)]
   public string BlogSlug { get; set; } = null!;
 
-  public string BlurbHtml { get; set; } = null!;
+  public string SubTitle { get; set; } = null!;
   
-  [StringLength(1024)]
-  public string BlurbImageUrl { get; set; } = null!;
-
   [StringLength(1024)]
   public string HeroImageUrl { get; set; } = null!;
 

@@ -18,12 +18,10 @@ namespace GordonBeemingCom.Areas.Blog.Controllers;
 public sealed class RssFeedsController : BaseController
 {
   private readonly AppDbContext _context;
-  private readonly StringHelper _stringHelper;
 
-  public RssFeedsController(AppDbContext context, ILogger<RssFeedsController> logger, StringHelper stringHelper) : base(logger)
+  public RssFeedsController(AppDbContext context, ILogger<RssFeedsController> logger) : base(logger)
   {
     this._context = context;
-    _stringHelper = stringHelper;
   }
 
   [HttpGet("rss/{categorySlug}")]
@@ -162,7 +160,7 @@ public sealed class RssFeedsController : BaseController
   {
     if (!full)
     {
-      return _stringHelper.StripHTML(post.BlurbHtml);
+      return post.SubTitle;
     }
     var contentBlocks = await _context
       .BlogContentBlocks.Where(o => o.BlogId == post.Id)

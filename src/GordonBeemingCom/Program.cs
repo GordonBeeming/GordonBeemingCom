@@ -65,7 +65,6 @@ builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.Configure<SiteConfig>(builder.Configuration.GetSection("SiteConfig"));
 
 builder.Services.AddSingleton<HashHelper>();
-builder.Services.AddSingleton<StringHelper>();
 
 var app = builder.Build();
 

@@ -10,14 +10,12 @@ namespace GordonBeemingCom.Areas.Blog.Controllers;
 public sealed class HomeController : BaseController
 {
   private readonly AppDbContext _context;
-  private readonly StringHelper _stringHelper;
   private readonly IHttpContextAccessor _httpContextAccessor;
   private readonly SiteConfig _siteConfig;
 
-  public HomeController(ILogger<HomeController> logger, AppDbContext context, IOptions<SiteConfig> siteConfig, StringHelper stringHelper, IHttpContextAccessor httpContextAccessor) : base(logger)
+  public HomeController(ILogger<HomeController> logger, AppDbContext context, IOptions<SiteConfig> siteConfig, IHttpContextAccessor httpContextAccessor) : base(logger)
   {
     _context = context;
-    _stringHelper = stringHelper;
     _httpContextAccessor = httpContextAccessor;
     _siteConfig = siteConfig.Value;
   }
@@ -51,7 +49,7 @@ public sealed class HomeController : BaseController
         Id = o.Id,
         Slug = o.BlogSlug,
         Title = o.BlogTitle,
-        SubTitle = _stringHelper.StripHTML(o.BlurbHtml),
+        SubTitle = o.SubTitle,
         PublishDate = o.PublishDate,
         Tags = o.BlogTags
         .Select(o => new RecentPostsViewModel.Tag

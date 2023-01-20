@@ -1,7 +1,5 @@
 name: publish
 
-trigge
-
 on:
   push:
     branches: [ "main" ]

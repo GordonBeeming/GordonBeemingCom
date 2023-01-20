@@ -19,7 +19,7 @@ public sealed class HomeController : BaseController
     _httpContextAccessor = httpContextAccessor;
     _siteConfig = siteConfig.Value;
   }
-  
+
   [Route("about-me")]
   public IActionResult AboutMe()
   {
@@ -27,7 +27,7 @@ public sealed class HomeController : BaseController
   }
 
   [HttpGet("blogs")]
-  public IActionResult Index2() => RedirectToActionPermanent(nameof(Index));
+  public IActionResult RedirectPathIndex() => RedirectToActionPermanent(nameof(Index));
 
   public Task<IActionResult> Index() => LoadPostSummaries(_siteConfig.RecentPostsCount);
 

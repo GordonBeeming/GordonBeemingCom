@@ -25,7 +25,7 @@ public sealed class RssFeedsController : BaseController
   }
 
   [HttpGet("rss/{categorySlug}")]
-  public IActionResult Rss(string categorySlug) => RedirectToActionPermanent(nameof(Rss), new { });
+  public IActionResult RedirectPathRss(string categorySlug) => RedirectToActionPermanent(nameof(Rss), new { });
 
   [HttpGet("rss/atom")]
   public Task<IActionResult> RssAtom()
@@ -39,7 +39,7 @@ public sealed class RssFeedsController : BaseController
   }
 
   [HttpGet("rss/{categorySlug}/latest/{latestN}")]
-  public IActionResult Rss(string categorySlug, int latestN) => RedirectToActionPermanent(nameof(Rss), new { latestN });
+  public IActionResult RedirectPathRss(string categorySlug, int latestN) => RedirectToActionPermanent(nameof(Rss), new { latestN });
 
   [HttpGet("rss/latest/{latestN}/atom")]
   public Task<IActionResult> RssAtom(int latestN)
@@ -53,7 +53,7 @@ public sealed class RssFeedsController : BaseController
   }
 
   [HttpGet("rss-full/{categorySlug}")]
-  public IActionResult RssFull(string categorySlug) => RedirectToActionPermanent(nameof(RssFull), new { });
+  public IActionResult RedirectPathRssFull(string categorySlug) => RedirectToActionPermanent(nameof(RssFull), new { });
 
   [HttpGet("rss-full/atom")]
   public Task<IActionResult> RssFullAtom()
@@ -67,7 +67,7 @@ public sealed class RssFeedsController : BaseController
   }
 
   [HttpGet("rss-full/{categorySlug}/latest/{latestN}")]
-  public IActionResult RssFull(string categorySlug, int latestN) => RedirectToActionPermanent(nameof(RssFull), new { latestN });
+  public IActionResult RedirectPathRssFull(string categorySlug, int latestN) => RedirectToActionPermanent(nameof(RssFull), new { latestN });
 
   [HttpGet("rss-full/latest/{latestN}")]
   public async Task<IActionResult> RssFullAtom(int latestN)

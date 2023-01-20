@@ -26,7 +26,7 @@ public sealed class TagPostsController : BaseController
   }
 
   [HttpGet("blogs/{categorySlug}")]
-  public IActionResult Categories(string categorySlug) => RedirectToActionPermanent(IndexAction, HomeControllerName, new { });
+  public IActionResult RedirectPathCategories(string categorySlug) => RedirectToActionPermanent(IndexAction, HomeControllerName, new { });
 
   private IOrderedQueryable<Blogs> GetBlogPosts(DateTime now) => _context.Blogs
     .Include(o => o.Category)
@@ -35,7 +35,7 @@ public sealed class TagPostsController : BaseController
           .OrderByDescending(o => o.PublishDate ?? now);
 
   [HttpGet("blog/tags/{slug}")]
-  public IActionResult Index2(string slug) => RedirectToActionPermanent(IndexAction, new { slug });
+  public IActionResult RedirectPathIndex(string slug) => RedirectToActionPermanent(IndexAction, new { slug });
 
   [HttpGet("tags/{slug}")]
   public async Task<IActionResult> Index(string slug)

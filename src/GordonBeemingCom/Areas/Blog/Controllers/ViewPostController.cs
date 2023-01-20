@@ -22,7 +22,7 @@ public sealed class ViewPostController : BaseController
   }
 
   [HttpGet("blogs/byid/{id}")]
-  public IActionResult ViewPostById2(Guid id) => RedirectToActionPermanent(nameof(ViewPostById), new { id });
+  public IActionResult RedirectPathViewPostById(Guid id) => RedirectToActionPermanent(nameof(ViewPostById), new { id });
 
   [HttpGet("byid/{id}")]
   public async Task<IActionResult> ViewPostById(Guid id)
@@ -40,10 +40,10 @@ public sealed class ViewPostController : BaseController
   }
 
   [HttpGet("blogs/{categorySlug}/{year}/{month}/{slug}")]
-  public IActionResult Index(string categorySlug, int year, int month, string slug) => RedirectToActionPermanent(nameof(Index), new { year, month, slug });
+  public IActionResult RedirectPathIndex(string categorySlug, int year, int month, string slug) => RedirectToActionPermanent(nameof(Index), new { slug });
 
   [HttpGet("blogs/{year}/{month}/{slug}")]
-  public IActionResult Index(int year, int month, string slug) => RedirectToActionPermanent(nameof(Index), new { slug });
+  public IActionResult RedirectPathIndex(int year, int month, string slug) => RedirectToActionPermanent(nameof(Index), new { slug });
 
   [HttpGet("{slug}")]
   public async Task<IActionResult> Index(string slug)

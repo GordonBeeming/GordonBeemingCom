@@ -43,7 +43,7 @@ public sealed class HomeController : Controller
   }
 
   [Route("blog/privacy-policy")]
-  public IActionResult Privacy2() => RedirectToActionPermanent(nameof(Privacy));
+  public IActionResult RedirectPathPrivacy() => RedirectToActionPermanent(nameof(Privacy));
 
   [Route("privacy-policy")]
   public IActionResult Privacy()

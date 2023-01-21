@@ -14,8 +14,8 @@ public sealed class BinariesController : BaseController
   }
 
   [HttpGet("/" + BlogArea + "/" + IFileService.DownloadFile + "/{container}/{*blobName}")]
-  [OutputCache(Duration = 31536000)]
-  [ResponseCache(Duration = 31536000)]
+  [OutputCache(Duration = OneYearInSeconds)]
+  [ResponseCache(Duration = OneYearInSeconds)]
   public async Task<IActionResult> DownloadFile(string container, string blobName)
   {
     var file = await _fileService.ReadFile(container, blobName);
@@ -28,8 +28,8 @@ public sealed class BinariesController : BaseController
   }
 
   [HttpGet("/" + BlogArea + "/" + IFileService.StreamFile + "/{container}/{*blobName}")]
-  [OutputCache(Duration = 31536000)]
-  [ResponseCache(Duration = 31536000)]
+  [OutputCache(Duration = OneYearInSeconds)]
+  [ResponseCache(Duration = OneYearInSeconds)]
   public async Task<IActionResult> StreamFile(string container, string blobName)
   {
     var file = await _fileService.ReadFile(container, blobName);

@@ -55,12 +55,6 @@ public sealed class HomeController : Controller
     return View();
   }
 
-  [Route("robots.txt")]
-  public IActionResult RobotsTxt()
-  {
-    return View();
-  }
-
   [Route("robots.txt"), OutputCache(Duration = OneDayInSeconds)]
   public ContentResult RobotsText()
   {

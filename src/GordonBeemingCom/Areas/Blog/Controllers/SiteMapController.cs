@@ -44,7 +44,7 @@ public sealed class SiteMapController : BaseController
 ";
     }
     return Content($@"<?xml version=""1.0"" encoding=""UTF-8""?>
-<urlset xmlns=""http://www.sitemaps.org/schemas/sitemap/0.9""> 
+<urlset xmlns=""http://www.sitemaps.org/schemas/sitemap/0.9"">
 <url>
     <loc>{ProductionBlogUrl}</loc>
     <lastmod>{posts.FirstOrDefault()?.PublishDate!.Value.ToString("yyyy-MM-dd")}</lastmod>
@@ -53,7 +53,7 @@ public sealed class SiteMapController : BaseController
 </url>
 {sitemapXmlUrls}
 <url>
-    <loc>{ProductionBlogUrl}abount-me</loc>
+    <loc>{ProductionBlogUrl}about-me</loc>
     <lastmod>{new FileInfo(typeof(SiteMapController).Assembly.Location).LastWriteTime.ToString("yyyy-MM-dd")}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>

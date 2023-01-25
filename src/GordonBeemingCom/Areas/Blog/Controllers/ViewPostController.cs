@@ -21,6 +21,7 @@ public sealed class ViewPostController : BaseController
     _context = context;
   }
 
+  [HttpGet("/blogs/byid/{id}")]
   [HttpGet("blogs/byid/{id}")]
   public IActionResult RedirectPathViewPostById(Guid id) => RedirectToActionPermanent(nameof(ViewPostById), new { id });
 
@@ -39,9 +40,11 @@ public sealed class ViewPostController : BaseController
     });
   }
 
+  [HttpGet("/blogs/{categorySlug}/{year}/{month}/{slug}")]
   [HttpGet("blogs/{categorySlug}/{year}/{month}/{slug}")]
   public IActionResult RedirectPathIndex(string categorySlug, int year, int month, string slug) => RedirectToActionPermanent(nameof(Index), new { slug });
 
+  [HttpGet("/blogs/{year}/{month}/{slug}")]
   [HttpGet("blogs/{year}/{month}/{slug}")]
   public IActionResult RedirectPathIndex(int year, int month, string slug) => RedirectToActionPermanent(nameof(Index), new { slug });
 

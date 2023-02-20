@@ -70,7 +70,7 @@ public sealed class HomeController : Controller
     {
       stringBuilder.AppendLine("Disallow: /");
     }
-    stringBuilder.AppendLine($"Sitemap: {ProductionUrl}sitemap.xml");
+    stringBuilder.AppendLine($"Sitemap: {ProductionUrl}/sitemap.xml");
 
     return this.Content(stringBuilder.ToString(), "text/plain", Encoding.UTF8);
   }

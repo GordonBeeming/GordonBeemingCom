@@ -92,9 +92,9 @@ jobs:
         with:
           inlineScript: |
               TAG=$(echo 'https://ghcr.io/${{ github.repository }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
-              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --settings BRANCH_NAME=${{ github.ref_name }}
               az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --settings COMMIT_HASH=${{ github.sha }}
+              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               
       - name: Azure Logout
         uses: azure/CLI@v1
@@ -130,6 +130,8 @@ jobs:
         with:
           inlineScript: |
               TAG=$(echo 'https://ghcr.io/${{ github.repository }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
+              az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --settings BRANCH_NAME=${{ github.ref_name }}
+              az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --settings COMMIT_HASH=${{ github.sha }}
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               
       - name: Azure Logout

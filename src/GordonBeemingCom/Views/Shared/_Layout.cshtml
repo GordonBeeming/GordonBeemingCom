@@ -129,6 +129,8 @@
             <strong>Disclaimer</strong>: Opinions are my own and not that of my company or anyone I engage with<br />
             @{
               var aspnetVersion = Environment.GetEnvironmentVariable("ASPNET_VERSION") ?? Environment.Version.ToString();
+              var aspnetVersionSegments = aspnetVersion.Split(".");
+              var dotnetLink = $"https://dotnet.microsoft.com/en-us/download/dotnet/{aspnetVersionSegments[0]}.{aspnetVersionSegments[1]}";
               var commitHash = Environment.GetEnvironmentVariable("COMMIT_HASH");
               if (string.IsNullOrEmpty(commitHash))
               {
@@ -141,7 +143,7 @@
               }
             }
             <span>
-              Powered by ASP.NET @(aspnetVersion) | Branch: <a href="https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch%3A@(branchName)" target="_blank" rel="nofollow noreferrer">@(branchName)</a> | Commit: <a href="https://github.com/GordonBeeming/GordonBeemingCom/commit/@(commitHash)" target="_blank" rel="nofollow noreferrer">@(commitHash)</a>.
+              Powered by ASP.NET <a href="@(dotnetLink)" target="_blank" rel="nofollow noreferrer">@(aspnetVersion)</a> | Branch: <a href="https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch%3A@(branchName)" target="_blank" rel="nofollow noreferrer">@(branchName)</a> | Commit: <a href="https://github.com/GordonBeeming/GordonBeemingCom/commit/@(commitHash)" target="_blank" rel="nofollow noreferrer">@(commitHash)</a>.
             </span>
           </div>
         </div>

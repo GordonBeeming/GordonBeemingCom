@@ -7,7 +7,6 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0.100-preview.2-bookworm-slim-amd64 AS build
 WORKDIR /src
-CMD ls
 COPY ["global.json", "GordonBeemingCom/global.json"]
 COPY ["src/GordonBeemingCom/GordonBeemingCom.csproj", "GordonBeemingCom/"]
 RUN dotnet restore "GordonBeemingCom/GordonBeemingCom.csproj"

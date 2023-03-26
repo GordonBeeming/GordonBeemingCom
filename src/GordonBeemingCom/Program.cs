@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Globalization;
 using GordonBeemingCom.Data;
+using GordonBeemingCom.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,7 @@ builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.Configure<SiteConfig>(builder.Configuration.GetSection("SiteConfig"));
 
 builder.Services.AddSingleton<HashHelper>();
+builder.Services.AddSingleton<DeploymentInfo>();
 
 var app = builder.Build();
 
@@ -86,7 +88,7 @@ if (app.Environment.IsDevelopment())
 else
 {
   app.UseExceptionHandler("/status-code");
-  
+
   // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
   //app.UseHsts();
 

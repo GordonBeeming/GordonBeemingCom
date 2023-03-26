@@ -37,8 +37,4 @@
     <PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0-preview.2.23128.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

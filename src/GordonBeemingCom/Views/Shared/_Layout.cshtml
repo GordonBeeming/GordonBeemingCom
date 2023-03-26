@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@inject DeploymentInfo DeploymentInfo
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
@@ -127,23 +128,8 @@
             &copy; 2013 - @(DateTime.UtcNow.Year) - Gordon Beeming - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">Some Rights Reserved</a>
             <br />
             <strong>Disclaimer</strong>: Opinions are my own and not that of my company or anyone I engage with<br />
-            @{
-              var aspnetVersion = Environment.GetEnvironmentVariable("ASPNET_VERSION") ?? Environment.Version.ToString();
-              var aspnetVersionSegments = aspnetVersion.Split(".");
-              var dotnetLink = $"https://dotnet.microsoft.com/en-us/download/dotnet/{aspnetVersionSegments[0]}.{aspnetVersionSegments[1]}";
-              var commitHash = Environment.GetEnvironmentVariable("COMMIT_HASH");
-              if (string.IsNullOrEmpty(commitHash))
-              {
-                commitHash = "local";
-              }
-              var branchName = Environment.GetEnvironmentVariable("BRANCH_NAME");
-              if (string.IsNullOrEmpty(branchName))
-              {
-                branchName = "local";
-              }
-            }
             <span>
-              Powered by ASP.NET <a href="@(dotnetLink)" target="_blank" rel="nofollow noreferrer">@(aspnetVersion)</a> | Branch: <a href="https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch%3A@(branchName)" target="_blank" rel="nofollow noreferrer">@(branchName)</a> | Commit: <a href="https://github.com/GordonBeeming/GordonBeemingCom/commit/@(commitHash)" target="_blank" rel="nofollow noreferrer">@(commitHash)</a>.
+              Powered by ASP.NET <a href="@(DeploymentInfo.DotNetLink)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.AspNetVersion)</a> | Branch: <a href="https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch%3A@(DeploymentInfo.BranchName)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.BranchName)</a> | Commit: <a href="https://github.com/GordonBeeming/GordonBeemingCom/commit/@(DeploymentInfo.CommitHash)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.CommitHashText)</a>.
             </span>
           </div>
         </div>

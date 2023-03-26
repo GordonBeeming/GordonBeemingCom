@@ -28,6 +28,7 @@ resource "azurerm_linux_web_app" "live" {
     "DOCKER_REGISTRY_SERVER_URL"="https://ghcr.io"
     "AZURE_CLIENT_ID": azurerm_user_assigned_identity.app.client_id
     "ProductionInstance":"true"
+    "ASPNETCORE_URLS":"http://+:80"
   }
 
   connection_string {

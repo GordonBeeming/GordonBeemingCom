@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Xml;
-using GordonBeemingCom.Areas.Blog.Data;
 using GordonBeemingCom.Areas.Blog.ViewModels;
 using GordonBeemingCom.Data;
 using GordonBeemingCom.Models;

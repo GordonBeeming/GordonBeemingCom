@@ -3,7 +3,6 @@ using System.ServiceModel.Syndication;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using GordonBeemingCom.Areas.Blog.Data;
 using GordonBeemingCom.Areas.Blog.ViewModels;
 using GordonBeemingCom.Data;
 using Microsoft.AspNetCore.Authentication;

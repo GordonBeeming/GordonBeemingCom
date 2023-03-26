@@ -20,6 +20,4 @@ RUN dotnet publish "GordonBeemingCom.csproj" -c Release -o /app/publish /p:UseAp
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENV BRANCH_NAME=git branch --show-current
-ENV COMMIT_HASH=git rev-parse $(git branch --show-current)
 ENTRYPOINT ["dotnet", "GordonBeemingCom.dll"]

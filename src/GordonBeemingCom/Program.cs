@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Debug;
 using Microsoft.Net.Http.Headers;
 
-var zaCulture = (CultureInfo)CultureInfo.GetCultureInfo("en-za").Clone();
-var zaCultureNumberFormat = (NumberFormatInfo)zaCulture.NumberFormat.Clone();
-zaCultureNumberFormat.CurrencySymbol = "R";
-zaCultureNumberFormat.CurrencyDecimalSeparator = ".";
-zaCultureNumberFormat.NumberDecimalSeparator = ".";
-zaCulture.NumberFormat = zaCultureNumberFormat;
-CultureInfo.DefaultThreadCurrentCulture = zaCulture;
-CultureInfo.DefaultThreadCurrentUICulture = zaCulture;
+var culture = (CultureInfo)CultureInfo.GetCultureInfo("en-us").Clone();
+var cultureNumberFormat = (NumberFormatInfo)culture.NumberFormat.Clone();
+cultureNumberFormat.CurrencySymbol = "R";
+cultureNumberFormat.CurrencyDecimalSeparator = ".";
+cultureNumberFormat.NumberDecimalSeparator = ".";
+culture.NumberFormat = cultureNumberFormat;
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
 
 #if DEBUG
 var debugLoggerFactory = new LoggerFactory(new[] { new DebugLoggerProvider() });

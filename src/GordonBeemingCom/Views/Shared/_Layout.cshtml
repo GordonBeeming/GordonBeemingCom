@@ -126,7 +126,23 @@
           <div class="small text-center text-muted fst-italic">
             &copy; 2013 - @(DateTime.UtcNow.Year) - Gordon Beeming - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">Some Rights Reserved</a>
             <br />
-            <strong>Disclaimer</strong>: Opinions are my own and not that of my company or anyone I engage with
+            <strong>Disclaimer</strong>: Opinions are my own and not that of my company or anyone I engage with<br />
+            @{
+              var aspnetVersion = Environment.GetEnvironmentVariable("ASPNET_VERSION");
+              var commitHash = Environment.GetEnvironmentVariable("COMMIT_HASH");
+              if (string.IsNullOrEmpty(commitHash))
+              {
+                commitHash = "local";
+              }
+              var branchName = Environment.GetEnvironmentVariable("BRANCH_NAME");
+              if (string.IsNullOrEmpty(branchName))
+              {
+                branchName = "local";
+              }
+            }
+            <span>
+              Powered by ASP.NET @(aspnetVersion) | Branch: <a href="https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch%3A@(branchName)">@(branchName)</a> | Commit: <a href="https://github.com/GordonBeeming/GordonBeemingCom/commit/@(commitHash)">@(commitHash)</a>.
+            </span>
           </div>
         </div>
       </div>

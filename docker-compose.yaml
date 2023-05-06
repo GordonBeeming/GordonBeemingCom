@@ -1,0 +1,22 @@
+version: "3.9"
+name: gordonbeemingcom
+
+services:
+  sql:
+    container_name: gordonbeemingcom-sql
+    hostname: gordonbeemingcom-sql
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    environment:
+      - SA_PASSWORD=${SA_PASSWORD}
+      - ACCEPT_EULA=Y
+      - MSSQL_DATA_DIR=/var/opt/mssql/data
+      - MSSQL_LOG_DIR=/var/opt/mssql/log
+      - MSSQL_BACKUP_DIR=/var/opt/mssql/backup
+    ports:
+      - 1600:1433
+    volumes:
+      - gordonbeemingcom-sql:/var/opt/mssql
+
+volumes:
+  gordonbeemingcom-sql:
+    driver: local

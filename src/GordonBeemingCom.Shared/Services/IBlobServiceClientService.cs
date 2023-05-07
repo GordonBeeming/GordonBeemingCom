@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 
-namespace GordonBeemingCom.Areas.Blog.Services;
+namespace GordonBeemingCom.Shared.Services;
 
 public interface IBlobServiceClientService
 {

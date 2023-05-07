@@ -1,7 +1,8 @@
 ﻿using Azure.Identity;
 using Azure.Storage.Blobs;
+using Microsoft.Extensions.Configuration;
 
-namespace GordonBeemingCom.Areas.Blog.Services;
+namespace GordonBeemingCom.Shared.Services;
 
 public sealed class BlobServiceClientService : IBlobServiceClientService
 {

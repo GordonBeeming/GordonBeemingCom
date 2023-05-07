@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-GordonBeemingCom.Editor-b266de7d-c296-47cb-9ba2-e52e61b6113b</UserSecretsId>
+    <UserSecretsId>aspnet-GordonBeemingCom-e3bcf64d-6911-4893-a842-f7366861c5f6</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GordonBeemingCom.Database\GordonBeemingCom.Database.csproj" />
+    <ProjectReference Include="..\GordonBeemingCom.Shared\GordonBeemingCom.Shared.csproj" />
   </ItemGroup>
 
 </Project>

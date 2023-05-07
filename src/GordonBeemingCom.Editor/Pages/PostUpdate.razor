@@ -1,0 +1,253 @@
+﻿@page "/posts/{Id:guid}"
+@using System.Text;
+@using System.Text.RegularExpressions;
+@using System.Globalization;
+@inject NavigationManager navigationManager
+@inject AppDbContext context
+@inject IConfiguration configuration
+@inject IFileService fileService
+@attribute [Authorize]
+
+<PageTitle>@blogName | Posts</PageTitle>
+
+<h1><span class="oi oi-signpost" title="@blogName" aria-hidden="true"></span> @blogName</h1>
+
+@if (blog == null)
+{
+  <p><em>Loading...</em></p>
+}
+else
+{
+  <EditForm Model="@blog">
+    <div class="row">
+      <div class="form-group col-lg-12 col-sm-12">
+        <h3>Basic Information</h3>
+      </div>
+      <div class="form-group col-lg-6 col-sm-12">
+        <label for="blogTitle">Title:</label>
+        <InputText id="blogTitle" class="form-control" @bind-Value="@blog.BlogTitle" @onblur="TitleBlur" />
+      </div>
+      <div class="form-group col-lg-6 col-sm-12">
+        <label for="slug">Slug:</label>
+        <InputText id="slug" class="form-control" @bind-Value="@blog.BlogSlug" @onblur="SlugBlur" />
+      </div>
+      <div class="form-group col-lg-4 col-sm-12">
+        <label for="category">Category:</label>
+        <InputSelect id="category" class="form-control" @bind-Value="@blog.CategoryId">
+          @foreach (var category in categories)
+          {
+            <option value="@category.Id">@category.CategoryName</option>
+          }
+        </InputSelect>
+      </div>
+      <div class="form-group col-lg-12 col-sm-12">
+        <label for="blogSubTitle">Sub title:</label>
+        <InputTextArea id="blogSubTitle" class="form-control" rows="4" @bind-Value="@blog.SubTitle" />
+      </div>
+      <div class="form-group col-lg-4 col-sm-12">
+        <label for="publishDate">Publish date:</label>
+        <DateTimePicker id="publishDate" @bind-Value="@blog.PublishDate" />
+      </div>
+      <div class="form-group col-lg-4 col-sm-12">
+        <label for="youTubeVideoId">YouTube Video Id:</label>
+        <InputText id="youTubeVideoId" class="form-control" @bind-Value="@blog.YouTubeVideoId" />
+      </div>
+      <div class="form-group col-lg-12 col-sm-12">
+        <label for="heroImage">Hero image:</label>
+        @if (!string.IsNullOrEmpty(blog.HeroImageUrl))
+        {
+          <img src="@(blog.HeroImageUrl.Replace("~",configuration["WebSiteUrl"]))" style="max-width:100%;" />
+        }
+      </div>
+      <div class="form-group col-lg-4 col-sm-12">
+        <InputFile id="heroImage" class="form-control" OnChange="OnHeroImageSelected" />
+      </div>
+    </div>
+
+    @if (validationIssues.Count > 0)
+    {
+      <ul class="validation-message">
+        @for (int i = 0; i < validationIssues.Count; i++)
+        {
+          <li>@($"{validationIssues[i]}")</li>
+        }
+      </ul>
+    }
+    @if (!formSumitting)
+    {
+      <button type="submit" class="btn btn-primary" @onclick="UpdateItem">Submit</button>
+      <button type="submit" class="btn btn-secondary" @onclick="CancelUpdate">Cancel</button>
+    }
+    else
+    {
+      <p>💾 Saving!</p>
+    }
+  </EditForm>
+
+}
+
+@code {
+  [Parameter]
+  public Guid Id { get; set; }
+
+  private string blogName => blog?.BlogTitle?.Length > 0 ? $"{blog.BlogTitle}" : "Post";
+
+  private Blogs? blog { get; set; }
+
+  private List<Categories> categories = new();
+
+  private List<string> validationIssues = new();
+
+  private bool formSumitting = false;
+
+  protected override async Task OnInitializedAsync()
+  {
+    categories = await context.Categories
+    .OrderBy(o => o.CategoryName)
+    .ToListAsync();
+    if (Id != Guid.Empty)
+    {
+      blog = await context.Blogs.FirstOrDefaultAsync(o => o.Id == Id);
+      if (blog == null)
+      {
+        return;
+      }
+      slugChanged = true;
+      if (blog.PublishDate.HasValue)
+      {
+        blog.PublishDate = DateTime.SpecifyKind(blog.PublishDate.Value, DateTimeKind.Utc);
+        blog.PublishDate = TimeZoneInfo.ConvertTimeFromUtc(blog.PublishDate.Value, TimeZoneInfo.Local);
+      }
+    }
+    else
+    {
+      blog = new Blogs();
+      slugChanged = false;
+    }
+  }
+
+  private async Task UpdateItem()
+  {
+    if (blog == null || formSumitting)
+    {
+      return;
+    }
+    formSumitting = true;
+    if (!FormIsValid())
+    {
+      formSumitting = false;
+      return;
+    }
+    try
+    {
+      if (Id == Guid.Empty)
+      {
+        context.Blogs.Add(blog);
+      }
+      if (blog.PublishDate.HasValue)
+      {
+        blog.PublishDate = DateTime.SpecifyKind(blog.PublishDate.Value, DateTimeKind.Local);
+        blog.PublishDate = TimeZoneInfo.ConvertTimeToUtc(blog.PublishDate.Value, TimeZoneInfo.Local);
+      }
+      await context.SaveChangesAsync();
+      navigationManager.NavigateTo("/posts");
+    }
+    catch (Exception ex)
+    {
+      validationIssues.Add(ex.Message);
+      formSumitting = false;
+    }
+  }
+
+  private bool FormIsValid()
+  {
+    if (blog == null)
+    {
+      return false;
+    }
+    validationIssues.Clear();
+    if (string.IsNullOrEmpty(blog.BlogTitle))
+    {
+      validationIssues.Add("Blog title missing!");
+    }
+    if (string.IsNullOrEmpty(blog.SubTitle))
+    {
+      validationIssues.Add("Sub title missing!");
+    }
+    blog.BlogSlug = blog.BlogSlug.Trim();
+    if (string.IsNullOrEmpty(blog.BlogSlug))
+    {
+      validationIssues.Add("Slug missing!");
+    }
+    return validationIssues.Count == 0;
+  }
+
+  private void CancelUpdate()
+  {
+    navigationManager.NavigateTo("/posts");
+  }
+
+  private void TitleBlur()
+  {
+    if (!slugChanged && blog != null)
+    {
+      blog.BlogSlug = CreateSlug(blog.BlogTitle);
+      lastSlug = blog.BlogSlug;
+    }
+  }
+
+  private bool slugChanged = false;
+  private string lastSlug = string.Empty;
+
+  private void SlugBlur()
+  {
+    if (!slugChanged && blog != null && lastSlug != blog.BlogSlug)
+    {
+      slugChanged = true;
+    }
+  }
+
+  private string CreateSlug(string title)
+  {
+    title = (title ?? string.Empty).Trim();
+    title = title.ToLowerInvariant().Replace(" ", "-").TrimEnd('-');
+    title = RemoveDiacritics(title);
+    title = Regex.Replace(title, @"([^0-9a-z-])", string.Empty);
+    while (title.Contains("--"))
+    {
+      title = title.Replace("--", "-");
+    }
+    return title.ToLowerInvariant();
+  }
+
+  private string RemoveDiacritics(string text)
+  {
+    var normalizedString = text.Normalize(NormalizationForm.FormD);
+    var stringBuilder = new StringBuilder();
+
+    foreach (var c in normalizedString)
+    {
+      var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+      if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+      {
+        stringBuilder.Append(c);
+      }
+    }
+
+    return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+  }
+
+  private async Task OnHeroImageSelected(InputFileChangeEventArgs e)
+  {
+    if (blog != null && e.File != null)
+    {
+      var fileInfo = await fileService.WriteFile(null, e.File.Name, e.File.ContentType, () => e.File.OpenReadStream());
+      if (fileInfo != null)
+      {
+        blog.HeroImageUrl = $"~{fileInfo.RawUrl}";
+      }
+    }
+  }
+
+
+}

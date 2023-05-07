@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using GordonBeemingCom.Editor.Areas.Identity;
 using GordonBeemingCom.Editor.Data;
+using GordonBeemingCom.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -57,7 +58,9 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<IFileService, FileService>();
+builder.Services.AddSingleton<IBlobServiceClientService, BlobServiceClientService>();
+builder.Services.AddSingleton<HashHelper>();
 
 var app = builder.Build();
 

@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GordonBeemingCom.Database\GordonBeemingCom.Database.csproj" />
+    <ProjectReference Include="..\GordonBeemingCom.Shared\GordonBeemingCom.Shared.csproj" />
   </ItemGroup>
 
 </Project>

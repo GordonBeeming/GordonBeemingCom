@@ -1,4 +1,4 @@
-﻿namespace GordonBeemingCom.Areas.Blog.Models;
+﻿namespace GordonBeemingCom.Shared.Models;
 
 public sealed class FileInformation
 {

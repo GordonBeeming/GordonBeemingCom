@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace GordonBeemingCom.Areas.Blog.Services;
+namespace GordonBeemingCom.Shared.Services;
 
 public sealed class HashHelper
 {
@@ -13,17 +13,17 @@ public sealed class HashHelper
     SHA512 = 5,
   }
 
-  public string GetHashFromFile(string fileName, Algorithms algorithm, int bufferSizeInMb = 100)
+  public Task<string> GetHashFromFile(string fileName, Algorithms algorithm, int bufferSizeInMb = 100)
   {
     return GetHashFromStream(File.OpenRead(fileName), algorithm, bufferSizeInMb);
   }
 
-  public string GetHashOfString(string value, Algorithms algorithm, int bufferSizeInMb = 100)
+  public Task<string> GetHashOfString(string value, Algorithms algorithm, int bufferSizeInMb = 100)
   {
     return GetHashFromBytes(GetBytes(value), algorithm, bufferSizeInMb);
   }
 
-  public string GetHashFromBytes(byte[] bytes, Algorithms algorithm, int bufferSizeInMb = 100)
+  public Task<string> GetHashFromBytes(byte[] bytes, Algorithms algorithm, int bufferSizeInMb = 100)
   {
     using (var ms = new MemoryStream(bytes))
     {
@@ -31,10 +31,11 @@ public sealed class HashHelper
     }
   }
 
-  public string GetHashFromStream(Stream ms, Algorithms algorithm, int bufferSizeInMb = 100)
+  public async Task<string> GetHashFromStream(Stream ms, Algorithms algorithm, int bufferSizeInMb = 100)
   {
-    using (var stream = new BufferedStream(ms, 1024 * 1024 * bufferSizeInMb))
+    using (var stream = new MemoryStream())
     {
+      await ms.CopyToAsync(stream);
       return BitConverter.ToString(GetHashAlgorithm(algorithm).ComputeHash(stream)).Replace("-", string.Empty);
     }
   }

@@ -133,7 +133,7 @@ else
       return;
     }
     formSumitting = true;
-    if (!FormIsValid())
+    if (!(await FormIsValid()))
     {
       formSumitting = false;
       return;
@@ -159,12 +159,13 @@ else
     }
   }
 
-  private bool FormIsValid()
+  private async Task<bool> FormIsValid()
   {
     if (blog == null)
     {
       return false;
     }
+    await Task.Delay(50);
     validationIssues.Clear();
     if (string.IsNullOrEmpty(blog.BlogTitle))
     {

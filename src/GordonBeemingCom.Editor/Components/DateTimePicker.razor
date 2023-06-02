@@ -29,6 +29,7 @@
 
   async Task OnBlur()
   {
+    await Task.Delay(10);
     if (selectedValue.Date.HasValue)
     {      
       Value = selectedValue.Date.Value.Date.AddHours(selectedValue.Time.Hour).AddMinutes(selectedValue.Time.Minute);

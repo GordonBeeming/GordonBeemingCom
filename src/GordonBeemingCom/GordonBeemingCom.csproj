@@ -33,6 +33,7 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0-beta3" />
     <PackageReference Include="Microsoft.ApplicationInsights.SnapshotCollector" Version="1.4.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
     <PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0-preview.3.23174.8" />
   </ItemGroup>

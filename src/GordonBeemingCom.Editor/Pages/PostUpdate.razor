@@ -73,6 +73,14 @@ else
         }
       </ul>
     }
+    @for (int i = 0; i < contentBlogs.Count; i++)
+    {
+      var contentBlock = contentBlogs[i];
+      @if (contentBlock.BlockType == ContentBlockTypes.Html)
+      {
+        <ContentBlockHtml @bind-ContentBlock="contentBlock"></ContentBlockHtml>
+      }
+    }
     @if (!formSumitting)
     {
       <button type="submit" class="btn btn-primary" @onclick="UpdateItem">Submit</button>
@@ -94,6 +102,8 @@ else
 
   private Blogs? blog { get; set; }
 
+  private List<BlogContentBlocks> contentBlogs = new();
+
   private List<Categories> categories = new();
 
   private List<string> validationIssues = new();
@@ -107,7 +117,9 @@ else
     .ToListAsync();
     if (Id != Guid.Empty)
     {
-      blog = await context.Blogs.FirstOrDefaultAsync(o => o.Id == Id);
+      blog = await context.Blogs
+                          .Include(o => o.BlogContentBlocks)
+                          .FirstOrDefaultAsync(o => o.Id == Id);
       if (blog == null)
       {
         return;
@@ -118,6 +130,9 @@ else
         blog.PublishDate = DateTime.SpecifyKind(blog.PublishDate.Value, DateTimeKind.Utc);
         blog.PublishDate = TimeZoneInfo.ConvertTimeFromUtc(blog.PublishDate.Value, TimeZoneInfo.Local);
       }
+      contentBlogs = blog.BlogContentBlocks
+                          .OrderBy(o=>o.DisplayOrder)
+                          .ToList();
     }
     else
     {

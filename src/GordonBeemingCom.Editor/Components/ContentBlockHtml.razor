@@ -1,0 +1,81 @@
+﻿@using TinyMCE.Blazor;
+
+
+<div class="row admin-toolbar">
+  <div class="col-lg-12 col-sm-12">
+    <div>
+      <button @onclick="ToggleEdit" class="btn btn-outline-primary">Toggle Edit</button>
+    </div>
+    <div>
+      <InputCheckbox id="@($"AddPreSpacer{ContentBlock.DisplayOrder}")" @bind-Value="ContentBlock.AddPreSpacer"></InputCheckbox> <label for="@($"AddPreSpacer{ContentBlock.DisplayOrder}")">Add Pre Spacer?</label>
+    </div>
+    <div>
+      <InputCheckbox id="@($"AddPostSpacer{ContentBlock.DisplayOrder}")" @bind-Value="ContentBlock.AddPostSpacer"></InputCheckbox> <label for="@($"AddPostSpacer{ContentBlock.DisplayOrder}")">Add Post Spacer?</label>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-sm-12">
+    @if (editMode)
+    {
+      <Editor ApiKey="ttwureoztelmx55cd66rthdd6tebebu4r2ayardzy442vyrd" CloudChannel="6" Field="() => HtmlValue" @bind-Value="@HtmlValue" Conf="@editorConf" />
+      <ValidationMessage For="() => HtmlValue" />
+    }
+    else
+    {
+      @((MarkupString)HtmlValue)
+    }
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public BlogContentBlocks ContentBlock { get; set; } = new();
+
+  [Parameter]
+  public EventCallback<BlogContentBlocks> ContentBlockChanged { get; set; }
+
+  private bool editMode { get; set; } = false;
+
+  protected void ToggleEdit()
+  {
+    editMode = !editMode;
+  }
+
+  private HtmlContentBlockContext context { get; set; } = new HtmlContentBlockContext();
+  private string HtmlValue
+  {
+    get
+    {
+      return context.Html;
+    }
+    set
+    {
+      context.Html = value;
+      ContentBlock.ContextInfo = JsonConvert.SerializeObject(context);
+      ContentBlockChanged.InvokeAsync(ContentBlock);
+    }
+  }
+
+  protected override void OnParametersSet()
+  {
+    if (ContentBlock == null)
+    {
+      ContentBlock = new();
+    }
+    else
+    {
+      context = JsonConvert.DeserializeObject<HtmlContentBlockContext>(ContentBlock.ContextInfo) ?? new HtmlContentBlockContext();
+    }
+  }
+
+  private Dictionary<string, object> editorConf = new Dictionary<string, object>
+  {
+    { "menubar", true },
+    { "plugins", new string[]{"advlist autolink lists link image charmap print preview anchor","searchreplace visualblocks code fullscreen ","insertdatetime media table paste code help wordcount" } },
+    { "toolbar", "undo redo | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | table charmap | link unlink | code | help" },
+    { "content_css", new[] {"//fonts.googleapis.com/css?family=Lato:300,300i,400,400i","//www.tiny.cloud/css/codepen.min.css"} },
+    { "extended_valid_elements", "script[language|type|src],style[type]" },
+  };
+}

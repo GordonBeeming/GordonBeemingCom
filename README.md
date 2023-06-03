@@ -4,7 +4,9 @@ This is the source code for profile and blog site [https://gordonbeeming.com](ht
 
 ## Database Changes
 
-Once new tables are added to the database, you will need to run the following command to generate the migration files:
+Once new tables are added to the database context, you will need to run the following command to generate the migration files:
     
     dotnet tool restore
-    dotnet-ef migrations add {{ NAME OF MIGRATION }} --context AppDbContext --project 'GordonBeemingCom.Database' --startup-project 'GordonBeemingCom'
+    cd src
+    dotnet dotnet-ef migrations add {{ NAME OF MIGRATION }} --context AppDbContext --project 'GordonBeemingCom.Database' --startup-project 'GordonBeemingCom'
+

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace GordonBeemingCom.Database.Tables;
@@ -13,7 +14,7 @@ public partial class BlogContentBlocks
 
   public Guid BlogId { get; set; }
 
-  public short BlockType { get; set; }
+  public ContentBlockTypes BlockType { get; set; }
 
   public string ContextInfo { get; set; } = null!;
 
@@ -21,8 +22,7 @@ public partial class BlogContentBlocks
 
   public bool AddPreSpacer { get; set; }
 
-  [Required]
-  public bool? AddPostSpacer { get; set; }
+  public bool AddPostSpacer { get; set; }
 
   public DateTime DateTimeStamp { get; set; }
 

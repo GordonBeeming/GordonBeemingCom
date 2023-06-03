@@ -172,7 +172,7 @@ public sealed class RssFeedsController : BaseController
       {
         description += $@"<div>&nbsp;</div>";
       }
-      if ((ContentBlockTypes)contentBlock.BlockType == ContentBlockTypes.Html)
+      if (contentBlock.BlockType == ContentBlockTypes.Html)
       {
         var htmlContent = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo);
         description += $@"
@@ -181,14 +181,14 @@ public sealed class RssFeedsController : BaseController
 </div>
 ";
       }
-      else if ((ContentBlockTypes)contentBlock.BlockType == ContentBlockTypes.Image)
+      else if (contentBlock.BlockType == ContentBlockTypes.Image)
       {
         var imageContent = JsonConvert.DeserializeObject<ImageContentBlockContext>(contentBlock.ContextInfo);
         description += $@"
 <img src='{GetRelativeImageUrl(imageContent!.ImageUrl, url)}' alt='{imageContent.AltText}' title='{imageContent.AltText}' {imageContent.HeightDisplayTag} {imageContent.WidthDisplayTag} />
 ";
       }
-      else if ((ContentBlockTypes)contentBlock.BlockType == ContentBlockTypes.Code)
+      else if (contentBlock.BlockType == ContentBlockTypes.Code)
       {
         var codeContent = JsonConvert.DeserializeObject<CodeContentBlockContext>(contentBlock.ContextInfo);
         description += $@"

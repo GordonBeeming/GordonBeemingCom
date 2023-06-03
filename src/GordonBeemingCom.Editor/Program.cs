@@ -64,6 +64,13 @@ builder.Services.AddSingleton<HashHelper>();
 
 var app = builder.Build();
 
+var serviceScopeFactory = app.Services.GetService<IServiceScopeFactory>();
+using (var scope = serviceScopeFactory!.CreateScope())
+{
+  var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+  appDbContext.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

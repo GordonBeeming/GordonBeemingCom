@@ -54,6 +54,10 @@ else
       </div>
       <div class="form-group col-lg-12 col-sm-12">
         <label for="heroImage">Hero image:</label>
+        @if (fileUploadTooBig)
+        {
+          <span class="alert-danger">File size too big.</span>
+        }<br />
         @if (!string.IsNullOrEmpty(blog.HeroImageUrl))
         {
           <img src="@(blog.HeroImageUrl.Replace("~",configuration["WebSiteUrl"]))" style="max-width:100%;" />
@@ -73,6 +77,25 @@ else
         }
       </ul>
     }
+    @if (!formSumitting)
+    {
+      <button type="submit" class="btn btn-primary" @onclick="UpdateItem">Save</button>
+      <button type="submit" class="btn btn-secondary" @onclick="CancelUpdate">Back to list</button>
+
+      if (blog.BlogSlug?.Length > 0)
+      {
+        <a class="btn btn-outline-info m-3" target="_blank" href="@(configuration["WebSiteUrl"])/blog/@(blog.BlogSlug)">Preview</a>
+      }
+    }
+    else
+    {
+      <p>💾 Saving!</p>
+    }
+    <div class="row">
+      <div class="form-group col-lg-12 col-sm-12">
+        <h3>Blog Content</h3>
+      </div>
+    </div>
     @for (int i = 0; i < contentBlogs.Count; i++)
     {
       var contentBlock = contentBlogs[i];
@@ -80,11 +103,29 @@ else
       {
         <ContentBlockHtml @bind-ContentBlock="contentBlock"></ContentBlockHtml>
       }
+      else if (contentBlock.BlockType == ContentBlockTypes.Image)
+      {
+        <ContentBlockImage @bind-ContentBlock="contentBlock"></ContentBlockImage>
+      }
+      else if (contentBlock.BlockType == ContentBlockTypes.Code)
+      {
+        @* var codeContent = JsonConvert.DeserializeObject<CodeContentBlockContext>(contentBlock.ContextInfo);
+  description += $@"
+  <pre data-lang='{codeContent!.Language}'>
+  {codeContent.Code}
+  </pre>
+  "; *@
+      }
     }
     @if (!formSumitting)
     {
-      <button type="submit" class="btn btn-primary" @onclick="UpdateItem">Submit</button>
-      <button type="submit" class="btn btn-secondary" @onclick="CancelUpdate">Cancel</button>
+      <button type="submit" class="btn btn-primary" @onclick="UpdateItem">Save</button>
+      <button type="submit" class="btn btn-secondary" @onclick="CancelUpdate">Back to list</button>
+
+      if (blog.BlogSlug?.Length > 0)
+      {
+        <a class="btn btn-outline-info m-3" target="_blank" href="@(configuration["WebSiteUrl"])/blog/@(blog.BlogSlug)">Preview</a>
+      }
     }
     else
     {
@@ -109,6 +150,7 @@ else
   private List<string> validationIssues = new();
 
   private bool formSumitting = false;
+  private bool fileUploadTooBig = false;
 
   protected override async Task OnInitializedAsync()
   {
@@ -165,7 +207,8 @@ else
         blog.PublishDate = TimeZoneInfo.ConvertTimeToUtc(blog.PublishDate.Value, TimeZoneInfo.Local);
       }
       await context.SaveChangesAsync();
-      navigationManager.NavigateTo("/posts");
+      await Task.Delay(1000);
+      formSumitting = false;
     }
     catch (Exception ex)
     {
@@ -255,15 +298,23 @@ else
 
   private async Task OnHeroImageSelected(InputFileChangeEventArgs e)
   {
+    fileUploadTooBig = false;
     if (blog != null && e.File != null)
     {
-      var fileInfo = await fileService.WriteFile(null, e.File.Name, e.File.ContentType, () => e.File.OpenReadStream());
-      if (fileInfo != null)
+      var maxFileSize = 1024 * configuration.GetValue<int>("MaxAllowedFileSize");
+      if (e.File.Size < maxFileSize)
       {
-        blog.HeroImageUrl = $"~{fileInfo.RawUrl}";
+        var fileInfo = await fileService.WriteFile(null, e.File.Name, e.File.ContentType, () => e.File.OpenReadStream(maxAllowedSize: maxFileSize));
+        if (fileInfo != null)
+        {
+          blog.HeroImageUrl = $"~{fileInfo.RawUrl}";
+        }
+      }
+      else
+      {
+        fileUploadTooBig = true;
       }
     }
   }
-
 
 }

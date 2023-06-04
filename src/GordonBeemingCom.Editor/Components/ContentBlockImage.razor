@@ -1,0 +1,186 @@
+﻿@inject IFileService fileService
+@inject IConfiguration configuration
+
+<div class="row admin-toolbar">
+  <div class="col-lg-12 col-sm-12">
+    <div class="admin-toolbar-item">
+      <button @onclick="RemoveBlock" class="btn btn-outline-danger">Remove Block</button>
+    </div>
+    <div class="admin-toolbar-item">
+      <button @onclick="ToggleEdit" class="btn btn-outline-primary">Toggle Edit</button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  @if (editMode)
+  {
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="@($"Image{ContentBlock.DisplayOrder}")" class="control-label">Image</label>
+        @if (fileUploadTooBig)
+        {
+          <span class="alert-danger">File size too big.</span>
+        }
+        <InputFile id="@($"Image{ContentBlock.DisplayOrder}")" class="form-control" OnChange="OnImageSelected" />
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="form-group">
+        <label for="@($"AltText{ContentBlock.DisplayOrder}")" class="control-label">Alt Text</label>
+        <input id="@($"AltText{ContentBlock.DisplayOrder}")" class="form-control" value="@context.AltText" @onchange="OnAltTextChanged" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="@($"Width{ContentBlock.DisplayOrder}")" class="control-label">Width</label>
+        <input id="@($"Width{ContentBlock.DisplayOrder}")" class="form-control" value="@context.Width" type="number" @onchange="OnWidthChanged" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="@($"Height{ContentBlock.DisplayOrder}")" class="control-label">Height</label>
+        <input id="@($"Height{ContentBlock.DisplayOrder}")" class="form-control" value="@context.Height" type="number" @onchange="OnHeightChanged" />
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="@($"Figure{ContentBlock.DisplayOrder}")" class="control-label">Figure</label>
+        <input id="@($"Figure{ContentBlock.DisplayOrder}")" class="form-control" value="@context.Figure" @onchange="OnFigureTextChanged" />
+      </div>
+    </div>
+  }
+  <div class="col-lg-12 col-sm-12">
+    <img src='@(context.ImageUrl)' alt='@(context.AltText)' title='@(context.AltText)' width="@(context.Width > 0 ? $"{context.Width}px" : "")" height="@(context.Height > 0 ? $"{context.Height}px" : "")" />
+    @if (context.Figure.Length > 0)
+    {
+      <br />
+      <strong>Figure: @(context.Figure)</strong>
+    }
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public BlogContentBlocks ContentBlock { get; set; } = new();
+
+  [Parameter]
+  public EventCallback<BlogContentBlocks> ContentBlockChanged { get; set; }
+
+  private bool editMode { get; set; } = false;
+  private bool fileUploadTooBig = false;
+
+  protected void ToggleEdit()
+  {
+    editMode = !editMode;
+  }
+
+  protected void RemoveBlock()
+  {
+    ContentBlock.CancelledDate = DateTime.UtcNow;
+  }
+
+  private ImageContentBlockContext context { get; set; } = new ImageContentBlockContext();
+
+  protected override void OnParametersSet()
+  {
+    if (ContentBlock == null)
+    {
+      ContentBlock = new();
+    }
+    else
+    {
+      if (ContentBlock.ContextInfo == null)
+      {
+        context = new ImageContentBlockContext();
+      }
+      else
+      {
+        context = JsonConvert.DeserializeObject<ImageContentBlockContext>(ContentBlock.ContextInfo) ?? new ImageContentBlockContext();
+      }
+      
+      if (context.AltText == null)
+      {
+        context.AltText = string.Empty;
+      }
+      if (context.Figure == null)
+      {
+        context.Figure = string.Empty;
+      }
+    }
+  }
+
+  private async Task OnImageSelected(InputFileChangeEventArgs e)
+  {
+    fileUploadTooBig = false;
+    if (context != null && e.File != null)
+    {
+      fileUploadTooBig = false;
+      var maxFileSize = 1024 * configuration.GetValue<int>("MaxAllowedFileSize");
+      if (e.File.Size < maxFileSize)
+      {
+        var fileInfo = await fileService.WriteFile(null, e.File.Name, e.File.ContentType, () => e.File.OpenReadStream(maxAllowedSize: maxFileSize));
+        if (fileInfo != null)
+        {
+          context.ImageUrl = $"{configuration["WebSiteUrl"]}{fileInfo.RawUrl}";
+          ContentBlock.ContextInfo = JsonConvert.SerializeObject(context);
+          await ContentBlockChanged.InvokeAsync(ContentBlock);
+        }
+      }
+      else
+      {
+        fileUploadTooBig = true;
+      }
+    }
+  }
+
+  private async Task OnFigureTextChanged(ChangeEventArgs e)
+  {
+    if (context != null && e.Value is string value)
+    {
+      if (context.AltText == context.Figure)
+      {
+        context.AltText = value;
+      }
+      context.Figure = value;
+      ContentBlock.ContextInfo = JsonConvert.SerializeObject(context);
+      await ContentBlockChanged.InvokeAsync(ContentBlock);
+    }
+  }
+
+  private async Task OnAltTextChanged(ChangeEventArgs e)
+  {
+    if (context != null && e.Value is string value)
+    {
+      context.AltText = value;
+      ContentBlock.ContextInfo = JsonConvert.SerializeObject(context);
+      await ContentBlockChanged.InvokeAsync(ContentBlock);
+    }
+  }
+
+  private async Task OnHeightChanged(ChangeEventArgs e)
+  {
+    if (context != null && e.Value is string value)
+    {
+      if (int.TryParse(value, out int v))
+      {
+        context.Height = v;
+        ContentBlock.ContextInfo = JsonConvert.SerializeObject(context);
+        await ContentBlockChanged.InvokeAsync(ContentBlock);
+      }
+    }
+  }
+
+  private async Task OnWidthChanged(ChangeEventArgs e)
+  {
+    if (context != null && e.Value is string value)
+    {
+      if (int.TryParse(value, out int v))
+      {
+        context.Width = v;
+        ContentBlock.ContextInfo = JsonConvert.SerializeObject(context);
+        await ContentBlockChanged.InvokeAsync(ContentBlock);
+      }
+    }
+  }
+}

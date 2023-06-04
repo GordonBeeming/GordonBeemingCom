@@ -1,5 +1,4 @@
-﻿using GordonBeemingCom.Areas.Blog.Services;
-using Microsoft.AspNetCore.OutputCaching;
+﻿using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Net.Http.Headers;
 
 namespace GordonBeemingCom.Areas.Blog.Controllers;

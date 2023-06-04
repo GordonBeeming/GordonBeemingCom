@@ -3,7 +3,6 @@ using System.ServiceModel.Syndication;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using GordonBeemingCom.Areas.Blog.Data;
 using GordonBeemingCom.Areas.Blog.ViewModels;
 using GordonBeemingCom.Data;
 using Microsoft.AspNetCore.Authentication;
@@ -167,13 +166,10 @@ public sealed class RssFeedsController : BaseController
       .OrderBy(o => o.DisplayOrder)
       .ToListAsync();
     var description = string.Empty;
+    var lastContentBlockType = ContentBlockTypes.Html;
     foreach (var contentBlock in contentBlocks)
     {
-      if (contentBlock.AddPreSpacer)
-      {
-        description += $@"<div>&nbsp;</div>";
-      }
-      if ((ContentBlockTypes)contentBlock.BlockType == ContentBlockTypes.Html)
+      if (contentBlock.BlockType == ContentBlockTypes.Html)
       {
         var htmlContent = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo);
         description += $@"
@@ -182,14 +178,23 @@ public sealed class RssFeedsController : BaseController
 </div>
 ";
       }
-      else if ((ContentBlockTypes)contentBlock.BlockType == ContentBlockTypes.Image)
+      else if (contentBlock.BlockType == ContentBlockTypes.Image)
       {
+        if (lastContentBlockType == ContentBlockTypes.Image)
+        {
+          description += $"<br/>";
+        }
         var imageContent = JsonConvert.DeserializeObject<ImageContentBlockContext>(contentBlock.ContextInfo);
         description += $@"
 <img src='{GetRelativeImageUrl(imageContent!.ImageUrl, url)}' alt='{imageContent.AltText}' title='{imageContent.AltText}' {imageContent.HeightDisplayTag} {imageContent.WidthDisplayTag} />
 ";
+        if (imageContent.Figure?.Length > 0)
+        {
+          description += $"<br /><strong>Figure: {imageContent.Figure}</strong>";
+        }
+        description += $"<br/>";
       }
-      else if ((ContentBlockTypes)contentBlock.BlockType == ContentBlockTypes.Code)
+      else if (contentBlock.BlockType == ContentBlockTypes.Code)
       {
         var codeContent = JsonConvert.DeserializeObject<CodeContentBlockContext>(contentBlock.ContextInfo);
         description += $@"
@@ -198,10 +203,7 @@ public sealed class RssFeedsController : BaseController
 </pre>
 ";
       }
-      if (contentBlock.AddPostSpacer == true)
-      {
-        description += $"<div>&nbsp;</div>";
-      }
+      lastContentBlockType = contentBlock.BlockType;
     }
     return description;
   }

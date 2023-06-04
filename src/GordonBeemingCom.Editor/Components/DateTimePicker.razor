@@ -1,0 +1,49 @@
+﻿
+<div class="row">
+  <div class="col">
+    <input id="@Id" type="date" class="form-control" @bind-value="@selectedValue.Date" @onblur="OnBlur" />
+  </div>
+  <div class="col">
+    <input type="time" class="form-control" @bind-value="@selectedValue.Time" @onblur="OnBlur" />
+  </div>
+</div>
+
+@code {
+
+  private DateTimePickerValue selectedValue = new();
+
+  [Parameter]
+  public string? Id { get; set; }
+
+  [Parameter]
+  public DateTime? Value { get; set; }
+
+  [Parameter]
+  public EventCallback<DateTime?> ValueChanged { get; set; }
+
+  protected override void OnParametersSet()
+  {
+    selectedValue.Date = Value;
+    selectedValue.Time = Value ?? selectedValue.Time;
+  }
+
+  async Task OnBlur()
+  {
+    await Task.Delay(10);
+    if (selectedValue.Date.HasValue)
+    {      
+      Value = selectedValue.Date.Value.Date.AddHours(selectedValue.Time.Hour).AddMinutes(selectedValue.Time.Minute);
+    }
+    else
+    {
+      Value = null;
+    }
+    await ValueChanged.InvokeAsync(Value);
+  }
+
+  public sealed class DateTimePickerValue
+  {
+    public DateTime? Date { get; set; }
+    public DateTime Time { get; set; } = DateTime.MinValue;
+  }
+}

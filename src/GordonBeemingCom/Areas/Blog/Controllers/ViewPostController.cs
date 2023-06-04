@@ -84,9 +84,7 @@ public sealed class ViewPostController : BaseController
           .Select(o => new ViewPostViewModel.ContentBlock
           {
             ContentId = o.Id,
-            AddPreSpacer = o.AddPreSpacer,
-            AddPostSpacer = o.AddPostSpacer == true,
-            BlockType = (ContentBlockTypes)o.BlockType,
+            BlockType = o.BlockType,
             ContextInfo = o.ContextInfo,
             DisplayOrder = o.DisplayOrder,
           })

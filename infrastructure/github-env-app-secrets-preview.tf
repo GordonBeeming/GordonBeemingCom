@@ -8,10 +8,17 @@ resource "github_actions_environment_secret" "preview-ARM_CLIENT_ID" {
 }
 
 # AZURE_WEBAPP_NAME
+resource "github_actions_environment_secret" "editor-preview-AZURE_WEBAPP_NAME" {
+  repository       = data.github_repository.main.id
+  environment      = github_repository_environment.preview.environment
+  secret_name      = "EDITOR_AZURE_WEBAPP_NAME"
+  plaintext_value  = azurerm_linux_web_app.editor_preview.name
+}
+
 resource "github_actions_environment_secret" "preview-AZURE_WEBAPP_NAME" {
   repository       = data.github_repository.main.id
   environment      = github_repository_environment.preview.environment
-  secret_name      = "AZURE_WEBAPP_NAME"
+  secret_name      = "SITE_AZURE_WEBAPP_NAME"
   plaintext_value  = azurerm_linux_web_app.preview.name
 }
 

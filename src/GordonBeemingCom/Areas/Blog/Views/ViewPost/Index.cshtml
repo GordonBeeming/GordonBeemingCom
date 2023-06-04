@@ -19,33 +19,32 @@
     <a asp-controller="TagPosts" asp-action="Index" asp-route-slug="@(tag.Slug)" class="badge tag-badge bg-secondary">@(tag.Name)</a>
   }
 </div>
-
+@{
+  var lastContentBlockType = ContentBlockTypes.Html;
+}
 @foreach (var contentBlock in Model.ContentBlocks)
 {
-  if (contentBlock.AddPreSpacer)
-  {
-    <div class="content-spacer">&nbsp;</div>
-  }
   if (contentBlock.BlockType == ContentBlockTypes.Html)
   {
     <partial name="_ContentBlock_Html" model="contentBlock.ContextInfoAsHtml" />
   }
   else if (contentBlock.BlockType == ContentBlockTypes.Image)
   {
+    if (lastContentBlockType == ContentBlockTypes.Image)
+    {
+      <br />
+    }
     <partial name="_ContentBlock_Image" model="contentBlock.ContextInfoAsImage" />
   }
   else if (contentBlock.BlockType == ContentBlockTypes.Code)
   {
     <partial name="_ContentBlock_Code" model="contentBlock.ContextInfoAsCode" />
   }
-  if (contentBlock.AddPostSpacer)
-  {
-    <div class="content-spacer">&nbsp;</div>
-  }
+  lastContentBlockType = contentBlock.BlockType;
 }
 
 <div class="content-spacer">&nbsp;</div>
 
 @section Scripts {
-
+  
 }

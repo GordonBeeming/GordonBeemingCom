@@ -1,0 +1,70 @@
+﻿@page "/posts"
+@inject NavigationManager navigationManager
+@inject AppDbContext context
+@attribute [Authorize]
+
+<PageTitle>Posts</PageTitle>
+
+<div class="position-relative">
+  <h1>Posts</h1>
+
+  @if (blogs == null)
+  {
+    <p><em>Loading...</em></p>
+  }
+  else
+  {
+    <a class="btn btn-outline-dark position-absolute top-right" href="/posts/@Guid.Empty">✨ Create new post</a>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Title</th>
+          <th>Slug</th>
+          <th>Tags</th>
+          <th>Publish Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var blog in blogs)
+        {
+          <tr>
+            <td>
+              <button title="edit" class="btn btn-outline-dark" @onclick="@(e=> EditBlog(blog.Id))">✏️</button>
+            </td>
+            <td>@blog.BlogTitle</td>
+            <td>@blog.BlogSlug</td>
+            <td>
+              @foreach (var tag in blog.BlogTags.Select(o => o.Tag))
+              {
+                <span class="badge tag-badge bg-secondary">@(tag.TagName)</span>
+              }
+            </td>
+            <td>@blog.PublishDate?.ToShortDateString()</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <a class="btn btn-outline-dark" href="/posts/@Guid.Empty">✨ Create new post</a>
+  }
+</div>
+
+@code {
+  private List<Blogs>? blogs;
+
+  protected override async Task OnInitializedAsync()
+  {
+    blogs = await context.Blogs
+    .Include(o => o.BlogTags).ThenInclude(o => o.Tag)
+    .OrderBy(o => o.PublishDate.HasValue)
+    .ThenByDescending(o => o.PublishDate)
+    .ToListAsync();
+  }
+
+  private void EditBlog(Guid id)
+  {
+    navigationManager.NavigateTo($"/posts/{id}");
+  }
+}

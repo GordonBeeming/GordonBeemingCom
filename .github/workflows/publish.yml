@@ -63,7 +63,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta-site.outputs.tags }}
           file: "src/GordonBeemingCom/Dockerfile"
 
       # Extract metadata (tags, labels) for Docker
@@ -87,7 +87,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta-editor.outputs.tags }}
           file: "src/GordonBeemingCom.Editor/Dockerfile"
 
   deployPreview:

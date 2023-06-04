@@ -8,10 +8,17 @@ resource "github_actions_environment_secret" "live-ARM_CLIENT_ID" {
 }
 
 # AZURE_WEBAPP_NAME
+resource "github_actions_environment_secret" "editor-live-AZURE_WEBAPP_NAME" {
+  repository       = data.github_repository.main.id
+  environment      = github_repository_environment.live.environment
+  secret_name      = "EDITOR_AZURE_WEBAPP_NAME"
+  plaintext_value  = azurerm_linux_web_app.editor_live.name
+}
+
 resource "github_actions_environment_secret" "live-AZURE_WEBAPP_NAME" {
   repository       = data.github_repository.main.id
   environment      = github_repository_environment.live.environment
-  secret_name      = "AZURE_WEBAPP_NAME"
+  secret_name      = "SITE_AZURE_WEBAPP_NAME"
   plaintext_value  = azurerm_linux_web_app.live.name
 }
 

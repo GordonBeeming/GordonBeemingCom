@@ -29,6 +29,7 @@ resource "azurerm_linux_web_app" "editor_live" {
     "AZURE_CLIENT_ID": azurerm_user_assigned_identity.app.client_id
     "ProductionInstance":"false"
     "ASPNETCORE_URLS":"http://+:80"
+    "WebSiteUrl": "https://${var.live_hostname}"
   }
 
   connection_string {

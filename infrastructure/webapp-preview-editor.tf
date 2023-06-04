@@ -29,6 +29,7 @@ resource "azurerm_linux_web_app" "editor_preview" {
     "AZURE_CLIENT_ID": azurerm_user_assigned_identity.app.client_id
     "ProductionInstance":"false"
     "ASPNETCORE_URLS":"http://+:80"
+    "WebSiteUrl": "https://${var.preview_hostname}"
   }
 
   connection_string {

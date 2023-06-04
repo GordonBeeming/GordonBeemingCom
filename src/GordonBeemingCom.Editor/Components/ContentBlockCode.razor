@@ -4,6 +4,9 @@
 <div class="row admin-toolbar">
   <div class="col-lg-12 col-sm-12">
     <div class="admin-toolbar-item">
+      <button @onclick="RemoveBlock" class="btn btn-outline-danger">Remove Block</button>
+    </div>
+    <div class="admin-toolbar-item">
       <button @onclick="ToggleEdit" class="btn btn-outline-primary">Toggle Edit</button>
     </div>
     @if (editMode)
@@ -108,12 +111,12 @@
     {
       if (editMode)
       {
-         <style>
-           .admin-editor-edit@(ContentBlock.DisplayOrder) {
-             height: @(((3 + LineCount) * 19) + 10)px;
-           }
-         </style>
-         <div>Lang: @(context.Language)</div>
+          <style>
+            .admin-editor-edit@(ContentBlock.DisplayOrder) {
+              height: @(((3 + LineCount) * 19) + 10)px;
+            }
+          </style>
+          <div>Lang: @(context.Language)</div>
         <StandaloneCodeEditor @ref="_editorEdit" Id="@($"CodeEdit{ContentBlock.DisplayOrder}")" ConstructionOptions="EditorConstructionOptionsEdit" CssClass="@($"admin-editor-edit{ContentBlock.DisplayOrder}")" OnDidChangeModelContent="OnDidChangeModelContent" />
       }
       else
@@ -128,7 +131,6 @@
     }
   </div>
 </div>
-
 
 @code {
   private StandaloneCodeEditor _editorEdit = null!;
@@ -146,6 +148,11 @@
   protected void ToggleEdit()
   {
     editMode = !editMode;
+  }
+  
+  protected void RemoveBlock()
+  {
+    ContentBlock.CancelledDate = DateTime.UtcNow;
   }
 
   private CodeContentBlockContext context { get; set; } = new CodeContentBlockContext();
@@ -202,7 +209,14 @@
     }
     else
     {
-      context = JsonConvert.DeserializeObject<CodeContentBlockContext>(ContentBlock.ContextInfo) ?? new CodeContentBlockContext();
+      if (ContentBlock.ContextInfo == null)
+      {
+        context = new CodeContentBlockContext();
+      }
+      else
+      {
+        context = JsonConvert.DeserializeObject<CodeContentBlockContext>(ContentBlock.ContextInfo) ?? new CodeContentBlockContext();
+      }
     }
   }
 

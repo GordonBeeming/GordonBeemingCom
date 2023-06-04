@@ -1,0 +1,82 @@
+﻿@inject IFileService fileService
+@inject IConfiguration configuration
+
+<div class="row">
+  <div class="form-group col-lg-12 col-sm-12">
+    <h3>Blog Content</h3>
+  </div>
+</div>
+
+  @for (int i = 0; i < contentBlocks.Count; i++)
+  {
+    var index = i;
+    var contentBlock = contentBlocks[index];
+    if (!contentBlock.CancelledDate.HasValue)
+    {
+      <div class="position-relative insert-bar">
+        <div class="top-right position-absolute">
+          <a href="javascript:void(null)" @onclick="()=>AddContentBlock(contentBlock.DisplayOrder, ContentBlockTypes.Html)">insert html</a> | <a href="javascript:void(null)" @onclick="()=>AddContentBlock(contentBlock.DisplayOrder, ContentBlockTypes.Image)">insert image</a> | <a href="javascript:void(null)" @onclick="()=>AddContentBlock(contentBlock.DisplayOrder, ContentBlockTypes.Code)">insert code</a>
+        </div>
+      </div>
+      @if (contentBlock.BlockType == ContentBlockTypes.Html)
+      {
+        <ContentBlockHtml @bind-ContentBlock="contentBlock"></ContentBlockHtml>
+      }
+      else if (contentBlock.BlockType == ContentBlockTypes.Image)
+      {
+        <ContentBlockImage @bind-ContentBlock="contentBlock"></ContentBlockImage>
+      }
+      else if (contentBlock.BlockType == ContentBlockTypes.Code)
+      {
+        <ContentBlockCode @bind-ContentBlock="contentBlock"></ContentBlockCode>
+      }
+    }
+  }
+  <div class="position-relative insert-bar">
+    <div class="top-right position-absolute">
+      <a href="javascript:void(null)" @onclick="()=>AddContentBlock(short.MaxValue, ContentBlockTypes.Html)">insert html</a> | <a href="javascript:void(null)" @onclick="()=>AddContentBlock(short.MaxValue, ContentBlockTypes.Image)">insert image</a> | <a href="javascript:void(null)" @onclick="()=>AddContentBlock(short.MaxValue, ContentBlockTypes.Code)">insert code</a>
+    </div>
+  </div>
+
+@code {
+
+  [Parameter]
+  public List<BlogContentBlocks> contentBlocks { get; set; } = new();
+
+  [Parameter]
+  public EventCallback<List<BlogContentBlocks>> contentBlocksChanged { get; set; }
+
+  private async Task AddContentBlock(short displayNumberBefore, ContentBlockTypes contentBlockType)
+  {
+    var inserted = false;
+    for (int index = 0; index < contentBlocks.Count; index++)
+    {
+      var contentBlock = contentBlocks[index];
+      if (!inserted)
+      {
+        if (contentBlock.DisplayOrder >= displayNumberBefore)
+        {
+          var newContentBlock = new BlogContentBlocks();
+          newContentBlock.DisplayOrder = contentBlock.DisplayOrder;
+          newContentBlock.BlockType = contentBlockType;
+          contentBlocks.Insert(index, newContentBlock);
+          inserted = true;
+        }
+      }
+      else
+      {
+        contentBlock.DisplayOrder++;
+      }
+    }
+    if (!inserted)
+    {
+      var newContentBlock = new BlogContentBlocks();
+      newContentBlock.DisplayOrder = (short)contentBlocks.Count;
+      newContentBlock.BlockType = contentBlockType;
+      contentBlocks.Add(newContentBlock);
+    }
+    await contentBlocksChanged.InvokeAsync(contentBlocks);
+    StateHasChanged();
+  }
+  
+}

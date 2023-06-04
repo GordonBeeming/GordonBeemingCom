@@ -91,27 +91,8 @@ else
     {
       <p>💾 Saving!</p>
     }
-    <div class="row">
-      <div class="form-group col-lg-12 col-sm-12">
-        <h3>Blog Content</h3>
-      </div>
-    </div>
-    @for (int i = 0; i < contentBlogs.Count; i++)
-    {
-      var contentBlock = contentBlogs[i];
-      @if (contentBlock.BlockType == ContentBlockTypes.Html)
-      {
-        <ContentBlockHtml @bind-ContentBlock="contentBlock"></ContentBlockHtml>
-      }
-      else if (contentBlock.BlockType == ContentBlockTypes.Image)
-      {
-        <ContentBlockImage @bind-ContentBlock="contentBlock"></ContentBlockImage>
-      }
-      else if (contentBlock.BlockType == ContentBlockTypes.Code)
-      {
-        <ContentBlockCode @bind-ContentBlock="contentBlock"></ContentBlockCode>
-      }
-    }
+    <ContentBlocks @bind-contentBlocks="contentBlocks"></ContentBlocks>
+
     @if (!formSumitting)
     {
       <button type="submit" class="btn btn-primary" @onclick="UpdateItem">Save</button>
@@ -127,7 +108,6 @@ else
       <p>💾 Saving!</p>
     }
   </EditForm>
-
 }
 
 @code {
@@ -138,7 +118,7 @@ else
 
   private Blogs? blog { get; set; }
 
-  private List<BlogContentBlocks> contentBlogs = new();
+  private List<BlogContentBlocks> contentBlocks { get; set; } = new();
 
   private List<Categories> categories = new();
 
@@ -167,8 +147,8 @@ else
         blog.PublishDate = DateTime.SpecifyKind(blog.PublishDate.Value, DateTimeKind.Utc);
         blog.PublishDate = TimeZoneInfo.ConvertTimeFromUtc(blog.PublishDate.Value, TimeZoneInfo.Local);
       }
-      contentBlogs = blog.BlogContentBlocks
-                          .OrderBy(o=>o.DisplayOrder)
+      contentBlocks = blog.BlogContentBlocks
+                          .OrderBy(o => o.DisplayOrder)
                           .ToList();
     }
     else
@@ -195,6 +175,13 @@ else
       if (Id == Guid.Empty)
       {
         context.Blogs.Add(blog);
+      }
+      foreach(var contentBlock in contentBlocks)
+      {
+        if (contentBlock.Id == Guid.Empty && !contentBlock.CancelledDate.HasValue)
+        {
+          blog.BlogContentBlocks.Add(contentBlock);
+        }
       }
       if (blog.PublishDate.HasValue)
       {
@@ -311,5 +298,4 @@ else
       }
     }
   }
-
 }

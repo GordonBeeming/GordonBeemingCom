@@ -4,6 +4,9 @@
 <div class="row admin-toolbar">
   <div class="col-lg-12 col-sm-12">
     <div class="admin-toolbar-item">
+      <button @onclick="RemoveBlock" class="btn btn-outline-danger">Remove Block</button>
+    </div>
+    <div class="admin-toolbar-item">
       <button @onclick="ToggleEdit" class="btn btn-outline-primary">Toggle Edit</button>
     </div>
   </div>
@@ -72,6 +75,11 @@
     editMode = !editMode;
   }
 
+  protected void RemoveBlock()
+  {
+    ContentBlock.CancelledDate = DateTime.UtcNow;
+  }
+
   private ImageContentBlockContext context { get; set; } = new ImageContentBlockContext();
 
   protected override void OnParametersSet()
@@ -82,7 +90,15 @@
     }
     else
     {
-      context = JsonConvert.DeserializeObject<ImageContentBlockContext>(ContentBlock.ContextInfo) ?? new ImageContentBlockContext();
+      if (ContentBlock.ContextInfo == null)
+      {
+        context = new ImageContentBlockContext();
+      }
+      else
+      {
+        context = JsonConvert.DeserializeObject<ImageContentBlockContext>(ContentBlock.ContextInfo) ?? new ImageContentBlockContext();
+      }
+      
       if (context.AltText == null)
       {
         context.AltText = string.Empty;

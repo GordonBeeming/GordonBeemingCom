@@ -1,8 +1,8 @@
-﻿@using TinyMCE.Blazor;
-
-
-<div class="row admin-toolbar">
+﻿<div class="row admin-toolbar">
   <div class="col-lg-12 col-sm-12">
+    <div class="admin-toolbar-item">
+      <button @onclick="RemoveBlock" class="btn btn-outline-danger">Remove Block</button>
+    </div>
     <div class="admin-toolbar-item">
       <button @onclick="ToggleEdit" class="btn btn-outline-primary">Toggle Edit</button>
     </div>
@@ -12,8 +12,7 @@
   <div class="col-lg-12 col-sm-12">
     @if (editMode)
     {
-      <Editor ApiKey="ttwureoztelmx55cd66rthdd6tebebu4r2ayardzy442vyrd" CloudChannel="6" Field="() => HtmlValue" @bind-Value="@HtmlValue" Conf="@editorConf" />
-      <ValidationMessage For="() => HtmlValue" />
+      <TinyMCE.Blazor.Editor ApiKey="ttwureoztelmx55cd66rthdd6tebebu4r2ayardzy442vyrd" CloudChannel="6" Field="() => HtmlValue" @bind-Value="@HtmlValue" Conf="@editorConf" />
     }
     else
     {
@@ -35,6 +34,11 @@
   protected void ToggleEdit()
   {
     editMode = !editMode;
+  }
+
+  protected void RemoveBlock()
+  {
+    ContentBlock.CancelledDate = DateTime.UtcNow;
   }
 
   private HtmlContentBlockContext context { get; set; } = new HtmlContentBlockContext();
@@ -60,14 +64,22 @@
     }
     else
     {
-      context = JsonConvert.DeserializeObject<HtmlContentBlockContext>(ContentBlock.ContextInfo) ?? new HtmlContentBlockContext();
+      if (ContentBlock.ContextInfo == null)
+      {
+        context = new HtmlContentBlockContext();
+      }
+      else
+      {
+        context = JsonConvert.DeserializeObject<HtmlContentBlockContext>(ContentBlock.ContextInfo) ?? new HtmlContentBlockContext();
+      }
+
     }
   }
 
   private Dictionary<string, object> editorConf = new Dictionary<string, object>
   {
     { "menubar", true },
-    { "plugins", new string[]{"advlist autolink lists link image charmap print preview anchor","searchreplace visualblocks code fullscreen ","insertdatetime media table paste code help wordcount" } },
+    { "plugins", new string[]{"advlist","autolink","lists","link","image","charmap","preview","anchor","searchreplace","visualblocks","code","fullscreen","insertdatetime","media","table","code","wordcount" } },
     { "toolbar", "undo redo | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | table charmap | link unlink | code | help" },
     { "content_css", new[] {"//fonts.googleapis.com/css?family=Lato:300,300i,400,400i","//www.tiny.cloud/css/codepen.min.css"} },
     { "extended_valid_elements", "script[language|type|src],style[type]" },

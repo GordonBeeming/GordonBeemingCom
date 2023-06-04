@@ -9,7 +9,7 @@ h1:focus {
 }
 
 a, .btn-link {
-  color: #0071c1;
+  color: #CC4141;
 }
 
 .btn-primary {
@@ -97,3 +97,11 @@ a, .btn-link {
       display: inline-block;
     }
 
+
+.insert-bar {
+  height: 20px;
+}
+
+.insert-bar a {
+  text-decoration:none;
+}

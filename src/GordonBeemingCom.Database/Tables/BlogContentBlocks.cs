@@ -20,10 +20,6 @@ public partial class BlogContentBlocks
 
   public short DisplayOrder { get; set; }
 
-  public bool AddPreSpacer { get; set; }
-
-  public bool AddPostSpacer { get; set; }
-
   public DateTime DateTimeStamp { get; set; }
 
   public DateTime? CancelledDate { get; set; }

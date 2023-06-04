@@ -166,12 +166,9 @@ public sealed class RssFeedsController : BaseController
       .OrderBy(o => o.DisplayOrder)
       .ToListAsync();
     var description = string.Empty;
+    var lastContentBlockType = ContentBlockTypes.Html;
     foreach (var contentBlock in contentBlocks)
     {
-      if (contentBlock.AddPreSpacer)
-      {
-        description += $@"<div>&nbsp;</div>";
-      }
       if (contentBlock.BlockType == ContentBlockTypes.Html)
       {
         var htmlContent = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo);
@@ -183,10 +180,19 @@ public sealed class RssFeedsController : BaseController
       }
       else if (contentBlock.BlockType == ContentBlockTypes.Image)
       {
+        if (lastContentBlockType == ContentBlockTypes.Image)
+        {
+          description += $"<br/>";
+        }
         var imageContent = JsonConvert.DeserializeObject<ImageContentBlockContext>(contentBlock.ContextInfo);
         description += $@"
 <img src='{GetRelativeImageUrl(imageContent!.ImageUrl, url)}' alt='{imageContent.AltText}' title='{imageContent.AltText}' {imageContent.HeightDisplayTag} {imageContent.WidthDisplayTag} />
 ";
+        if (imageContent.Figure?.Length > 0)
+        {
+          description += $"<br /><strong>Figure: {imageContent.Figure}</strong>";
+        }
+        description += $"<br/>";
       }
       else if (contentBlock.BlockType == ContentBlockTypes.Code)
       {
@@ -197,10 +203,7 @@ public sealed class RssFeedsController : BaseController
 </pre>
 ";
       }
-      if (contentBlock.AddPostSpacer == true)
-      {
-        description += $"<div>&nbsp;</div>";
-      }
+      lastContentBlockType = contentBlock.BlockType;
     }
     return description;
   }

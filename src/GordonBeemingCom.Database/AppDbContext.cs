@@ -28,7 +28,6 @@ public partial class AppDbContext : DbContext
     modelBuilder.Entity<BlogContentBlocks>(entity =>
     {
       entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-      entity.Property(e => e.AddPostSpacer).HasDefaultValueSql("((1))");
       entity.Property(e => e.DateTimeStamp).HasDefaultValueSql("(sysutcdatetime())");
 
       entity.HasOne(d => d.Blog).WithMany(p => p.BlogContentBlocks)

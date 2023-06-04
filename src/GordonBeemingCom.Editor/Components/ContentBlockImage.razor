@@ -6,12 +6,6 @@
     <div class="admin-toolbar-item">
       <button @onclick="ToggleEdit" class="btn btn-outline-primary">Toggle Edit</button>
     </div>
-    <div class="admin-toolbar-item">
-      <InputCheckbox id="@($"AddPreSpacer{ContentBlock.DisplayOrder}")" @bind-Value="ContentBlock.AddPreSpacer"></InputCheckbox> <label for="@($"AddPreSpacer{ContentBlock.DisplayOrder}")">Add Pre Spacer?</label>
-    </div>
-    <div class="admin-toolbar-item">
-      <InputCheckbox id="@($"AddPostSpacer{ContentBlock.DisplayOrder}")" @bind-Value="ContentBlock.AddPostSpacer"></InputCheckbox> <label for="@($"AddPostSpacer{ContentBlock.DisplayOrder}")">Add Post Spacer?</label>
-    </div>
   </div>
 </div>
 <div class="row">

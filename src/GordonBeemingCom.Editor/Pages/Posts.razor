@@ -31,7 +31,7 @@
         {
           <tr>
             <td>
-              <button title="edit" class="btn btn-outline-dark" @onclick="@(e=> EditCandidate(blog.Id))">✏️</button>
+              <button title="edit" class="btn btn-outline-dark" @onclick="@(e=> EditBlog(blog.Id))">✏️</button>
             </td>
             <td>@blog.BlogTitle</td>
             <td>@blog.BlogSlug</td>
@@ -63,7 +63,7 @@
     .ToListAsync();
   }
 
-  private void EditCandidate(Guid id)
+  private void EditBlog(Guid id)
   {
     navigationManager.NavigateTo($"/posts/{id}");
   }

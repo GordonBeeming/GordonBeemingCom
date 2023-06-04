@@ -93,7 +93,7 @@ jobs:
   deployPreview:
     name: "Deploy to Preview"
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/editor'
     concurrency:
       group: preview
       cancel-in-progress: false

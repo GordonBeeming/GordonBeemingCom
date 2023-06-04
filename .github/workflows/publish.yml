@@ -2,7 +2,7 @@ name: publish
 
 on:
   push:
-    branches: [ "main","editor" ]
+    branches: [ "main" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
@@ -93,7 +93,7 @@ jobs:
   deployPreview:
     name: "Deploy to Preview"
     needs: build
-    if: github.ref == 'refs/heads/editor'
+    if: github.ref == 'refs/heads/main'
     concurrency:
       group: preview
       cancel-in-progress: false

@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject DeploymentInfo DeploymentInfo
 
 <PageTitle>Admin | Gordon Beeming</PageTitle>
 
@@ -14,6 +15,17 @@
 
         <article class="content px-4">
             @Body
-        </article>
+    </article>
+
+    <footer>
+      <div class="small text-center text-muted fst-italic">
+        &copy; 2013 - @(DateTime.UtcNow.Year) - Gordon Beeming - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">Some Rights Reserved</a>
+        <br />
+        <strong>Disclaimer</strong>: Opinions are my own and not that of my company or anyone I engage with<br />
+        <span>
+          Powered by ASP.NET <a href="@(DeploymentInfo.DotNetLink)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.AspNetVersion)</a> | Branch: <a href="https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch%3A@(DeploymentInfo.BranchName)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.BranchName)</a> | Commit: <a href="https://github.com/GordonBeeming/GordonBeemingCom/commit/@(DeploymentInfo.CommitHash)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.CommitHashText)</a>.
+        </span>
+      </div>
+    </footer>
     </main>
 </div>

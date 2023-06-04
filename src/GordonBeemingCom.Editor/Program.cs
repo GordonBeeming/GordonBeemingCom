@@ -61,6 +61,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 builder.Services.AddSingleton<IFileService, FileService>();
 builder.Services.AddSingleton<IBlobServiceClientService, BlobServiceClientService>();
 builder.Services.AddSingleton<HashHelper>();
+builder.Services.AddSingleton<DeploymentInfo>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-﻿namespace GordonBeemingCom.Services;
+﻿namespace GordonBeemingCom.Shared.Services;
 
 public sealed class DeploymentInfo
 {

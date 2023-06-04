@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using System.Globalization;
 using GordonBeemingCom.Data;
-using GordonBeemingCom.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

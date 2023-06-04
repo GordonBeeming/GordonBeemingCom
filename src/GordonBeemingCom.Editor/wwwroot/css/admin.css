@@ -86,8 +86,14 @@ a, .btn-link {
 
 
 
-  .admin-toolbar div div {
+  .admin-toolbar .admin-toolbar-item {
     margin-right: 10px;
     display: inline-block;
     float: right;
   }
+
+    .admin-toolbar .admin-toolbar-item .dropdown {
+      margin-right: 10px;
+      display: inline-block;
+    }
+

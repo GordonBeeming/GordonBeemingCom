@@ -109,12 +109,7 @@ else
       }
       else if (contentBlock.BlockType == ContentBlockTypes.Code)
       {
-        @* var codeContent = JsonConvert.DeserializeObject<CodeContentBlockContext>(contentBlock.ContextInfo);
-  description += $@"
-  <pre data-lang='{codeContent!.Language}'>
-  {codeContent.Code}
-  </pre>
-  "; *@
+        <ContentBlockCode @bind-ContentBlock="contentBlock"></ContentBlockCode>
       }
     }
     @if (!formSumitting)

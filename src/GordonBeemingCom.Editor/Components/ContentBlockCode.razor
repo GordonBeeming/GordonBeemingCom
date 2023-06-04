@@ -1,0 +1,250 @@
+﻿@using BlazorMonaco
+@using BlazorMonaco.Editor
+
+<div class="row admin-toolbar">
+  <div class="col-lg-12 col-sm-12">
+    <div class="admin-toolbar-item">
+      <button @onclick="ToggleEdit" class="btn btn-outline-primary">Toggle Edit</button>
+    </div>
+    <div class="admin-toolbar-item">
+      <InputCheckbox id="@($"AddPreSpacer{ContentBlock.DisplayOrder}")" @bind-Value="ContentBlock.AddPreSpacer"></InputCheckbox> <label for="@($"AddPreSpacer{ContentBlock.DisplayOrder}")">Add Pre Spacer?</label>
+    </div>
+    <div class="admin-toolbar-item">
+      <InputCheckbox id="@($"AddPostSpacer{ContentBlock.DisplayOrder}")" @bind-Value="ContentBlock.AddPostSpacer"></InputCheckbox> <label for="@($"AddPostSpacer{ContentBlock.DisplayOrder}")">Add Post Spacer?</label>
+    </div>
+    @if (editMode)
+    {
+      <div class="admin-toolbar-item">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          common code
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <li><a class="dropdown-item" @onclick='()=> changeLang("azcli")'>Azure CLI</a></li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("bat")'>Batch</a></li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("csharp")'>C#</a></li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("html")'>HTML</a></li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("javascript")'>JavaScript</a></li>
+          <li>
+            <a class="dropdown-item" @onclick=' ()=> changeLang("json")'>JSON</a>
+          </li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("markdown")'>Markdown</a></li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("plaintext")'>Plain Text</a></li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("powershell")'>PowerShell</a></li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("razor")'>Razor</a></li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("sql")'>SQL</a></li>
+          <li>
+            <a class="dropdown-item" @onclick=' ()=> changeLang("typescript")'>TypeScript</a>
+          </li>
+          <li><a class="dropdown-item" @onclick='()=> changeLang("xml")'>XML</a></li>
+          <li>
+            <a class="dropdown-item" @onclick=' ()=> changeLang("yaml")'>YAML</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          code a - m
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("abap")'>abap</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("aes")'>aes</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("apex")'>Apex</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("postiats")'>ATS</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("c")'>C</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("cpp")'>C++</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("clojure")'>clojure</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("coffeescript")'>CoffeeScript</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("csp")'>CSP</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("css")'>CSS</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("msdax")'>DAX</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("dockerfile")'>Dockerfile</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("fsharp")'>F#</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("go")'>Go</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("graphql")'>GraphQL</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("handlebars")'>Handlebars</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("ini")'>Ini</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("java")'>Java</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("kotlin")'>Kotlin</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("less")'>Less</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("lua")'>Lua</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("mips")'>MIPS</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("mysql")'>MySQL</a></li>
+        </ul>
+      </div>
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          code o - z
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("objective-c")'>Objective-C</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("pascal")'>Pascal</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("pascaligo")'>Pascaligo</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("perl")'>Perl</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("php")'>PHP</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("pgsql")'>PostgreSQL</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("powerquery")'>PQ</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("pug")'>Pug</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("python")'>Python</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("r")'>R</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("redis")'>redis</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("redshift")'>Redshift</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("ruby")'>Ruby</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("rust")'>Rust</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("scss")'>Sass</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("scheme")'>scheme</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("shell")'>Shell</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("sb")'>Small Basic</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("sol")'>sol</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("st")'>StructuredText</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("swift")'>Swift</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("tcl")'>tcl</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("twig")'>Twig</a></li>
+          <li><a class="dropdown-item" @onclick=' ()=> changeLang("vb")'>Visual Basic</a></li>
+        </ul>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-sm-12">
+    @if (!loading)
+    {
+      if (editMode)
+      {
+         <style>
+           .admin-editor-edit@(ContentBlock.DisplayOrder) {
+             height: @(((3 + LineCount) * 19) + 10)px;
+           }
+         </style>
+         <div>Lang: @(context.Language)</div>
+        <StandaloneCodeEditor @ref="_editorEdit" Id="@($"CodeEdit{ContentBlock.DisplayOrder}")" ConstructionOptions="EditorConstructionOptionsEdit" CssClass="@($"admin-editor-edit{ContentBlock.DisplayOrder}")" OnDidChangeModelContent="OnDidChangeModelContent" />
+      }
+      else
+      {
+        <style>
+          .admin-editor-view@(ContentBlock.DisplayOrder) {
+            height: @((LineCount * 19) + 10)px;
+          }
+        </style>
+        <StandaloneCodeEditor @ref="_editorView" Id="@($"CodeView{ContentBlock.DisplayOrder}")" ConstructionOptions="EditorConstructionOptionsView" CssClass="@($"admin-editor-view{ContentBlock.DisplayOrder}")" OnDidChangeModelContent="OnDidChangeModelContent" OnDidInit="EditorOnDidInit" />
+      }
+    }
+  </div>
+</div>
+
+
+@code {
+  private StandaloneCodeEditor _editorEdit = null!;
+  private StandaloneCodeEditor _editorView = null!;
+
+  [Parameter]
+  public BlogContentBlocks ContentBlock { get; set; } = new();
+
+  [Parameter]
+  public EventCallback<BlogContentBlocks> ContentBlockChanged { get; set; }
+
+  private bool editMode { get; set; } = false;
+  private bool loading { get; set; } = false;
+
+  protected void ToggleEdit()
+  {
+    editMode = !editMode;
+  }
+
+  private CodeContentBlockContext context { get; set; } = new CodeContentBlockContext();
+  private string CodeValue
+  {
+    get
+    {
+      return context.Code;
+    }
+    set
+    {
+      context.Code = value;
+      ContentBlock.ContextInfo = JsonConvert.SerializeObject(context);
+      ContentBlockChanged.InvokeAsync(ContentBlock);
+    }
+  }
+
+  private int LineCount { get; set; } = 1;
+
+  private async Task EditorOnDidInit()
+  {
+    if (_editorEdit is not null)
+    {
+      LineCount = await (await _editorEdit.GetModel()).GetLineCount();
+    }
+    if (_editorView is not null)
+    {
+      LineCount = await (await _editorView.GetModel()).GetLineCount();
+    }
+  }
+
+  private async Task OnDidChangeModelContent(ModelContentChangedEvent e)
+  {
+    LineCount = await (await _editorEdit.GetModel()).GetLineCount();
+    CodeValue = (await _editorEdit.GetValue()).Trim();
+    await _editorView.SetValue(CodeValue);
+  }
+
+  private async Task changeLang(string lang)
+  {
+    loading = true;
+    context.Language = lang;
+    ContentBlock.ContextInfo = JsonConvert.SerializeObject(context);
+    await ContentBlockChanged.InvokeAsync(ContentBlock);
+    await Task.Delay(10);
+    loading = false;
+  }
+
+  protected override void OnParametersSet()
+  {
+    if (ContentBlock == null)
+    {
+      ContentBlock = new();
+    }
+    else
+    {
+      context = JsonConvert.DeserializeObject<CodeContentBlockContext>(ContentBlock.ContextInfo) ?? new CodeContentBlockContext();
+    }
+  }
+
+  private StandaloneEditorConstructionOptions EditorConstructionOptionsEdit(StandaloneCodeEditor editor)
+  {
+    return new StandaloneEditorConstructionOptions
+      {
+        Language = context.Language,
+        Value = context.Code,
+        Theme = "vs",
+        LineNumbers = "on",
+        GlyphMargin = false,
+        Scrollbar = new EditorScrollbarOptions { HandleMouseWheel = false, VerticalScrollbarSize = 10, HorizontalScrollbarSize = 10, },
+        ScrollBeyondLastLine = false,
+        ReadOnly = false,
+        AutomaticLayout = true,
+        Minimap = new EditorMinimapOptions { Enabled = false, },
+        LineHeight = 19,
+      };
+  }
+
+  private StandaloneEditorConstructionOptions EditorConstructionOptionsView(StandaloneCodeEditor editor)
+  {
+    return new StandaloneEditorConstructionOptions
+      {
+        Language = context.Language,
+        Value = context.Code,
+        Theme = "vs",
+        LineNumbers = "on",
+        GlyphMargin = false,
+        Scrollbar = new EditorScrollbarOptions { HandleMouseWheel = false, VerticalScrollbarSize = 10, HorizontalScrollbarSize = 10, },
+        ScrollBeyondLastLine = false,
+        ReadOnly = true,
+        AutomaticLayout = true,
+        Minimap = new EditorMinimapOptions { Enabled = false, },
+        LineHeight = 19,
+      };
+  }
+}

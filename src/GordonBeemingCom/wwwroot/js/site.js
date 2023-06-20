@@ -8,7 +8,6 @@ $(document).ready(function () {
   $('a').each(function () {
     var a = new RegExp('/' + window.location.host + '/');
     // Check if it's an external link
-    console.log(this.href);
     if (!a.test(this.href)) {
       // If the link contains only text
       if ($(this).children().length == 0) {

@@ -93,7 +93,7 @@ body {
     background-image: url('../images/background.jpg');
     background-repeat: repeat;
     background-position: center;
-    background-size:contain;
+    background-size: contain;
     z-index: -1;
   }
 
@@ -116,3 +116,7 @@ body {
     z-index: -1;
     border-radius: 20px;
   }
+
+article img {
+  max-width: 100%;
+}

@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorMonaco" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0-preview.4.23260.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0-preview.5.23302.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0-preview.4.23260.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0-preview.5.23302.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0-preview.4.23259.3" />

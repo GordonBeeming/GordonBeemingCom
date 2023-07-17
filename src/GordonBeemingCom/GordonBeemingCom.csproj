@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0-preview.5.23313.2" />
 
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.17.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0-beta3" />
     <PackageReference Include="Microsoft.ApplicationInsights.SnapshotCollector" Version="1.4.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

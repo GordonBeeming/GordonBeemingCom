@@ -38,7 +38,6 @@ public sealed class FileService : IFileService
 
     var blobServiceClient = _blobServiceClientService.GetBlobServiceClient();
     var containerClient = blobServiceClient.GetBlobContainerClient(result.Container);
-    await Console.Out.WriteLineAsync(result.Container);
     await containerClient.CreateIfNotExistsAsync();
     var blobClient = containerClient.GetBlobClient(result.BlobName);
 
@@ -98,4 +97,5 @@ public sealed class FileService : IFileService
 
     return result;
   }
+
 }

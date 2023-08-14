@@ -56,7 +56,7 @@ else
         <label for="heroImage">Hero image:</label>
         @if (fileUploadTooBig)
         {
-          <span class="alert-danger">File size too big.</span>
+          <div class="alert-danger">File size too big.</div>
         }<br />
         @if (!string.IsNullOrEmpty(blog.HeroImageUrl))
         {
@@ -190,6 +190,10 @@ else
       }
       await context.SaveChangesAsync();
       await Task.Delay(1000);
+      if (Id == Guid.Empty)
+      {
+        navigationManager.NavigateTo($"/posts/{blog.Id}");
+      }
       formSumitting = false;
     }
     catch (Exception ex)

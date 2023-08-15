@@ -40,6 +40,10 @@ else
           }
         </InputSelect>
       </div>
+      <div class="form-group col-lg-8 col-sm-12">
+        <label for="blogTags">Tags:</label>
+        <InputText id="blogTags" class="form-control" @bind-Value="@tags" />
+      </div>
       <div class="form-group col-lg-12 col-sm-12">
         <label for="blogSubTitle">Sub title:</label>
         <InputTextArea id="blogSubTitle" class="form-control" rows="4" @bind-Value="@blog.SubTitle" />
@@ -122,6 +126,8 @@ else
 
   private List<Categories> categories = new();
 
+  private string tags = string.Empty;
+
   private List<string> validationIssues = new();
 
   private bool formSumitting = false;
@@ -136,6 +142,8 @@ else
     {
       blog = await context.Blogs
                           .Include(o => o.BlogContentBlocks)
+                          .Include(o => o.BlogTags)
+                          .ThenInclude(o => o.Tag)
                           .FirstOrDefaultAsync(o => o.Id == Id);
       if (blog == null)
       {
@@ -150,10 +158,12 @@ else
       contentBlocks = blog.BlogContentBlocks
                           .OrderBy(o => o.DisplayOrder)
                           .ToList();
+      tags = string.Join("; ", blog.BlogTags.OrderBy(o => o.Tag.TagName).Select(o => o.Tag.TagName));
     }
     else
     {
       blog = new Blogs();
+      blog.CategoryId = categories.FirstOrDefault(o => o.CategoryName.Equals("Developer", StringComparison.OrdinalIgnoreCase))?.Id ?? Guid.Empty;
       slugChanged = false;
     }
   }
@@ -176,7 +186,7 @@ else
       {
         context.Blogs.Add(blog);
       }
-      foreach(var contentBlock in contentBlocks)
+      foreach (var contentBlock in contentBlocks)
       {
         if (contentBlock.Id == Guid.Empty && !contentBlock.CancelledDate.HasValue)
         {
@@ -187,6 +197,30 @@ else
       {
         blog.PublishDate = DateTime.SpecifyKind(blog.PublishDate.Value, DateTimeKind.Local);
         blog.PublishDate = TimeZoneInfo.ConvertTimeToUtc(blog.PublishDate.Value, TimeZoneInfo.Local);
+      }
+      foreach (var tag in blog.BlogTags)
+      {
+        context.Entry(tag).State = EntityState.Deleted;
+      }
+      var tagsArray = tags.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+      foreach (var tag in tagsArray)
+      {
+        var tagClean = (tag ?? string.Empty).Trim();
+        var tagId = await context.Tags
+                        .AsNoTracking()
+                        .Where(o => o.TagName == tagClean)
+                        .Select(o => o.Id)
+                        .FirstOrDefaultAsync();
+        if (tagId == Guid.Empty)
+        {
+          var newTag = new Tags { TagName = tagClean, TagSlug = CreateSlug(tagClean) };
+          context.Tags.Add(newTag);
+          blog.BlogTags.Add(new BlogTags { Tag = newTag, });
+        }
+        else
+        {
+          blog.BlogTags.Add(new BlogTags { TagId = tagId, });
+        }
       }
       await context.SaveChangesAsync();
       await Task.Delay(1000);

@@ -40,13 +40,16 @@ else
           }
         </InputSelect>
       </div>
-      <div class="form-group col-lg-8 col-sm-12">
-        <label for="blogTags">Tags:</label>
-        <InputText id="blogTags" class="form-control" @bind-Value="@tags" />
-      </div>
       <div class="form-group col-lg-12 col-sm-12">
         <label for="blogSubTitle">Sub title:</label>
         <InputTextArea id="blogSubTitle" class="form-control" rows="4" @bind-Value="@blog.SubTitle" />
+      </div>
+      <div class="form-group col-lg-12 col-sm-12">
+        <label for="blogTags">Tags:</label>
+        <InputTextArea id="blogTags" class="form-control" rows="4" @bind-Value="@tags" />
+      </div>
+      <div class="form-group col-lg-12 col-sm-12">
+        <pre style="text-wrap: wrap;">@allTags</pre>
       </div>
       <div class="form-group col-lg-4 col-sm-12">
         <label for="publishDate">Publish date:</label>
@@ -115,8 +118,8 @@ else
 }
 
 @code {
-  [Parameter]
-  public Guid Id { get; set; }
+    [Parameter]
+    public Guid Id { get; set; }
 
   private string blogName => blog?.BlogTitle?.Length > 0 ? $"{blog.BlogTitle}" : "Post";
 
@@ -127,6 +130,8 @@ else
   private List<Categories> categories = new();
 
   private string tags = string.Empty;
+
+  private string allTags = string.Empty;
 
   private List<string> validationIssues = new();
 
@@ -166,6 +171,17 @@ else
       blog.CategoryId = categories.FirstOrDefault(o => o.CategoryName.Equals("Developer", StringComparison.OrdinalIgnoreCase))?.Id ?? Guid.Empty;
       slugChanged = false;
     }
+    await LoadAllTags();
+  }
+
+  private async Task LoadAllTags()
+  {
+    allTags = string.Join("; ", (await context.Tags
+                            .AsNoTracking()
+                            .Where(o=>o.TagName.Length > 0)
+                            .OrderBy(o => o.TagName)
+                            .Select(o => o.TagName)
+                            .ToListAsync()));
   }
 
   private async Task UpdateItem()
@@ -229,6 +245,7 @@ else
         navigationManager.NavigateTo($"/posts/{blog.Id}");
       }
       formSumitting = false;
+      await LoadAllTags();
     }
     catch (Exception ex)
     {

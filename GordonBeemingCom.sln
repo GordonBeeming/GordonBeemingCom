@@ -7,9 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		docker-compose.yaml = docker-compose.yaml
 		.config\dotnet-tools.json = .config\dotnet-tools.json
 		global.json = global.json
 		README.md = README.md
+		up.ps1 = up.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GordonBeemingCom", "src\GordonBeemingCom\GordonBeemingCom.csproj", "{8116AA4A-CD45-4964-BFFA-A5133079DC4B}"
@@ -18,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GordonBeemingCom.Database",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GordonBeemingCom.Editor", "src\GordonBeemingCom.Editor\GordonBeemingCom.Editor.csproj", "{497BA756-3A75-4702-AB4B-ECD0C9D32C8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GordonBeemingCom.Shared", "src\GordonBeemingCom.Shared\GordonBeemingCom.Shared.csproj", "{9233A67A-E3F4-4D55-BDB8-63DE1ACE80A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GordonBeemingCom.Shared", "src\GordonBeemingCom.Shared\GordonBeemingCom.Shared.csproj", "{9233A67A-E3F4-4D55-BDB8-63DE1ACE80A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

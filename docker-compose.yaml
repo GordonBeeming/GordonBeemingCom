@@ -19,7 +19,7 @@ services:
   azurite:
     container_name: gordonbeemingcom-azurite
     hostname: gordonbeemingcom-azurite
-    image: mcr.microsoft.com/azure-storage/azurite
+    image: mcr.microsoft.com/azure-storage/azurite:latest
     ports:
       - 11000:10000 
       - 11001:10001 

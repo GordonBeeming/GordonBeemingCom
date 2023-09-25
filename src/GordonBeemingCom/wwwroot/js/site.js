@@ -23,7 +23,11 @@ $(document).ready(function () {
       // Change the href to redirect to the local page /external with the encoded original link as a query string
       this.href = "/external?link=" + encodedLink;
       this.target = "_blank"
-      this.title = "This is an external link, and will open in a new tab.";
+      if (this.title.length > 0) {
+        this.title = this.title + " | This is an external link, and will open in a new tab.";
+      } else {
+        this.title = "This is an external link, and will open in a new tab.";
+      }
     }
   });
 });

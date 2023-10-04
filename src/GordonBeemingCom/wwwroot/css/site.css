@@ -122,7 +122,8 @@ header.masthead .home-header {
   }
 
   header.masthead .home-header .subheading {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    line-height: 1.5;
   }
 
   header.masthead .home-header .icons-social a img {
@@ -184,8 +185,8 @@ header.masthead .home-header {
 
   header.masthead .home-header .subheading {
     font-size: 1.4rem;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 15px;
+    margin-bottom: 20px;
   }
 
   header.masthead .home-header .icons-social a img {
@@ -206,8 +207,8 @@ header.masthead .home-header {
 
   header.masthead .home-header .subheading {
     font-size: 1.4rem;
-    margin-top: 30px;
-    margin-bottom: 60px;
+    margin-top: 15px;
+    margin-bottom: 40px;
   }
 
   header.masthead .home-header .icons-social a img {

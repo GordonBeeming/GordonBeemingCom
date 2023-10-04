@@ -1,5 +1,6 @@
 ﻿@model RecentPostsViewModel
 @{
+  Layout = "_Layout";
   ViewData["Title"] = "Blog";
 
   ViewData["HeadingImage"] = BlogHomeImageRelativePath;
@@ -11,44 +12,59 @@
   <link rel="canonical" href="@(ProductionBlogUrl)" />
 }
 
-@foreach (var post in Model.RecentPosts)
-{
-  <!-- Post preview-->
-  <div class="post-preview">
-    <a asp-controller="@(ViewPostControllerName)" asp-action="Index" asp-route-slug="@(post.Slug)">
-      <h2 class="post-title">@(post.Title)</h2>
-      <h3 class="post-subtitle">@(post.SubTitle)</h3>
-    </a>
-    <p class="post-meta">
-      @if (post.PublishDate.HasValue)
-      {
-        <text>Posted on @(post.PublishDate.Value.ToString("MMMM dd, yyyy"))</text>
-      }
-      else
-      {
-        <text>🔒 NOT PUBLISHED</text>
-      }
-      @if (post.Tags.Count > 0)
-      {
-        @foreach (var tag in post.Tags)
-        {
-          <a asp-controller="TagPosts" asp-action="Index" asp-route-slug="@(tag.Slug)" class="badge tag-badge bg-secondary">@(tag.Name)</a>
-        }
-      }
-    </p>
+<partial name="_HomeHeader" />
+<!-- Main Content-->
+<main class="mb-4">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-10 col-xl-10">
+        <div class="profile-row row gx-4 gx-lg-5 justify-content-center">
+          <div class="profile-right col-md-12 col-lg-12 col-xl-12">
 
+            @foreach (var post in Model.RecentPosts)
+            {
+              <!-- Post preview-->
+              <div class="post-preview">
+                <a asp-controller="@(ViewPostControllerName)" asp-action="Index" asp-route-slug="@(post.Slug)">
+                  <h2 class="post-title">@(post.Title)</h2>
+                  <h3 class="post-subtitle">@(post.SubTitle)</h3>
+                </a>
+                <p class="post-meta">
+                  @if (post.PublishDate.HasValue)
+                  {
+                    <text>Posted on @(post.PublishDate.Value.ToString("MMMM dd, yyyy"))</text>
+                  }
+                  else
+                  {
+                    <text>🔒 NOT PUBLISHED</text>
+                  }
+                  @if (post.Tags.Count > 0)
+                  {
+                    @foreach (var tag in post.Tags)
+                    {
+                      <a asp-controller="TagPosts" asp-action="Index" asp-route-slug="@(tag.Slug)" class="badge tag-badge bg-secondary">@(tag.Name)</a>
+                    }
+                  }
+                </p>
+
+              </div>
+              if (post.AddHR)
+              {
+                <!-- Divider-->
+                <hr class="my-4" />
+              }
+            }
+            @if (Model.NextPostId.HasValue)
+            {
+              <!-- Pager-->
+              <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" asp-action="AllPosts">All posts →</a></div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  if (post.AddHR)
-  {
-    <!-- Divider-->
-    <hr class="my-4" />
-  }
-}
-@if (Model.NextPostId.HasValue)
-{
-  <!-- Pager-->
-  <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" asp-action="AllPosts">All posts →</a></div>
-}
+</main>
 
 @section Scripts {
 

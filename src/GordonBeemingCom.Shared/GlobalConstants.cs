@@ -13,12 +13,13 @@ public static class GlobalConstants
 
   public const string ProductionUrl = "https://gordonbeeming.com";
   public const string ProductionBlogUrl = ProductionUrl + "/" + BlogArea + "/";
-  public const string HomeImageRelativePath = "/images/blog-banner.jpg";
-  public const string ProductionHomeImageUrl = ProductionUrl + HomeImageRelativePath;
+  public const string BlogHomeImageRelativePath = "/images/blog-banner.jpg";
+  public const string ProfileHomeImageRelativePath = "/images/profile-banner.jpg";
+  public const string ProductionHomeImageUrl = ProductionUrl + BlogHomeImageRelativePath;
 
   public const string ProfileImageUrl = "https://en.gravatar.com/userimage/44277051/f0a721c3a3f76d28a9646a13c27eb7a7.jpeg";
 
-  public const string BlogSubHeading = "Father | Husband | SSW Solution Architect | Microsoft MVP";
+  public const string BlogSubHeading = "Father | Husband | Triathlete | SSW Solution Architect | Microsoft MVP";
 
   public const string ProductionInstance = nameof(ProductionInstance);
 

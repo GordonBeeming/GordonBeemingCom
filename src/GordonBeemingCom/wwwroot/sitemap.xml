@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://gordonbeeming.com/</loc>
+    <lastmod>2023-09.25</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
   <sitemap>
     <loc>https://gordonbeeming.com/blog/sitemap.xml</loc>
   </sitemap>

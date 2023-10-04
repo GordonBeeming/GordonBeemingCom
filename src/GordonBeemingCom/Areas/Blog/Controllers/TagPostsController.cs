@@ -54,7 +54,7 @@ public sealed class TagPostsController : BaseController
     {
       slug = tag.TagSlug,
     }, HttpContext.Request.Scheme)!;
-    viewModel.BannerImage = HomeImageRelativePath;
+    viewModel.BannerImage = BlogHomeImageRelativePath;
     viewModel.TagPosts = await _context.BlogTags
       .Where(o => o.TagId == tag.Id)
       .Select(o => o.Blog)

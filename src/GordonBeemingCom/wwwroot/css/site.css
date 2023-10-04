@@ -59,15 +59,6 @@ footer a img {
   font-size: 3em;
 }
 
-.books table {
-  display: inline-block;
-  margin-right: 50px;
-}
-
-  .books table img {
-    max-height: 200px;
-  }
-
 a.tag-badge {
   text-decoration: none;
   font-style: normal;
@@ -142,8 +133,14 @@ header.masthead .home-header .icons-social a img {
   height: 30px;
 }
 
+.books img {
+  width: 150px;
+  height: auto;
+  margin-bottom:20px
+}
+
 @media (min-width: 576px) {
-  header.masthead .home-header h1 {
+  header .masthead .home-header h1 {
     font-size: 3rem;
   }
   header.masthead .home-header .subheading {
@@ -184,6 +181,9 @@ header.masthead .home-header .icons-social a img {
     width: 60px;
     height: 60px;
   }
+  .books img {
+    width: 200px;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -199,5 +199,8 @@ header.masthead .home-header .icons-social a img {
   header.masthead .home-header .icons-social a img {
     width: 68px;
     height: 68px;
+  }
+  .books img {
+    width: 270px;
   }
 }

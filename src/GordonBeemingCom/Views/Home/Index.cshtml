@@ -1,7 +1,6 @@
 ﻿@model LandingPageViewModel
 @{
-  Layout = "_NoHeading";
-
+  Layout = "_Layout";
   ViewData["Title"] = "Profile";
   ViewData["HideHomeLogo"] = true;
 }
@@ -9,74 +8,95 @@
 @section Head {
   <link rel="canonical" href="@(ProductionUrl)" />
 }
+<header class="masthead" style="background-image: url('/images/about-me-banner.jpg')">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-12 col-lg-12 col-xl-12">
+        <div class="page-heading home-header">
+          <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
+              <img src="/images/profile-flip.png" width="300" height="300" />
+            </div>
+            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12">
+              <h1>Gordon Beeming</h1>
+              <span class="subheading">
+                Father | Husband | <a title='SSW Solution Architect' target="_blank" href="https://ssw.com.au/people/gordon-beeming" rel="nofollow">SSW Solution Architect</a> | <a title='Microsoft MVP (Azure DevOps &AMP; GitHub)' target="_blank" href="https://mvp.microsoft.com/en-us/PublicProfile/5000879" rel="nofollow">Microsoft MVP</a>
+              </span>
+              <div class="icons-social">
+                <a title='LinkedIn (gordon-beeming)' target="_blank" href="https://www.linkedin.com/in/gordon-beeming" rel="nofollow"><img src="images/linkedin.svg" border="0" /></a>
+                <a title='X (GordonBeeming)' target="_blank" href="https://twitter.com/GordonBeeming" rel="nofollow"><img src="images/X.svg" border="0" /></a>
+                <a title='GitHub (gordonbeeming)' target="_blank" href="https://github.com/gordonbeeming" rel="nofollow"><img src="images/github-mark.svg" border="0" /></a>
+                <a title='youtube' target="_blank" href="https://www.youtube.com/@@gordonbeeming" rel="nofollow"><img src="images/youtube.svg" border="0" /></a>
+                <a title='stackoverflow' target="_blank" href="https://stackoverflow.com/story/gordon-beeming" rel="nofollow"><img src="images/stackoverflow.svg" border="0" /></a>
+                <a title='Strava (gordonbeeming)' target="_blank" href="https://www.strava.com/athletes/gordonbeeming" rel="nofollow"><img src="images/strava.svg" border="0" /></a>
+                <a title='Unsplash (@@gordonbeeming)' target="_blank" href="https://unsplash.com/@@gordonbeeming" rel="nofollow"><img src="images/Unsplash.svg" border="0" /></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Main Content-->
+<main class="mb-4">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-10 col-xl-10">
+        <div class="profile-row row gx-4 gx-lg-5 justify-content-center">
+          <div class="profile-right col-md-12 col-lg-12 col-xl-12">
+            <partial name="_Bio" />
 
-<div class="profile-row row gx-4 gx-lg-5 justify-content-center">
-  <div class="profile-right col-md-9 col-lg-9 col-xl-9">
-    <h1>Hi... I'm <span class="highlight">Gordon Beeming</span>.</h1>
-    <partial name="_Bio" />
-
-    <h2>Recent Blog Posts</h2>
-    <div class="recent-blog-posts">
-      @foreach (var post in Model.RecentPosts)
-      {
-        <p>
-          <a asp-area="@(BlogArea)" asp-controller="ViewPost" asp-action="Index" asp-route-slug="@(post.Slug)">@(post.Title)</a>
-          @if (post.Tags.Count > 0)
-          {
-            <br>
-            foreach (var tag in post.Tags)
-            {
-              <text>@(tag.Name)</text>
-              @if (tag != post.Tags.Last())
+            <h2>Recent Blog Posts</h2>
+            <div class="recent-blog-posts">
+              @foreach (var post in Model.RecentPosts)
               {
-                <text>, </text>
+                <p>
+                  <a asp-area="@(BlogArea)" asp-controller="ViewPost" asp-action="Index" asp-route-slug="@(post.Slug)">@(post.Title)</a>
+                  @if (post.Tags.Count > 0)
+                  {
+                    <br>
+                    foreach (var tag in post.Tags)
+                    {
+                      <text>@(tag.Name)</text>
+                      @if (tag != post.Tags.Last())
+                      {
+                        <text>, </text>
+                      }
+                    }
+                  }
+                </p>
               }
-            }
-          }
-        </p>
-      }
-      <p>
-        👀 <a asp-area="@(BlogArea)" asp-controller="Home" asp-action="Index">View more posts...</a>
-      </p>
-    </div>
+              <p>
+                👀 <a asp-area="@(BlogArea)" asp-controller="Home" asp-action="Index">View more posts...</a>
+              </p>
+            </div>
 
-    <h2>Social Media</h2>
-    <div class="icons-social">
-      <a title='LinkedIn (gordon-beeming)' target="_blank" href="https://www.linkedin.com/in/gordon-beeming" rel="nofollow"><img src="images/linkedin.svg" border="0" /></a>
-      <a title='X (GordonBeeming)' target="_blank" href="https://twitter.com/GordonBeeming" rel="nofollow"><img src="images/X.svg" border="0" /></a>
-      <a title='GitHub (gordonbeeming)' target="_blank" href="https://github.com/gordonbeeming" rel="nofollow"><img src="images/github-mark.svg" border="0" /></a>
-      <a title='youtube' target="_blank" href="https://www.youtube.com/@@gordonbeeming" rel="nofollow"><img src="images/youtube.svg" border="0" /></a>
-      <a title='stackoverflow' target="_blank" href="https://stackoverflow.com/story/gordon-beeming" rel="nofollow"><img src="images/stackoverflow.svg" border="0" /></a>
-      <a title='Strava (gordonbeeming)' target="_blank" href="https://www.strava.com/athletes/gordonbeeming" rel="nofollow"><img src="images/strava.svg" border="0" /></a>
-      <a title='Unsplash (@@gordonbeeming)' target="_blank" href="https://unsplash.com/@@gordonbeeming" rel="nofollow"><img src="images/Unsplash.svg" border="0" /></a>
-    </div>
-
-    <h2>Books</h2>
-    <div class="books">
-      <table cellspacing="0" cellpadding="20">
-        <tr>
-          <td>
-            <a title="Managing Agile Open-Source Software Projects with Visual Studio Online" href="https://www.microsoftpressstore.com/store/managing-agile-open-source-software-projects-with-visual-9781509300648">
-              <img src="images/book-03.png" alt="Managing Agile Open-Source Software Projects with Visual Studio Online" border="0" />
-            </a>
-          </td>
-          <td>
-            <a title="Team Foundation Server 2015 Customization" href="https://www.amazon.com/Team-Foundation-Server-2015-Customization-ebook/dp/B014JH154E/ref=sr_1_1?dchild=1&qid=1601298839&refinements=p_27%3AGordon+Beeming&s=digital-text&sr=1-1&text=Gordon+Beeming">
-              <img src="images/book-02.png" alt="Team Foundation Server 2015 Customization" border="0" />
-            </a>
-          </td>
-          <td>
-            <a title="Team Foundation Server 2013 Customization" href="https://www.amazon.com/Team-Foundation-Server-2013-Customization/dp/1782177140/ref=sr_1_2?dchild=1&qid=1601298839&refinements=p_27%3AGordon+Beeming&s=digital-text&sr=1-2&text=Gordon+Beeming">
-              <img src="images/book-01.png" alt="Team Foundation Server 2013 Customization" border="0" />
-            </a>
-          </td>
-        </tr>
-      </table>
+            <h2>Books</h2>
+            <div class="books">
+              <table cellspacing="0" cellpadding="20">
+                <tr>
+                  <td>
+                    <a title="Managing Agile Open-Source Software Projects with Visual Studio Online" href="https://www.microsoftpressstore.com/store/managing-agile-open-source-software-projects-with-visual-9781509300648">
+                      <img src="images/book-03.png" alt="Managing Agile Open-Source Software Projects with Visual Studio Online" border="0" />
+                    </a>
+                  </td>
+                  <td>
+                    <a title="Team Foundation Server 2015 Customization" href="https://www.amazon.com/Team-Foundation-Server-2015-Customization-ebook/dp/B014JH154E/ref=sr_1_1?dchild=1&qid=1601298839&refinements=p_27%3AGordon+Beeming&s=digital-text&sr=1-1&text=Gordon+Beeming">
+                      <img src="images/book-02.png" alt="Team Foundation Server 2015 Customization" border="0" />
+                    </a>
+                  </td>
+                  <td>
+                    <a title="Team Foundation Server 2013 Customization" href="https://www.amazon.com/Team-Foundation-Server-2013-Customization/dp/1782177140/ref=sr_1_2?dchild=1&qid=1601298839&refinements=p_27%3AGordon+Beeming&s=digital-text&sr=1-2&text=Gordon+Beeming">
+                      <img src="images/book-01.png" alt="Team Foundation Server 2013 Customization" border="0" />
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="profile-left col-md-3 col-lg-3 col-xl-3">
-    <div class="profile-image">
-      <img src="~/images/profile.jpg" />
-    </div>
-  </div>
-</div>
+</main>

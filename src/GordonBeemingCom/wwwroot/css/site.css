@@ -40,6 +40,12 @@ footer a img {
   color: #CC4141;
 }
 
+.icons-social
+{
+  position: relative;
+  margin-bottom:0;
+}
+
 .icons-social a img {
   height: 68px;
   margin: 10px 8px;
@@ -119,4 +125,79 @@ body {
 
 article img {
   max-width: 100%;
+}
+
+
+header.masthead .home-header {
+  min-width: 400px;
+}
+header.masthead .home-header h1 {
+  font-size: 2rem;
+}
+  header.masthead .home-header .subheading {
+    font-size: 1.2rem;
+  }
+header.masthead .home-header .icons-social a img {
+  width: 30px;
+  height: 30px;
+}
+
+@media (min-width: 576px) {
+  header.masthead .home-header h1 {
+    font-size: 3rem;
+  }
+  header.masthead .home-header .subheading {
+    font-size: 1.4rem;
+  }
+
+  header.masthead .home-header .icons-social a img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 768px) {
+  header.masthead .home-header h1 {
+    font-size: 3rem;
+  }
+  header.masthead .home-header .subheading {
+    font-size: 1.4rem;
+  }
+
+  header.masthead .home-header .icons-social a img {
+    width: 68px;
+    height: 68px;
+  }
+}
+
+@media (min-width: 992px) {
+  header.masthead .home-header h1 {
+    font-size: 4rem;
+  }
+  header.masthead .home-header .subheading {
+    font-size: 1.4rem;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  header.masthead .home-header .icons-social a img {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (min-width: 1200px) {
+  header.masthead .home-header h1 {
+    font-size: 5rem;
+  }
+  header.masthead .home-header .subheading {
+    font-size: 1.4rem;
+    margin-top: 30px;
+    margin-bottom: 60px;
+  }
+
+  header.masthead .home-header .icons-social a img {
+    width: 68px;
+    height: 68px;
+  }
 }

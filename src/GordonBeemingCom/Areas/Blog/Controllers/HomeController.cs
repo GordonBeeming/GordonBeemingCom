@@ -23,7 +23,7 @@ public sealed class HomeController : BaseController
   [Route("about-me")]
   public IActionResult AboutMe()
   {
-    return View();
+    return RedirectPermanent("/");
   }
 
   [HttpGet("blogs")]

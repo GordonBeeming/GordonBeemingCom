@@ -7,11 +7,6 @@ p a {
   text-decoration: none;
 }
 
-footer a img {
-  height: 2em;
-  margin-bottom: 15px;
-}
-
 .container.noheader {
   padding-top: 5.5rem;
 }
@@ -40,24 +35,23 @@ footer a img {
   color: #CC4141;
 }
 
-.icons-social
-{
+.icons-social {
   position: relative;
-  margin-bottom:0;
+  margin-bottom: 0;
 }
 
-.icons-social a img {
-  height: 68px;
-  margin: 10px 8px;
-}
+  .icons-social a img {
+    height: 68px;
+    margin: 10px 8px;
+  }
 
-.icons-social a.wide img {
-  width: 136px;
-}
+  .icons-social a.wide img {
+    width: 136px;
+  }
 
-.icons-social i {
-  font-size: 3em;
-}
+  .icons-social i {
+    font-size: 3em;
+  }
 
 a.tag-badge {
   text-decoration: none;
@@ -122,27 +116,42 @@ article img {
 header.masthead .home-header {
   min-width: 400px;
 }
-header.masthead .home-header h1 {
-  font-size: 2rem;
-}
+
+  header.masthead .home-header h1 {
+    font-size: 2rem;
+  }
+
   header.masthead .home-header .subheading {
     font-size: 1.2rem;
   }
-header.masthead .home-header .icons-social a img {
-  width: 30px;
-  height: 30px;
-}
+
+  header.masthead .home-header .icons-social a img {
+    width: 30px;
+    height: 30px;
+  }
 
 .books img {
   width: 150px;
   height: auto;
-  margin-bottom:20px
+  margin-bottom: 20px
 }
+
+
+.footer-socials a {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+  .footer-socials a img {
+    height: 50px;
+    margin-bottom:20px;
+  }
 
 @media (min-width: 576px) {
   header .masthead .home-header h1 {
     font-size: 3rem;
   }
+
   header.masthead .home-header .subheading {
     font-size: 1.4rem;
   }
@@ -157,6 +166,7 @@ header.masthead .home-header .icons-social a img {
   header.masthead .home-header h1 {
     font-size: 3rem;
   }
+
   header.masthead .home-header .subheading {
     font-size: 1.4rem;
   }
@@ -171,6 +181,7 @@ header.masthead .home-header .icons-social a img {
   header.masthead .home-header h1 {
     font-size: 4rem;
   }
+
   header.masthead .home-header .subheading {
     font-size: 1.4rem;
     margin-top: 30px;
@@ -181,15 +192,18 @@ header.masthead .home-header .icons-social a img {
     width: 60px;
     height: 60px;
   }
+
   .books img {
     width: 200px;
   }
+
 }
 
 @media (min-width: 1200px) {
   header.masthead .home-header h1 {
     font-size: 5rem;
   }
+
   header.masthead .home-header .subheading {
     font-size: 1.4rem;
     margin-top: 30px;
@@ -200,7 +214,12 @@ header.masthead .home-header .icons-social a img {
     width: 68px;
     height: 68px;
   }
+
   .books img {
     width: 270px;
+  }
+  .footer-socials a img {
+    height: 65px;
+    margin-bottom: 20px;
   }
 }

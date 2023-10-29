@@ -1,6 +1,7 @@
-﻿using System.Configuration;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Globalization;
 using GordonBeemingCom.Data;
+using GordonBeemingCom.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -67,11 +68,13 @@ builder.Services.Configure<SiteConfig>(builder.Configuration.GetSection("SiteCon
 builder.Services.AddSingleton<HashHelper>();
 builder.Services.AddSingleton<DeploymentInfo>();
 
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 var app = builder.Build();
 
 //app.UseHttpsRedirection();
 
-// Configure the HTTP request pipeline. 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
   builder.Services.AddDatabaseDeveloperPageExceptionFilter();

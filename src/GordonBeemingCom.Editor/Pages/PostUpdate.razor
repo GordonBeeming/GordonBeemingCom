@@ -214,6 +214,7 @@ else
         blog.PublishDate = DateTime.SpecifyKind(blog.PublishDate.Value, DateTimeKind.Local);
         blog.PublishDate = TimeZoneInfo.ConvertTimeToUtc(blog.PublishDate.Value, TimeZoneInfo.Local);
       }
+      blog.ModifiedDate = DateTime.UtcNow;
       foreach (var tag in blog.BlogTags)
       {
         context.Entry(tag).State = EntityState.Deleted;

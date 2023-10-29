@@ -123,7 +123,7 @@ public sealed class RssFeedsController : BaseController
       rssItem.AddPermalink(new Uri(permUrl!));
       if (!string.IsNullOrEmpty(post.HeroImageUrl))
       {
-        rssItem.ElementExtensions.Add(new SyndicationElementExtension(new XElement(yahooMediaNamespace + "content", new XAttribute("url", GetAbsoluteImageUrl(post.HeroImageUrl, Url)!))));
+        rssItem.ElementExtensions.Add(new SyndicationElementExtension(new XElement(yahooMediaNamespace + "content", new XAttribute("url", GetAbsoluteBlogImageUrl(post.HeroImageUrl, Url)!))));
       }
       rssItem.ElementExtensions.Add(new SyndicationElementExtension(new XElement(dcNamespace + "creator", "Gordon Beeming")));
       items.Add(rssItem);

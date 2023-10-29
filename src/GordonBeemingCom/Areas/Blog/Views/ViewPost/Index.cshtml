@@ -16,10 +16,13 @@
     <meta name="author" content="Gordon Beeming">
     
     <!--  Essential META Tags -->
-    <meta property="og:title" content="@(Model.Title)" />
+    <meta property="og:title" content="@(Model.Title) - Gordon Beeming" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="@(Model.CanonicalUrl)" />
     <meta property="og:image" content="@(Model.HeroImageUrl)" />
+    <meta name="twitter:title" content="@(Model.Title) - Gordon Beeming">
+    <meta name="twitter:description" content="@(Model.SubTitle)">
+    <meta name="twitter:image" content="@(Model.HeroImageUrl)">
     <meta name="twitter:card" content="summary_large_image">
     
     <!--  Non-Essential, But Recommended -->
@@ -30,6 +33,24 @@
     <!--  Non-Essential, But Required for Analytics -->
     @* <meta property="fb:app_id" content="your_app_id" /> *@
     <meta name="twitter:site" content="@@gordonbeeming">
+    
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "NewsArticle",
+          "headline": "@(Model.Title) - Gordon Beeming",
+          "image": [
+            "@(Model.HeroImageUrl)"
+           ],
+          "datePublished": "@(Model.PubDate?.ToString("yyyy-MM-ddTHH:mm:ss+08:00"))",
+          "dateModified": "@(Model.ModDate.ToString("yyyy-MM-ddTHH:mm:ss+08:00"))",
+          "author": [{
+              "@@type": "Person",
+              "name": "Gordon Beeming",
+              "url": "https://gordonbeeming.com/"
+            }]
+        }
+        </script>
 }
 
 <div class="tag-list">

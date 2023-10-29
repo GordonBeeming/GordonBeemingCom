@@ -60,9 +60,11 @@ public sealed class ViewPostController : BaseController
     var url = Url;
     var viewModel = new ViewPostViewModel();
     viewModel.Id = post.Id;
+    viewModel.PubDate = post.PublishDate;
+    viewModel.ModDate = post.ModifiedDate;
     viewModel.Title = post.BlogTitle;
     viewModel.SubTitle = post.SubTitle;
-    viewModel.HeroImageUrl = GetRelativeImageUrl(post.HeroImageUrl, url);
+    viewModel.HeroImageUrl = $"{Url.Action(IndexAction,HomeControllerName,new{area=""}, HttpContext.Request.Scheme)?.TrimEnd('/')}{GetRelativeImageUrl(post.HeroImageUrl, url)}";
     viewModel.CanonicalUrl = Url.Action(IndexAction, ViewPostControllerName, new
     {
       slug = post.BlogSlug,

@@ -20,7 +20,7 @@ public partial class Blogs
   public string BlogSlug { get; set; } = null!;
 
   public string SubTitle { get; set; } = null!;
-  
+
   [StringLength(1024)]
   public string HeroImageUrl { get; set; } = null!;
 
@@ -28,6 +28,9 @@ public partial class Blogs
 
   [Column(TypeName = "datetime")]
   public DateTime? PublishDate { get; set; }
+
+  [Column(TypeName = "datetime2")]
+  public DateTime ModifiedDate { get; set; }
 
   public DateTime? CancelledDate { get; set; }
 

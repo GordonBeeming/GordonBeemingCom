@@ -52,12 +52,14 @@
         }
         </script>
 }
-
 <div class="tag-list">
     @foreach (var tag in Model.Tags)
     {
         <a asp-controller="TagPosts" asp-action="Index" asp-route-slug="@(tag.Slug)" class="badge tag-badge bg-secondary">@(tag.Name)</a>
     }
+</div>
+<div>
+  📅 @(Model.PubDate?.ToString("dd MMM yyyy") ?? "not published")
 </div>
 @{
     var lastContentBlockType = ContentBlockTypes.Html;

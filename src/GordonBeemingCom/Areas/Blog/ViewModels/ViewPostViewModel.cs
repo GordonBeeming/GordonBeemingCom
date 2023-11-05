@@ -13,6 +13,8 @@ public sealed class ViewPostViewModel
   public List<TagInfo> Tags { get; set; } = new List<TagInfo>();
   public List<ContentBlock> ContentBlocks { get; set; } = new List<ContentBlock>();
   public string CanonicalUrl { get; set; }
+  public DateTime? PubDate { get; set; }
+  public DateTime ModDate { get; set; }
 
   public sealed class CategoryInfo
   {

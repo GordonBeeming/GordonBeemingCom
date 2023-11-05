@@ -22,7 +22,7 @@ public abstract class BaseController : Controller
     return url.Content(imageUrl.Replace($"{ProductionBlogUrl}/", $"~/{BlogArea}/"));
   }
 
-  internal string? GetAbsoluteImageUrl(string imageUrl, IUrlHelper url)
+  internal string? GetAbsoluteBlogImageUrl(string imageUrl, IUrlHelper url)
   {
     if (imageUrl == null)
     {

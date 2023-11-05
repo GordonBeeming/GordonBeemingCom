@@ -1,50 +1,92 @@
 ﻿@model ViewPostViewModel
 @{
-  Layout = "_PostHeading";
+    Layout = "_PostHeading";
 
-  ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Title;
 
-  ViewData["HeadingImage"] = Model.HeroImageUrl;
-  ViewData["Heading"] = Model.Title;
-  ViewData["SubHeading"] = Model.SubTitle;
+    ViewData["HeadingImage"] = Model.HeroImageUrl;
+    ViewData["Heading"] = Model.Title;
+    ViewData["SubHeading"] = Model.SubTitle;
 }
 
 @section Head {
-  <link rel="canonical" href="@(Model.CanonicalUrl)" />
+    <link rel="canonical" href="@(Model.CanonicalUrl)"/>
+    <meta name="description" content="@(Model.SubTitle)">
+    <meta name="keywords" content="@(string.Join(",", Model.Tags.Select(o => o.Name)))">
+    <meta name="author" content="Gordon Beeming">
+    
+    <!--  Essential META Tags -->
+    <meta property="og:title" content="@(Model.Title) - Gordon Beeming" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="@(Model.CanonicalUrl)" />
+    <meta property="og:image" content="@(Model.HeroImageUrl)" />
+    <meta name="twitter:title" content="@(Model.Title) - Gordon Beeming">
+    <meta name="twitter:description" content="@(Model.SubTitle)">
+    <meta name="twitter:image" content="@(Model.HeroImageUrl)">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!--  Non-Essential, But Recommended -->
+    <meta property="og:description" content="@(Model.SubTitle)">
+    <meta property="og:site_name" content="Gordon Beeming Profile & Blog">
+    @* <meta name="twitter:image:alt" content="Alt text for image"> *@
+    
+    <!--  Non-Essential, But Required for Analytics -->
+    @* <meta property="fb:app_id" content="your_app_id" /> *@
+    <meta name="twitter:site" content="@@gordonbeeming">
+    
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "NewsArticle",
+          "headline": "@(Model.Title) - Gordon Beeming",
+          "image": [
+            "@(Model.HeroImageUrl)"
+           ],
+          "datePublished": "@(Model.PubDate?.ToString("yyyy-MM-ddTHH:mm:ss+10:00"))",
+          "dateModified": "@(Model.ModDate.ToString("yyyy-MM-ddTHH:mm:ss+10:00"))",
+          "author": [{
+              "@@type": "Person",
+              "name": "Gordon Beeming",
+              "url": "https://gordonbeeming.com/"
+            }]
+        }
+        </script>
 }
-
 <div class="tag-list">
-  @foreach (var tag in Model.Tags)
-  {
-    <a asp-controller="TagPosts" asp-action="Index" asp-route-slug="@(tag.Slug)" class="badge tag-badge bg-secondary">@(tag.Name)</a>
-  }
+    @foreach (var tag in Model.Tags)
+    {
+        <a asp-controller="TagPosts" asp-action="Index" asp-route-slug="@(tag.Slug)" class="badge tag-badge bg-secondary">@(tag.Name)</a>
+    }
+</div>
+<div>
+  📅 @(Model.PubDate?.ToString("dd MMM yyyy") ?? "not published")
 </div>
 @{
-  var lastContentBlockType = ContentBlockTypes.Html;
+    var lastContentBlockType = ContentBlockTypes.Html;
 }
 @foreach (var contentBlock in Model.ContentBlocks)
 {
-  if (contentBlock.BlockType == ContentBlockTypes.Html)
-  {
-    <partial name="_ContentBlock_Html" model="contentBlock.ContextInfoAsHtml" />
-  }
-  else if (contentBlock.BlockType == ContentBlockTypes.Image)
-  {
-    if (lastContentBlockType == ContentBlockTypes.Image)
+    if (contentBlock.BlockType == ContentBlockTypes.Html)
     {
-      <br />
+        <partial name="_ContentBlock_Html" model="contentBlock.ContextInfoAsHtml"/>
     }
-    <partial name="_ContentBlock_Image" model="contentBlock.ContextInfoAsImage" />
-  }
-  else if (contentBlock.BlockType == ContentBlockTypes.Code)
-  {
-    <partial name="_ContentBlock_Code" model="contentBlock.ContextInfoAsCode" />
-  }
-  lastContentBlockType = contentBlock.BlockType;
+    else if (contentBlock.BlockType == ContentBlockTypes.Image)
+    {
+        if (lastContentBlockType == ContentBlockTypes.Image)
+        {
+            <br/>
+        }
+        <partial name="_ContentBlock_Image" model="contentBlock.ContextInfoAsImage"/>
+    }
+    else if (contentBlock.BlockType == ContentBlockTypes.Code)
+    {
+        <partial name="_ContentBlock_Code" model="contentBlock.ContextInfoAsCode"/>
+    }
+    lastContentBlockType = contentBlock.BlockType;
 }
 
 <div class="content-spacer">&nbsp;</div>
 
 @section Scripts {
-  
+
 }

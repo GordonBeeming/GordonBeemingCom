@@ -6,6 +6,7 @@
 @inject AppDbContext context
 @inject IConfiguration configuration
 @inject IFileService fileService
+@inject IHttpContextAccessor httpContextAccessor
 @attribute [Authorize]
 
 <PageTitle>@blogName | Posts</PageTitle>
@@ -140,6 +141,11 @@ else
 
   protected override async Task OnInitializedAsync()
   {
+    if (!httpContextAccessor.HttpContext.User.Identity.IsAuthenticated || !httpContextAccessor.HttpContext.User.Identity.Name.Equals(configuration["Blog:Username"]))
+    {
+      return;
+    }
+
     categories = await context.Categories
     .OrderBy(o => o.CategoryName)
     .ToListAsync();
@@ -186,6 +192,11 @@ else
 
   private async Task UpdateItem()
   {
+    if (!httpContextAccessor.HttpContext.User.Identity.IsAuthenticated || !httpContextAccessor.HttpContext.User.Identity.Name.Equals(configuration["Blog:Username"]))
+    {
+      return;
+    }
+
     if (blog == null || formSumitting)
     {
       return;
@@ -214,6 +225,7 @@ else
         blog.PublishDate = DateTime.SpecifyKind(blog.PublishDate.Value, DateTimeKind.Local);
         blog.PublishDate = TimeZoneInfo.ConvertTimeToUtc(blog.PublishDate.Value, TimeZoneInfo.Local);
       }
+      blog.ModifiedDate = DateTime.UtcNow;
       foreach (var tag in blog.BlogTags)
       {
         context.Entry(tag).State = EntityState.Deleted;
@@ -335,6 +347,11 @@ else
 
   private async Task OnHeroImageSelected(InputFileChangeEventArgs e)
   {
+    if (!httpContextAccessor.HttpContext.User.Identity.IsAuthenticated || !httpContextAccessor.HttpContext.User.Identity.Name.Equals(configuration["Blog:Username"]))
+    {
+      return;
+    }
+
     fileUploadTooBig = false;
     if (blog != null && e.File != null)
     {

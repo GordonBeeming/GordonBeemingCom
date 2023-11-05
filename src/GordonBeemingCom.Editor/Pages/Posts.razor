@@ -1,6 +1,8 @@
 ﻿@page "/posts"
 @inject NavigationManager navigationManager
 @inject AppDbContext context
+@inject IHttpContextAccessor httpContextAccessor
+@inject IConfiguration configuration
 @attribute [Authorize]
 
 <PageTitle>Posts</PageTitle>
@@ -56,6 +58,11 @@
 
   protected override async Task OnInitializedAsync()
   {
+    if (!httpContextAccessor.HttpContext.User.Identity.IsAuthenticated || !httpContextAccessor.HttpContext.User.Identity.Name.Equals(configuration["Blog:Username"]))
+    {
+      return;
+    }
+    
     blogs = await context.Blogs
     .Include(o => o.BlogTags).ThenInclude(o => o.Tag)
     .OrderBy(o => o.PublishDate.HasValue)

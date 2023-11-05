@@ -45,7 +45,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 #endif
 });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+  {
+    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedEmail = true;
+  })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>

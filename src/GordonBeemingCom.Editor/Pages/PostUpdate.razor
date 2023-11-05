@@ -141,7 +141,7 @@ else
 
   protected override async Task OnInitializedAsync()
   {
-    if (!httpContextAccessor.HttpContext.User.Identity.IsAuthenticated || !httpContextAccessor.HttpContext.User.Identity.Name.Equals(configuration["Blog:Username"]))
+    if (httpContextAccessor?.HttpContext?.User?.Identity?.Name?.Equals(configuration["Blog:Username"]) == false)
     {
       return;
     }
@@ -192,11 +192,11 @@ else
 
   private async Task UpdateItem()
   {
-    if (!httpContextAccessor.HttpContext.User.Identity.IsAuthenticated || !httpContextAccessor.HttpContext.User.Identity.Name.Equals(configuration["Blog:Username"]))
+    if (httpContextAccessor?.HttpContext?.User?.Identity?.Name?.Equals(configuration["Blog:Username"]) == false)
     {
       return;
     }
-
+    
     if (blog == null || formSumitting)
     {
       return;
@@ -347,7 +347,7 @@ else
 
   private async Task OnHeroImageSelected(InputFileChangeEventArgs e)
   {
-    if (!httpContextAccessor.HttpContext.User.Identity.IsAuthenticated || !httpContextAccessor.HttpContext.User.Identity.Name.Equals(configuration["Blog:Username"]))
+    if (httpContextAccessor?.HttpContext?.User?.Identity?.Name?.Equals(configuration["Blog:Username"]) == false)
     {
       return;
     }

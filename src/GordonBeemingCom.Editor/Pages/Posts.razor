@@ -58,7 +58,7 @@
 
   protected override async Task OnInitializedAsync()
   {
-    if (!httpContextAccessor.HttpContext.User.Identity.IsAuthenticated || !httpContextAccessor.HttpContext.User.Identity.Name.Equals(configuration["Blog:Username"]))
+    if (httpContextAccessor?.HttpContext?.User?.Identity?.Name?.Equals(configuration["Blog:Username"]) == false)
     {
       return;
     }

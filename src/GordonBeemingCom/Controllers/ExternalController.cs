@@ -24,13 +24,13 @@ public sealed class ExternalController : Controller
   [HttpGet("/external")]
   public IActionResult Index([FromQuery]string link)
   {
-    var referrer = _httpContextAccessor.HttpContext?.Request.Headers["Referer"].ToString();
-    var host = _httpContextAccessor.HttpContext?.Request.Host.ToString();
-    var scheme = _httpContextAccessor.HttpContext?.Request.Scheme.ToString();
-    if (referrer?.StartsWith($"{scheme}://{host}/") != true)
-    {
-      return NotFound();
-    }
+    // var referrer = _httpContextAccessor.HttpContext?.Request.Headers["Referer"].ToString();
+    // var host = _httpContextAccessor.HttpContext?.Request.Host.ToString();
+    // var scheme = _httpContextAccessor.HttpContext?.Request.Scheme.ToString();
+    // if (referrer?.StartsWith($"{scheme}://{host}/") != true)
+    // {
+    //   return NotFound();
+    // }
     _logger.LogInformation("External link clicked {link}", link.Replace(Environment.NewLine, ""));
 
     // later we could track this and potentially handle redirects here instead of updating content

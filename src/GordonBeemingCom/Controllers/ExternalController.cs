@@ -22,7 +22,7 @@ public sealed class ExternalController : Controller
   [HttpGet("/external")]
   public IActionResult Index([FromQuery]string link)
   {
-    _logger.LogInformation("External link clicked {link}", link);
+    _logger.LogInformation("External link clicked {link}", link.Replace(Environment.NewLine, ""));
 
     // later we could track this and potentially handle redirects here instead of updating content
 

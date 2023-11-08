@@ -29,7 +29,7 @@
     "devDependencies": {
         "autoprefixer": "10.4.16",
         "postcss": "8.4.31",
-        "sass": "1.69.3",
+        "sass": "1.69.4",
         "shelljs": "0.8.5",
         "upath": "2.0.1"
     }

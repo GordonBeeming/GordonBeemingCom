@@ -225,7 +225,7 @@ header.masthead .home-header {
   }
 }
 
-ul .nav-item:first-child {
+ul .nav-item:first-child span {
   padding-top: 2rem!important;
 }
 

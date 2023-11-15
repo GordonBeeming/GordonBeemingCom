@@ -224,3 +224,8 @@ header.masthead .home-header {
     margin-bottom: 20px;
   }
 }
+
+ul .nav-item:first-child span {
+  padding-top: 2rem!important;
+}
+

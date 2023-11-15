@@ -224,3 +224,13 @@ header.masthead .home-header {
     margin-bottom: 20px;
   }
 }
+
+.navbar-nav {
+  display: flex;
+  aligh-items: center;
+}
+
+ul .nav-item:first-child {
+  padding-top: 2rem!important;
+}
+

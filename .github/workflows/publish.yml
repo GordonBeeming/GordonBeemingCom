@@ -46,7 +46,7 @@ jobs:
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata (site)
         id: meta-site
-        uses: docker/metadata-action@9dc751fe249ad99385a2583ee0d084c400eee04e
+        uses: docker/metadata-action@dbef88086f6cef02e264edb7dbf63250c17cef6c
         with:
           images: ${{ env.REGISTRY }}/${{ env.SITE_IMAGE_NAME }}
           tags: |
@@ -70,7 +70,7 @@ jobs:
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata (editor)
         id: meta-editor
-        uses: docker/metadata-action@9dc751fe249ad99385a2583ee0d084c400eee04e
+        uses: docker/metadata-action@dbef88086f6cef02e264edb7dbf63250c17cef6c
         with:
           images: ${{ env.REGISTRY }}/${{ env.EDITOR_IMAGE_NAME }}
           tags: |

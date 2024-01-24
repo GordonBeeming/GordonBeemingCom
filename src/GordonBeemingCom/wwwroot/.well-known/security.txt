@@ -1,6 +1,6 @@
 ﻿Contact: mailto:security@gordonbeeming.com
 Contact: https://twitter.com/GordonBeeming
-Expires: 2023-05-31T22:00:00.000Z
+Expires: 2024-12-31T22:00:00.000Z
 Encryption: https://keybase.io/gordonbeeming
 Preferred-Languages: en
 Canonical: https://gordonbeeming.com/.well-known/security.txt

@@ -6,7 +6,7 @@ terraform {
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "4.21.0"
+      version = "4.26.0"
     }
     pkcs12 = {
       version = "0.0.7"

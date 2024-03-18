@@ -32,6 +32,13 @@ jobs:
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@2b51285047da1547ffb1b2203d8be4c0af6b1f20
 
+      - name: Set commit hash
+        id: set-commit-hash
+        shell: bash
+        run: |
+          export COMMIT_HASH=${GITHUB_SHA:0:7}
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
@@ -65,6 +72,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-site.outputs.tags }}
           file: "src/GordonBeemingCom/Dockerfile"
+          build-args: --build-arg A_COMMIT_HASH=${{ steps.set-commit-hash.outputs.COMMIT_HASH }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -89,6 +97,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-editor.outputs.tags }}
           file: "src/GordonBeemingCom.Editor/Dockerfile"
+          build-args: --build-arg A_COMMIT_HASH=${{ steps.set-commit-hash.outputs.COMMIT_HASH }}
 
   deployPreview:
     name: "Deploy to Preview"
@@ -103,14 +112,23 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+    env:
+      API_URL: "https://preview.gordonbeeming.com"
 
-    steps:    
+    steps:
       - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.ARM_CLIENT_ID }}
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      - name: Set commit hash
+        id: set-commit-hash
+        shell: bash
+        run: |
+          export COMMIT_HASH=${GITHUB_SHA:0:7}
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
 
       - name: Deploy Web App to Preview (editor)
         uses: Azure/cli@v2
@@ -120,7 +138,7 @@ jobs:
               az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --settings BRANCH_NAME=${{ github.ref_name }}
               az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --settings COMMIT_HASH=${{ github.sha }}
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
-              
+
       - name: Deploy Web App to Preview (site)
         uses: Azure/cli@v2
         with:
@@ -129,7 +147,45 @@ jobs:
               az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --settings BRANCH_NAME=${{ github.ref_name }}
               az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --settings COMMIT_HASH=${{ github.sha }}
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
-              
+
+      - name: Check deployed version endpoint
+        shell: pwsh
+        run: |
+          $tries = 0
+          $maxTries = 12
+          $apiDeployed = $false
+          $returnedVersion = ""
+          $expectedCommitHash = $env:COMMIT_HASH
+          $baseUrl = $env:API_URL
+          Write-Host "Waiting for API to deploy at $($baseUrl)/api/DeployVersion"
+          while ($tries -lt $maxTries -and $apiDeployed -eq $false) {
+              $version = Invoke-WebRequest -uri "$($baseUrl)/api/DeployVersion" -Method POST -Body "" -ContentType "application/json"
+              $returnedVersion = $version.Content.Trim('"')
+              if ($version.StatusCode -eq 200 -and $returnedVersion -eq $expectedCommitHash) {
+                  $apiDeployed = $true
+              } else {
+                  Write-Host "Waiting for API to deploy... (try $($tries + 1) of $maxTries)"
+                  Start-Sleep -Seconds 5
+                  $tries++
+              }
+          }
+          if ($apiDeployed -eq $false) {
+              Write-Host "🔥 API did not deploy after $($maxTries * 5) seconds"
+              Write-Host "🔥 Current Version: $($returnedVersion), Expected Version: $($expectedCommitHash)"
+              exit(1)
+          }
+
+          # Write-Host "Health Check at $($baseUrl)/api/HealthCheck"
+          # $response = Invoke-WebRequest -Uri $env:API_URL/api/HealthCheck -Method POST -Body "" -ContentType "application/json"
+          # if ($response.Content -eq "OK") {
+          #   Write-Host "Health check succeeded"
+          # } else {
+          #   Write-Error "Health check failed: $($response.StatusCode)"
+          #   exit 1
+          # }
+        env:
+          COMMIT_HASH: ${{ steps.set-commit-hash.outputs.COMMIT_HASH }}
+
       - name: Azure Logout
         uses: azure/CLI@v2
         with:

@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           export COMMIT_HASH=${GITHUB_SHA:0:7}
-          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_OUTPUT
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -128,7 +128,7 @@ jobs:
         shell: bash
         run: |
           export COMMIT_HASH=${GITHUB_SHA:0:7}
-          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_OUTPUT
 
       - name: Deploy Web App to Preview (editor)
         uses: Azure/cli@v2
@@ -218,7 +218,7 @@ jobs:
         shell: bash
         run: |
           export COMMIT_HASH=${GITHUB_SHA:0:7}
-          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_OUTPUT
 
       - name: Deploy Web App to Live (editor)
         uses: Azure/cli@v2

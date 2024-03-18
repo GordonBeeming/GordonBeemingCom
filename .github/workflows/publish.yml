@@ -113,7 +113,7 @@ jobs:
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: Deploy Web App to Preview (editor)
-        uses: Azure/cli@v1.0.7
+        uses: Azure/cli@v2
         with:
           inlineScript: |
               TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.EDITOR_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
@@ -122,7 +122,7 @@ jobs:
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               
       - name: Deploy Web App to Preview (site)
-        uses: Azure/cli@v1.0.7
+        uses: Azure/cli@v2
         with:
           inlineScript: |
               TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.SITE_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
@@ -131,7 +131,7 @@ jobs:
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               
       - name: Azure Logout
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az logout
@@ -160,7 +160,7 @@ jobs:
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: Deploy Web App to Live (editor)
-        uses: Azure/cli@v1.0.7
+        uses: Azure/cli@v2
         with:
           inlineScript: |
               TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.EDITOR_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
@@ -169,7 +169,7 @@ jobs:
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               
       - name: Deploy Web App to Live (site)
-        uses: Azure/cli@v1.0.7
+        uses: Azure/cli@v2
         with:
           inlineScript: |
               TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.SITE_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
@@ -178,7 +178,7 @@ jobs:
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               
       - name: Azure Logout
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az logout

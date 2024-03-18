@@ -161,14 +161,24 @@ jobs:
           Write-Host "Waiting for API to deploy at $VersionApi"
           Write-Host "Expected Version: $expectedCommitHash"
           while ($tries -lt $maxTries -and $apiDeployed -eq $false) {
-              $version = Invoke-RestMethod -Uri $VersionApi -Method POST
-              $returnedVersion = $version.Trim('"')
-              if ($version.StatusCode -eq 200 -and $returnedVersion -eq $expectedCommitHash) {
-                  $apiDeployed = $true
-              } else {
-                  Write-Host "Waiting for API to deploy... (try $($tries + 1) of $maxTries)"
-                  Start-Sleep -Seconds 5
-                  $tries++
+              try
+              {
+                $version = Invoke-RestMethod -Uri $VersionApi -Method POST
+                $returnedVersion = $version
+                if ($returnedVersion -eq $expectedCommitHash) {
+                    $apiDeployed = $true
+                } else {
+                    Write-Host "Waiting for API to deploy... (try $($tries + 1) of $maxTries)"
+                    Start-Sleep -Seconds 5
+                    $tries++
+                }
+              }
+              catch
+              {
+                Write-Host "🔥 Error trying to get version... $($_.Exception)"
+                Write-Host "Waiting for API to deploy... (try $($tries + 1) of $maxTries)"
+                Start-Sleep -Seconds 5
+                $tries++
               }
           }
           if ($apiDeployed -eq $false) {
@@ -253,14 +263,24 @@ jobs:
           Write-Host "Waiting for API to deploy at $VersionApi"
           Write-Host "Expected Version: $expectedCommitHash"
           while ($tries -lt $maxTries -and $apiDeployed -eq $false) {
-              $version = Invoke-RestMethod -Uri $VersionApi -Method POST
-              $returnedVersion = $version.Trim('"')
-              if ($version.StatusCode -eq 200 -and $returnedVersion -eq $expectedCommitHash) {
-                  $apiDeployed = $true
-              } else {
-                  Write-Host "Waiting for API to deploy... (try $($tries + 1) of $maxTries)"
-                  Start-Sleep -Seconds 5
-                  $tries++
+              try
+              {
+                $version = Invoke-RestMethod -Uri $VersionApi -Method POST
+                $returnedVersion = $version
+                if ($returnedVersion -eq $expectedCommitHash) {
+                    $apiDeployed = $true
+                } else {
+                    Write-Host "Waiting for API to deploy... (try $($tries + 1) of $maxTries)"
+                    Start-Sleep -Seconds 5
+                    $tries++
+                }
+              }
+              catch
+              {
+                Write-Host "🔥 Error trying to get version... $($_.Exception)"
+                Write-Host "Waiting for API to deploy... (try $($tries + 1) of $maxTries)"
+                Start-Sleep -Seconds 5
+                $tries++
               }
           }
           if ($apiDeployed -eq $false) {

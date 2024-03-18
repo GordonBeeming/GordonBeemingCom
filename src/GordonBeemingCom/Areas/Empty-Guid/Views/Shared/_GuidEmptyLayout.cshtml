@@ -1,0 +1,62 @@
+﻿@{
+  Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"]</title>
+  
+  <link rel="stylesheet" href="@(EmptyGuidArea_StaticFiles_RelativePath)lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
+  <link rel="stylesheet" href="@(EmptyGuidArea_StaticFiles_RelativePath)css/home.css" asp-append-version="true" />
+  
+  <link rel="apple-touch-icon" sizes="57x57" href="@(EmptyGuidArea_StaticFiles_RelativePath)apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="@(EmptyGuidArea_StaticFiles_RelativePath)apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="@(EmptyGuidArea_StaticFiles_RelativePath)apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="@(EmptyGuidArea_StaticFiles_RelativePath)apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="@(EmptyGuidArea_StaticFiles_RelativePath)apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="@(EmptyGuidArea_StaticFiles_RelativePath)apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="@(EmptyGuidArea_StaticFiles_RelativePath)apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="@(EmptyGuidArea_StaticFiles_RelativePath)apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="@(EmptyGuidArea_StaticFiles_RelativePath)apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="@(EmptyGuidArea_StaticFiles_RelativePath)android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="@(EmptyGuidArea_StaticFiles_RelativePath)favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="@(EmptyGuidArea_StaticFiles_RelativePath)favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="@(EmptyGuidArea_StaticFiles_RelativePath)favicon-16x16.png">
+  <link rel="manifest" href="@(EmptyGuidArea_StaticFiles_RelativePath)manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="@(EmptyGuidArea_StaticFiles_RelativePath)ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+      <div class="container">
+        <a class="navbar-brand" asp-area="@(EmptyGuidArea)"><img src="@(EmptyGuidArea_StaticFiles_RelativePath)android-icon-36x36.png" width="30" /> Guid.Empty</a>
+        <a class="navbar-brand float-right" asp-area=""> 👈 back to site</a>
+      </div>
+    </nav>
+  </header>
+  <div class="vertical-center">
+    <div class="container">
+      <main role="main" class="pb-3">
+        @RenderBody()
+      </main>
+    </div>
+  </div>
+
+  <footer class="border-top footer text-muted">
+    <div class="container">
+      &copy; @(DateTime.UtcNow.Year == 2020 ? "2020" : $"2020 - {DateTime.UtcNow.Year}") - <a href="https://gordonbeeming.com/" target="_blank">Gordon Beeming</a> - <a asp-area="" asp-page="/Privacy">Privacy</a>. 
+      The site theme is <a href="https://bootswatch.com/sketchy/" rel="nofollow" target="_blank">Sketchy</a> from Bootswatch.
+    </div>
+  </footer>
+
+  <script src="@(EmptyGuidArea_StaticFiles_RelativePath)lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+  <script src="@(EmptyGuidArea_StaticFiles_RelativePath)lib/bootstrap/dist/js/bootstrap.bundle.js" asp-append-version="true"></script>
+  <script src="@(EmptyGuidArea_StaticFiles_RelativePath)js/site.js" asp-append-version="true"></script>
+</body>
+</html>

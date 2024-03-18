@@ -161,7 +161,7 @@ jobs:
           Write-Host "Waiting for API to deploy at $VersionApi"
           Write-Host "Expected Version: $expectedCommitHash"
           while ($tries -lt $maxTries -and $apiDeployed -eq $false) {
-              $version = Invoke-WebRequest -uri $VersionApi -Method POST -Body "" -ContentType "application/json"
+              $version = Invoke-WebRequest -uri $VersionApi -SslProtocol Tls12 -Method POST -Body "" -ContentType "application/json"
               $returnedVersion = $version.Content.Trim('"')
               if ($version.StatusCode -eq 200 -and $returnedVersion -eq $expectedCommitHash) {
                   $apiDeployed = $true
@@ -178,7 +178,7 @@ jobs:
           }
 
           # Write-Host "Health Check at $($baseUrl)/api/HealthCheck"
-          # $response = Invoke-WebRequest -Uri $env:API_URL/api/HealthCheck -Method POST -Body "" -ContentType "application/json"
+          # $response = Invoke-WebRequest -Uri $env:API_URL/api/HealthCheck -SslProtocol Tls12 -Method POST -Body "" -ContentType "application/json"
           # if ($response.Content -eq "OK") {
           #   Write-Host "Health check succeeded"
           # } else {
@@ -231,8 +231,6 @@ jobs:
         with:
           inlineScript: |
               TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.EDITOR_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
-              az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --settings BRANCH_NAME=${{ github.ref_name }}
-              az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --settings COMMIT_HASH=${{ github.sha }}
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
               
       - name: Deploy Web App to Live (site)
@@ -240,8 +238,6 @@ jobs:
         with:
           inlineScript: |
               TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.SITE_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
-              az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --settings BRANCH_NAME=${{ github.ref_name }}
-              az webapp config appsettings set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --settings COMMIT_HASH=${{ github.sha }}
               az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
 
       - name: Check deployed version endpoint
@@ -257,7 +253,7 @@ jobs:
           Write-Host "Waiting for API to deploy at $VersionApi"
           Write-Host "Expected Version: $expectedCommitHash"
           while ($tries -lt $maxTries -and $apiDeployed -eq $false) {
-              $version = Invoke-WebRequest -uri $VersionApi -Method POST -Body "" -ContentType "application/json"
+              $version = Invoke-WebRequest -uri $VersionApi -SslProtocol Tls12 -Method POST -Body "" -ContentType "application/json"
               $returnedVersion = $version.Content.Trim('"')
               if ($version.StatusCode -eq 200 -and $returnedVersion -eq $expectedCommitHash) {
                   $apiDeployed = $true
@@ -274,7 +270,7 @@ jobs:
           }
 
           # Write-Host "Health Check at $($baseUrl)/api/HealthCheck"
-          # $response = Invoke-WebRequest -Uri $env:API_URL/api/HealthCheck -Method POST -Body "" -ContentType "application/json"
+          # $response = Invoke-WebRequest -Uri $env:API_URL/api/HealthCheck -SslProtocol Tls12 -Method POST -Body "" -ContentType "application/json"
           # if ($response.Content -eq "OK") {
           #   Write-Host "Health check succeeded"
           # } else {

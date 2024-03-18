@@ -3,7 +3,9 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-preview-alpine AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
+ENV ASPNETCORE_URLS=http://+:80
+ARG A_COMMIT_HASH
+ENV COMMIT_HASH=$A_COMMIT_HASH
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0-preview-alpine AS build
 WORKDIR /src

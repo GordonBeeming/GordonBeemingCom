@@ -72,8 +72,8 @@ html {
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
   background: white;
+  padding: 5px;
 }
 
 html, body {

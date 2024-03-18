@@ -1,4 +1,5 @@
-﻿@{
+﻿@inject DeploymentInfo DeploymentInfo
+@{
   Layout = null;
 }
 
@@ -50,7 +51,13 @@
 
   <footer class="border-top footer text-muted">
     <div class="container">
-      &copy; @(DateTime.UtcNow.Year == 2020 ? "2020" : $"2020 - {DateTime.UtcNow.Year}") - <a href="https://gordonbeeming.com/" target="_blank">Gordon Beeming</a> - <a asp-area="" asp-page="/Privacy">Privacy</a>. 
+      &copy; 2013 - @(DateTime.UtcNow.Year) - Gordon Beeming - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">Some Rights Reserved</a>
+      <br />
+      <strong>Disclaimer</strong>: Opinions are my own and not that of my company or anyone I engage with<br />
+      <span>
+        Powered by ASP.NET <a href="@(DeploymentInfo.DotNetLink)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.AspNetVersion)</a> | Branch: <a href="https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch%3A@(DeploymentInfo.BranchName)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.BranchName)</a> | Commit: <a href="https://github.com/GordonBeeming/GordonBeemingCom/commit/@(DeploymentInfo.CommitHash)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.CommitHashText)</a>.
+      </span>
+      <br />
       The site theme is <a href="https://bootswatch.com/sketchy/" rel="nofollow" target="_blank">Sketchy</a> from Bootswatch.
     </div>
   </footer>

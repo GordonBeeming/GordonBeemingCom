@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Debug;
 
-var culture = (CultureInfo)CultureInfo.GetCultureInfo("en-us").Clone();
+var culture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
 var cultureNumberFormat = (NumberFormatInfo)culture.NumberFormat.Clone();
-cultureNumberFormat.CurrencySymbol = "R";
+cultureNumberFormat.CurrencySymbol = "$";
 cultureNumberFormat.CurrencyDecimalSeparator = ".";
 cultureNumberFormat.NumberDecimalSeparator = ".";
 culture.NumberFormat = cultureNumberFormat;

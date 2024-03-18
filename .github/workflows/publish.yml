@@ -157,9 +157,9 @@ jobs:
           $returnedVersion = ""
           $expectedCommitHash = $env:COMMIT_HASH
           $baseUrl = $env:API_URL
-          Write-Host "Waiting for API to deploy at $($baseUrl)/api/DeployVersion"
+          Write-Host "Waiting for API to deploy at $($baseUrl)/api/Deploy/Version"
           while ($tries -lt $maxTries -and $apiDeployed -eq $false) {
-              $version = Invoke-WebRequest -uri "$($baseUrl)/api/DeployVersion" -Method POST -Body "" -ContentType "application/json"
+              $version = Invoke-WebRequest -uri "$($baseUrl)/api/Deploy/Version" -Method POST -Body "" -ContentType "application/json"
               $returnedVersion = $version.Content.Trim('"')
               if ($version.StatusCode -eq 200 -and $returnedVersion -eq $expectedCommitHash) {
                   $apiDeployed = $true
@@ -251,9 +251,9 @@ jobs:
           $returnedVersion = ""
           $expectedCommitHash = $env:COMMIT_HASH
           $baseUrl = $env:API_URL
-          Write-Host "Waiting for API to deploy at $($baseUrl)/api/DeployVersion"
+          Write-Host "Waiting for API to deploy at $($baseUrl)/api/Deploy/Version"
           while ($tries -lt $maxTries -and $apiDeployed -eq $false) {
-              $version = Invoke-WebRequest -uri "$($baseUrl)/api/DeployVersion" -Method POST -Body "" -ContentType "application/json"
+              $version = Invoke-WebRequest -uri "$($baseUrl)/api/Deploy/Version" -Method POST -Body "" -ContentType "application/json"
               $returnedVersion = $version.Content.Trim('"')
               if ($version.StatusCode -eq 200 -and $returnedVersion -eq $expectedCommitHash) {
                   $apiDeployed = $true

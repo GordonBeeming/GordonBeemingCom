@@ -20,6 +20,7 @@ public sealed class DeployController(ApplicationDbContext applicationDbContext,I
         };
     }
 
+    [HttpGet("version")]
     [HttpPost("version")]
     public IActionResult GetVersion()
     {

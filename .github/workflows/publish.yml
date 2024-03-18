@@ -72,7 +72,9 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-site.outputs.tags }}
           file: "src/GordonBeemingCom/Dockerfile"
-          build-args: --build-arg A_COMMIT_HASH=${{ steps.set-commit-hash.outputs.COMMIT_HASH }} --build-arg A_BRANCH_NAME=${{ github.ref_name }}
+          build-args: |
+            A_COMMIT_HASH=${{ steps.set-commit-hash.outputs.COMMIT_HASH }}
+            A_BRANCH_NAME=${{ github.ref_name }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -97,7 +99,9 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-editor.outputs.tags }}
           file: "src/GordonBeemingCom.Editor/Dockerfile"
-          build-args: --build-arg A_COMMIT_HASH=${{ steps.set-commit-hash.outputs.COMMIT_HASH }} --build-arg A_BRANCH_NAME=${{ github.ref_name }}
+          build-args: |
+            A_COMMIT_HASH=${{ steps.set-commit-hash.outputs.COMMIT_HASH }}
+            A_BRANCH_NAME=${{ github.ref_name }}
 
   deployPreview:
     name: "Deploy to Preview"

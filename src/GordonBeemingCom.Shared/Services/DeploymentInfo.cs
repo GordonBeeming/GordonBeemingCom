@@ -8,9 +8,9 @@ public sealed class DeploymentInfo
     var aspnetVersionSegments = AspNetVersion.Split(".");
     DotNetLink = $"https://dotnet.microsoft.com/en-us/download/dotnet/{aspnetVersionSegments[0]}.{aspnetVersionSegments[1]}";
     CommitHash = Environment.GetEnvironmentVariable("COMMIT_HASH") ?? "local";
-    if (CommitHash.Length > 6)
+    if (CommitHash.Length > 7)
     {
-      CommitHashText = CommitHash.Substring(0, 6);
+      CommitHashText = CommitHash.Substring(0, 7);
     }
     else
     {

@@ -1,0 +1,38 @@
+﻿@{
+  ViewData["Title"] = "Creating empty guids";
+}
+
+<div class="row">
+  <div class="col-12">
+    <div class="form-group">
+      <input class="form-control text-center the-guid" value="00000000-0000-0000-0000-000000000000" readonly onClick="this.setSelectionRange(0, this.value.length)" />
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="form-group">
+      <label class="col-form-label"><samp>C#</samp><br /><code>Guid.Empty</code></label>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="form-group">
+      <label class="col-form-label"><samp>ms sql</samp><br /><code>cast(cast(0 as binary) as uniqueidentifier)</code></label>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="form-group">
+      <label class="col-form-label"><samp>powershell</samp><br /><code>[Guid]::Empty</code></label>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <p>
+      This project is hosted on GitHub at
+      <a href='https://github.com/Gordon-Beeming' target='_blank' rel='nofollow external'>Gordon-Beeming</a>
+      /
+      <a href='https://github.com/Gordon-Beeming/GordonBeemingCom' target='_blank' rel='nofollow external'>GordonBeemingCom</a>
+      /
+      <a href='https://github.com/GordonBeeming/GordonBeemingCom/tree/main/src/GordonBeemingCom/Areas/Empty-Guid' target='_blank' rel='nofollow external'>Empty-Guid</a>
+    </p>
+  </div>
+</div>

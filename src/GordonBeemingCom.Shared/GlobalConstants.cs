@@ -25,4 +25,11 @@ public static class GlobalConstants
 
   public const int OneDayInSeconds = 86400;
   public const int OneYearInSeconds = 31536000;
+
+  #region Random App Areas
+
+  public const string EmptyGuidArea = "empty-guid";
+  public const string EmptyGuidArea_StaticFiles_RelativePath = "/apps/empty-guid/";
+
+  #endregion
 }

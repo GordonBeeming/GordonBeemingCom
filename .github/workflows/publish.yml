@@ -163,9 +163,9 @@ jobs:
           while ($tries -lt $maxTries -and $apiDeployed -eq $false) {
               try
               {
-                $version = Invoke-RestMethod -Uri $VersionApi -Method POST
-                $returnedVersion = $version
-                if ($returnedVersion -eq $expectedCommitHash) {
+                $version = Invoke-WebRequest -Uri $VersionApi -Method POST -Body "" -ContentType "application/json"
+                $returnedVersion = $version.Content.Trim('"')
+                if ($version.StatusCode -eq 200 -and $returnedVersion -eq $expectedCommitHash) {
                     $apiDeployed = $true
                 } else {
                     Write-Host "Waiting for API to deploy... (try $($tries + 1) of $maxTries)"
@@ -265,9 +265,9 @@ jobs:
           while ($tries -lt $maxTries -and $apiDeployed -eq $false) {
               try
               {
-                $version = Invoke-RestMethod -Uri $VersionApi -Method POST
-                $returnedVersion = $version
-                if ($returnedVersion -eq $expectedCommitHash) {
+                $version = Invoke-WebRequest -Uri $VersionApi -Method POST -Body "" -ContentType "application/json"
+                $returnedVersion = $version.Content.Trim('"')
+                if ($version.StatusCode -eq 200 -and $returnedVersion -eq $expectedCommitHash) {
                     $apiDeployed = $true
                 } else {
                     Write-Host "Waiting for API to deploy... (try $($tries + 1) of $maxTries)"

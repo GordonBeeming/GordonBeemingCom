@@ -7,6 +7,7 @@
 @inject IConfiguration configuration
 @inject IFileService fileService
 @inject IHttpContextAccessor httpContextAccessor
+@inject IExternalUrlsService externalUrlsService
 @attribute [Authorize]
 
 <PageTitle>@blogName | Posts</PageTitle>
@@ -251,6 +252,23 @@ else
         }
       }
       await context.SaveChangesAsync();
+      foreach (var contentBlock in contentBlocks)
+      {
+        if (contentBlock.BlockType == ContentBlockTypes.Html)
+        {
+          HtmlContentBlockContext htmlContext;
+          if (contentBlock.ContextInfo == null)
+          {
+            htmlContext = new HtmlContentBlockContext();
+          }
+          else
+          {
+            htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
+          }
+          await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
+          await externalUrlsService.CommitChangesAsync();
+        }
+      }
       await Task.Delay(1000);
       if (Id == Guid.Empty)
       {
@@ -262,6 +280,10 @@ else
     catch (Exception ex)
     {
       validationIssues.Add(ex.Message);
+      if (ex.InnerException != null)
+      {
+        validationIssues.Add(ex.InnerException.Message);
+      }
       formSumitting = false;
     }
   }
@@ -282,10 +304,14 @@ else
     {
       validationIssues.Add("Sub title missing!");
     }
-    blog.BlogSlug = blog.BlogSlug.Trim();
+    blog.BlogSlug = blog.BlogSlug?.Trim() ?? string.Empty;
     if (string.IsNullOrEmpty(blog.BlogSlug))
     {
       validationIssues.Add("Slug missing!");
+    }
+    if (string.IsNullOrEmpty(blog.HeroImageUrl))
+    {
+      validationIssues.Add("Hero image missing!");
     }
     return validationIssues.Count == 0;
   }

@@ -1,0 +1,86 @@
+﻿@page "/accepted-urls"
+@using System.Text;
+@using System.Text.RegularExpressions;
+@using System.Globalization;
+@inject IExternalUrlsService externalUrlsService
+@inject AppDbContext context
+@inject IConfiguration configuration
+@inject IHttpContextAccessor httpContextAccessor
+@attribute [Authorize]
+
+<PageTitle>Accepted Urls</PageTitle>
+
+<h1>Accepted Urls</h1>
+
+<button type="submit" class="btn btn-primary" @onclick="ScanAllPosts">@(scanButtonText)</button>
+
+<div class="row">
+  <div class="form-group col-lg-12 col-sm-12">
+    <label for="blogTags">Html:</label>
+    <InputTextArea id="blogTags" class="form-control" rows="10" @bind-Value="@html" />
+  </div>
+  <div class="form-group col-lg-12 col-sm-12">
+    <button type="submit" class="btn btn-primary" @onclick="ScanHtmlForUrls">@(scanHtmlButtonText)</button>
+  </div>
+</div>
+
+@code {
+  private const string scanButtonTextDefault = "Scan existing posts for urls";
+  private string scanButtonText { get; set; } = scanButtonTextDefault;
+  private const string scanHtmlButtonTextDefault = "Scan";
+  private string scanHtmlButtonText { get; set; } = scanHtmlButtonTextDefault;
+  private string html { get; set; } = string.Empty;
+  private int ScanCount { get; set; }
+
+  protected override async Task OnInitializedAsync()
+  {
+    if (httpContextAccessor?.HttpContext?.User?.Identity?.Name?.Equals(configuration["Blog:Username"]) == false)
+    {
+      return;
+    }
+  }
+
+  private async Task ScanAllPosts()
+  {
+    var blocks = await context.BlogContentBlocks
+      .Where(o=>o.BlockType == ContentBlockTypes.Html)
+      .AsNoTracking()
+      .ToListAsync();
+    ScanCount = 0;
+    scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
+    StateHasChanged();
+    await Task.Delay(1000);
+    foreach (var contentBlock in blocks)
+    {
+      ScanCount++;
+      scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
+      StateHasChanged();
+      HtmlContentBlockContext htmlContext;
+      if (contentBlock.ContextInfo == null)
+      {
+        htmlContext = new HtmlContentBlockContext();
+      }
+      else
+      {
+        htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
+      }
+      await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
+      await externalUrlsService.CommitChangesAsync();
+    }
+    ScanCount = 0;
+    scanButtonText = $"{scanButtonTextDefault} (done)";
+    StateHasChanged();
+  }
+
+  private async Task ScanHtmlForUrls()
+  {
+    scanHtmlButtonText = "Scanning...";
+    StateHasChanged();
+    await Task.Delay(1000);
+    await externalUrlsService.RegisterUrlsAsync(html);
+    await externalUrlsService.CommitChangesAsync();
+    html = string.Empty;
+    scanHtmlButtonText = $"{scanHtmlButtonTextDefault} (done)";
+    StateHasChanged();
+  }
+}

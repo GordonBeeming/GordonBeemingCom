@@ -12,29 +12,29 @@ public sealed class ExternalController : Controller
   private readonly AppDbContext _context;
   private readonly IConfiguration _configuration;
   private readonly IHttpContextAccessor _httpContextAccessor;
+  private readonly IExternalUrlsService _externalUrlsService;
 
-  public ExternalController(ILogger<ExternalController> logger, AppDbContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+  public ExternalController(ILogger<ExternalController> logger, AppDbContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IExternalUrlsService externalUrlsService)
   {
     _logger = logger;
     _context = context;
     _configuration = configuration;
     _httpContextAccessor = httpContextAccessor;
+    _externalUrlsService = externalUrlsService;
   }
 
   [HttpGet("/external")]
-  public IActionResult Index([FromQuery]string link)
+  public async Task<IActionResult> Index([FromQuery]string link)
   {
     if (link == null)
     {
       return NotFound();
     }
-    // var referrer = _httpContextAccessor.HttpContext?.Request.Headers["Referer"].ToString();
-    // var host = _httpContextAccessor.HttpContext?.Request.Host.ToString();
-    // var scheme = _httpContextAccessor.HttpContext?.Request.Scheme.ToString();
-    // if (referrer?.StartsWith($"{scheme}://{host}/") != true)
-    // {
-    //   return NotFound();
-    // }
+    if (!(await _externalUrlsService.IsUrlRegisteredAsync(link)))
+    {
+      _logger.LogWarning("External link not registered {link}", link.Replace(Environment.NewLine, ""));
+      return NotFound();
+    }
     _logger.LogInformation("External link clicked {link}", link.Replace(Environment.NewLine, ""));
 
     // later we could track this and potentially handle redirects here instead of updating content

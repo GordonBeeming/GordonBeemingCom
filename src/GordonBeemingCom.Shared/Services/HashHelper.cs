@@ -36,6 +36,7 @@ public sealed class HashHelper
     using (var stream = new MemoryStream())
     {
       await ms.CopyToAsync(stream);
+      stream.Position = 0; // Reset the position
       return BitConverter.ToString(GetHashAlgorithm(algorithm).ComputeHash(stream)).Replace("-", string.Empty);
     }
   }

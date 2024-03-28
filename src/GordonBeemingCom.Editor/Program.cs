@@ -67,6 +67,7 @@ builder.Services.AddSingleton<IFileService, FileService>();
 builder.Services.AddSingleton<IBlobServiceClientService, BlobServiceClientService>();
 builder.Services.AddSingleton<HashHelper>();
 builder.Services.AddSingleton<DeploymentInfo>();
+builder.Services.AddScoped<IExternalUrlsService, ExternalUrlsService>();
 
 var app = builder.Build();
 

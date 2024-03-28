@@ -7,6 +7,7 @@
 @inject IConfiguration configuration
 @inject IFileService fileService
 @inject IHttpContextAccessor httpContextAccessor
+@inject IExternalUrlsService externalUrlsService
 @attribute [Authorize]
 
 <PageTitle>@blogName | Posts</PageTitle>
@@ -251,6 +252,23 @@ else
         }
       }
       await context.SaveChangesAsync();
+      foreach (var contentBlock in contentBlocks)
+      {
+        if (contentBlock.BlockType == ContentBlockTypes.Html)
+        {
+          HtmlContentBlockContext htmlContext;
+          if (contentBlock.ContextInfo == null)
+          {
+            htmlContext = new HtmlContentBlockContext();
+          }
+          else
+          {
+            htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
+          }
+          await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
+          await externalUrlsService.CommitChangesAsync();
+        }
+      }
       await Task.Delay(1000);
       if (Id == Guid.Empty)
       {

@@ -11,6 +11,8 @@ public partial class AppDbContext : DbContext
   {
   }
 
+  public virtual DbSet<AcceptedExternalUrls> AcceptedExternalUrls { get; set; }
+
   public virtual DbSet<BlogContentBlocks> BlogContentBlocks { get; set; }
 
   public virtual DbSet<BlogTags> BlogTags { get; set; }
@@ -25,6 +27,13 @@ public partial class AppDbContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
+    modelBuilder.Entity<AcceptedExternalUrls>(entity =>
+    {
+      entity.Property(e => e.DateTimeStamp).HasDefaultValueSql("(sysutcdatetime())");
+
+      entity.HasQueryFilter(b => EF.Property<DateTime?>(b, "CancelledDate") == null);
+    });
+
     modelBuilder.Entity<BlogContentBlocks>(entity =>
     {
       entity.Property(e => e.Id).HasDefaultValueSql("(newid())");

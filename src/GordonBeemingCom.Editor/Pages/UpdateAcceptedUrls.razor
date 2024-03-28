@@ -1,0 +1,60 @@
+﻿@page "/accepted-urls"
+@using System.Text;
+@using System.Text.RegularExpressions;
+@using System.Globalization;
+@inject IExternalUrlsService externalUrlsService
+@inject AppDbContext context
+@inject IConfiguration configuration
+@inject IHttpContextAccessor httpContextAccessor
+@attribute [Authorize]
+
+<PageTitle>Accepted Urls</PageTitle>
+
+<h1>Accepted Urls</h1>
+
+<button type="submit" @key="@ScanCount" class="btn btn-primary" @onclick="ScanAllPosts">@(scanButtonText)</button>
+
+@code {
+  private const string scanButtonTextDefault = "Scan existing posts for urls";
+  private string scanButtonText { get; set; } = scanButtonTextDefault;
+  private int ScanCount { get; set; } = 0;
+
+  protected override async Task OnInitializedAsync()
+  {
+    if (httpContextAccessor?.HttpContext?.User?.Identity?.Name?.Equals(configuration["Blog:Username"]) == false)
+    {
+      return;
+    }
+  }
+
+  private async Task ScanAllPosts()
+  {
+    var blocks = await context.BlogContentBlocks
+      .Where(o=>o.BlockType == ContentBlockTypes.Html)
+      .AsNoTracking()
+      .ToListAsync();
+    ScanCount = 0;
+    scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
+    StateHasChanged();
+    foreach (var contentBlock in blocks)
+    {
+      ScanCount++;
+      scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
+      StateHasChanged();
+      HtmlContentBlockContext htmlContext;
+      if (contentBlock.ContextInfo == null)
+      {
+        htmlContext = new HtmlContentBlockContext();
+      }
+      else
+      {
+        htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
+      }
+      await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
+      await externalUrlsService.CommitChangesAsync();
+    }
+    ScanCount = 0;
+    scanButtonText = $"{scanButtonTextDefault} (done)";
+    StateHasChanged();
+  }
+}

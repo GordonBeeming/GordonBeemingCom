@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using GordonBeemingCom.Database.Tables;
 using GordonBeemingCom.Editor.Areas.Identity;
 using GordonBeemingCom.Editor.Data;
 using GordonBeemingCom.Shared.Services;
@@ -74,6 +75,12 @@ using (var scope = serviceScopeFactory!.CreateScope())
 {
   var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
   appDbContext.Database.Migrate();
+  if (appDbContext.Categories.FirstOrDefault() == null)
+  {
+    appDbContext.Categories.Add(new Categories() { Id = Guid.NewGuid(), CategoryName = "Developer", CategorySlug = "developer", DisplayIndex = 1, HexColour = "00FF00",});
+    appDbContext.SaveChanges();
+
+  }
 }
 
 // Configure the HTTP request pipeline.

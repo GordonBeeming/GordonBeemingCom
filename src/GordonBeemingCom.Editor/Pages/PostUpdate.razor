@@ -262,6 +262,10 @@ else
     catch (Exception ex)
     {
       validationIssues.Add(ex.Message);
+      if (ex.InnerException != null)
+      {
+        validationIssues.Add(ex.InnerException.Message);
+      }
       formSumitting = false;
     }
   }
@@ -282,10 +286,14 @@ else
     {
       validationIssues.Add("Sub title missing!");
     }
-    blog.BlogSlug = blog.BlogSlug.Trim();
+    blog.BlogSlug = blog.BlogSlug?.Trim() ?? string.Empty;
     if (string.IsNullOrEmpty(blog.BlogSlug))
     {
       validationIssues.Add("Slug missing!");
+    }
+    if (string.IsNullOrEmpty(blog.HeroImageUrl))
+    {
+      validationIssues.Add("Hero image missing!");
     }
     return validationIssues.Count == 0;
   }

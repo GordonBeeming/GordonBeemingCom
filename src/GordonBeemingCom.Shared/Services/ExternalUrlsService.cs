@@ -38,6 +38,10 @@ public sealed class ExternalUrlsService : IExternalUrlsService
     {
       return;
     }
+    if (_urlCache.Contains(url))
+    {
+      return;
+    }
     var acceptedExternalUrl = new AcceptedExternalUrls
     {
       UrlHash = urlHash,

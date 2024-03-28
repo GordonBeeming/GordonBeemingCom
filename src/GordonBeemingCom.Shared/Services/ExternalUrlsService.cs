@@ -12,6 +12,7 @@ public interface IExternalUrlsService
   Task<bool> IsUrlRegisteredAsync(string url);
   Task RegisterUrlsAsync(string html);
   Task CommitChangesAsync();
+  Task<List<string>> GetUrlsCacheAsync();
 }
 
 public sealed class ExternalUrlsService : IExternalUrlsService
@@ -33,13 +34,14 @@ public sealed class ExternalUrlsService : IExternalUrlsService
     {
       return;
     }
-    var urlHash = await _hashHelper.GetHashOfString(url, HashHelper.Algorithms.SHA1);
-    if (await IsUrlHashRegisteredAsync(urlHash))
+    if (_urlCache.Contains(url))
     {
       return;
     }
-    if (_urlCache.Contains(url))
+    var urlHash = await _hashHelper.GetHashOfString(url, HashHelper.Algorithms.SHA1);
+    if (await IsUrlHashRegisteredAsync(urlHash))
     {
+      _urlCache.Add(url);
       return;
     }
     var acceptedExternalUrl = new AcceptedExternalUrls
@@ -58,7 +60,12 @@ public sealed class ExternalUrlsService : IExternalUrlsService
       return true;
     }
     var urlHash = await _hashHelper.GetHashOfString(url, HashHelper.Algorithms.SHA1);
-    return await IsUrlHashRegisteredAsync(urlHash);
+    var exists = await IsUrlHashRegisteredAsync(urlHash);
+    if (exists)
+    {
+      _urlCache.Add(url);
+    }
+    return exists;
   }
 
   private async Task<bool> IsUrlHashRegisteredAsync(string urlHash)
@@ -83,5 +90,10 @@ public sealed class ExternalUrlsService : IExternalUrlsService
   public async Task CommitChangesAsync()
   {
     await _context.SaveChangesAsync();
+  }
+
+  public Task<List<string>> GetUrlsCacheAsync()
+  {
+    return Task.FromResult(_urlCache.ToList());
   }
 }

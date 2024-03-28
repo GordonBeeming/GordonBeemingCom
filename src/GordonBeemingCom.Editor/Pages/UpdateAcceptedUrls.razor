@@ -1,7 +1,5 @@
 ﻿@page "/accepted-urls"
-@using System.Text;
-@using System.Text.RegularExpressions;
-@using System.Globalization;
+
 @inject IExternalUrlsService externalUrlsService
 @inject AppDbContext context
 @inject IConfiguration configuration
@@ -11,18 +9,22 @@
 <PageTitle>Accepted Urls</PageTitle>
 
 <h1>Accepted Urls</h1>
-
+  
 <button type="submit" class="btn btn-primary" @onclick="ScanAllPosts">@(scanButtonText)</button>
 
-<div class="row">
-  <div class="form-group col-lg-12 col-sm-12">
-    <label for="blogTags">Html:</label>
-    <InputTextArea id="blogTags" class="form-control" rows="10" @bind-Value="@html" />
+<EditForm Model="htmlContext">
+    
+  <div class="row">
+    <div class="form-group col-lg-12 col-sm-12">
+      <label for="htmlInput">Html:</label>
+      <InputTextArea id="htmlInput" class="form-control" rows="10" @bind-Value="@htmlContext.Html"/>
+    </div>
+    <div class="form-group col-lg-12 col-sm-12">
+      <button type="submit" class="btn btn-primary" @onclick="ScanHtmlForUrls">@(scanHtmlButtonText)</button>
+    </div>
   </div>
-  <div class="form-group col-lg-12 col-sm-12">
-    <button type="submit" class="btn btn-primary" @onclick="ScanHtmlForUrls">@(scanHtmlButtonText)</button>
-  </div>
-</div>
+
+</EditForm>
 
 @if (validationIssues.Count > 0)
 {
@@ -34,14 +36,27 @@
   </ul>
 }
 
+@if (discoveredLinks.Count > 0)
+{
+  <h3>Discovered Urls</h3>
+  <ul>
+    @for (int i = 0; i < discoveredLinks.Count; i++)
+    {
+      <li>@($"{discoveredLinks[i]}")</li>
+    }
+  </ul>
+}
+
 @code {
   private const string scanButtonTextDefault = "Scan existing posts for urls";
   private string scanButtonText { get; set; } = scanButtonTextDefault;
   private const string scanHtmlButtonTextDefault = "Scan";
   private string scanHtmlButtonText { get; set; } = scanHtmlButtonTextDefault;
-  private string html { get; set; } = string.Empty;
   private int ScanCount { get; set; }
   private List<string> validationIssues = new();
+  private List<string> discoveredLinks = new();
+  
+  private HtmlContentBlockContext? htmlContext;
 
   protected override async Task OnInitializedAsync()
   {
@@ -49,6 +64,8 @@
     {
       return;
     }
+
+    htmlContext = new();
   }
 
   private async Task ScanAllPosts()
@@ -85,6 +102,7 @@
       ScanCount = 0;
       scanButtonText = $"{scanButtonTextDefault} (done)";
       StateHasChanged();
+      await LoadDiscoveredLinks();
     }
     catch (Exception ex)
     {
@@ -96,18 +114,26 @@
     }
   }
 
+  private async Task LoadDiscoveredLinks()
+  {
+    discoveredLinks = (await externalUrlsService.GetUrlsCacheAsync())
+      .OrderBy(o=>o)
+      .ToList();
+    StateHasChanged();
+  }
+
   private async Task ScanHtmlForUrls()
   {
     try
     {
       scanHtmlButtonText = "Scanning...";
       StateHasChanged();
-      await Task.Delay(1000);
-      await externalUrlsService.RegisterUrlsAsync(html);
+      await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
       await externalUrlsService.CommitChangesAsync();
-      html = string.Empty;
+      htmlContext.Html = string.Empty;
       scanHtmlButtonText = $"{scanHtmlButtonTextDefault} (done)";
       StateHasChanged();
+      await LoadDiscoveredLinks();
     }
     catch (Exception ex)
     {

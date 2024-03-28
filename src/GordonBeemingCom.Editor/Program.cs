@@ -61,7 +61,14 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 });
 
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor(options =>
+  {
+    options.DetailedErrors = true;
+  })
+  .AddHubOptions(options =>
+  {
+    options.MaximumReceiveMessageSize = 1024 * 1024;
+  });
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddSingleton<IFileService, FileService>();
 builder.Services.AddSingleton<IBlobServiceClientService, BlobServiceClientService>();

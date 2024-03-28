@@ -24,6 +24,16 @@
   </div>
 </div>
 
+@if (validationIssues.Count > 0)
+{
+  <ul class="validation-message">
+    @for (int i = 0; i < validationIssues.Count; i++)
+    {
+      <li>@($"{validationIssues[i]}")</li>
+    }
+  </ul>
+}
+
 @code {
   private const string scanButtonTextDefault = "Scan existing posts for urls";
   private string scanButtonText { get; set; } = scanButtonTextDefault;
@@ -31,6 +41,7 @@
   private string scanHtmlButtonText { get; set; } = scanHtmlButtonTextDefault;
   private string html { get; set; } = string.Empty;
   private int ScanCount { get; set; }
+  private List<string> validationIssues = new();
 
   protected override async Task OnInitializedAsync()
   {
@@ -42,45 +53,69 @@
 
   private async Task ScanAllPosts()
   {
-    var blocks = await context.BlogContentBlocks
-      .Where(o=>o.BlockType == ContentBlockTypes.Html)
-      .AsNoTracking()
-      .ToListAsync();
-    ScanCount = 0;
-    scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
-    StateHasChanged();
-    await Task.Delay(1000);
-    foreach (var contentBlock in blocks)
+    try
     {
-      ScanCount++;
+      var blocks = await context.BlogContentBlocks
+        .Where(o => o.BlockType == ContentBlockTypes.Html)
+        .AsNoTracking()
+        .ToListAsync();
+      ScanCount = 0;
       scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
       StateHasChanged();
-      HtmlContentBlockContext htmlContext;
-      if (contentBlock.ContextInfo == null)
+      await Task.Delay(1000);
+      foreach (var contentBlock in blocks)
       {
-        htmlContext = new HtmlContentBlockContext();
+        ScanCount++;
+        scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
+        StateHasChanged();
+        HtmlContentBlockContext htmlContext;
+        if (contentBlock.ContextInfo == null)
+        {
+          htmlContext = new HtmlContentBlockContext();
+        }
+        else
+        {
+          htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
+        }
+
+        await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
+        await externalUrlsService.CommitChangesAsync();
       }
-      else
-      {
-        htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
-      }
-      await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
-      await externalUrlsService.CommitChangesAsync();
+
+      ScanCount = 0;
+      scanButtonText = $"{scanButtonTextDefault} (done)";
+      StateHasChanged();
     }
-    ScanCount = 0;
-    scanButtonText = $"{scanButtonTextDefault} (done)";
-    StateHasChanged();
+    catch (Exception ex)
+    {
+      validationIssues.Add(ex.Message);
+      if (ex.InnerException != null)
+      {
+        validationIssues.Add(ex.InnerException.Message);
+      }
+    }
   }
 
   private async Task ScanHtmlForUrls()
   {
-    scanHtmlButtonText = "Scanning...";
-    StateHasChanged();
-    await Task.Delay(1000);
-    await externalUrlsService.RegisterUrlsAsync(html);
-    await externalUrlsService.CommitChangesAsync();
-    html = string.Empty;
-    scanHtmlButtonText = $"{scanHtmlButtonTextDefault} (done)";
-    StateHasChanged();
+    try
+    {
+      scanHtmlButtonText = "Scanning...";
+      StateHasChanged();
+      await Task.Delay(1000);
+      await externalUrlsService.RegisterUrlsAsync(html);
+      await externalUrlsService.CommitChangesAsync();
+      html = string.Empty;
+      scanHtmlButtonText = $"{scanHtmlButtonTextDefault} (done)";
+      StateHasChanged();
+    }
+    catch (Exception ex)
+    {
+      validationIssues.Add(ex.Message);
+      if (ex.InnerException != null)
+      {
+        validationIssues.Add(ex.InnerException.Message);
+      }
+    }
   }
 }

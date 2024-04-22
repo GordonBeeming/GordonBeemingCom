@@ -12,7 +12,7 @@ public static class GlobalConstants
   public const string IndexAction = "Index";
 
   public const string ProductionUrl = "https://gordonbeeming.com";
-  public const string PreviewUrl = "https://gordonbeeming.com";
+  public const string PreviewUrl = "https://preview.gordonbeeming.com";
   public const string ProductionBlogUrl = ProductionUrl + "/" + BlogArea + "/";
   public const string BlogHomeImageRelativePath = "/images/blog-banner.jpg";
   public const string ProfileHomeImageRelativePath = "/images/profile-banner.jpg";

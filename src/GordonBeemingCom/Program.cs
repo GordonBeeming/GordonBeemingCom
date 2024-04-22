@@ -76,6 +76,8 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseForwardedHeaders();
+
 //app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.

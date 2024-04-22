@@ -69,6 +69,10 @@ public sealed class ViewPostController : BaseController
     {
       slug = post.BlogSlug,
     }, HttpContext.Request.Scheme)!;
+    if (viewModel.CanonicalUrl.Contains(PreviewUrl, StringComparison.InvariantCultureIgnoreCase))
+    {
+      viewModel.CanonicalUrl = viewModel.CanonicalUrl.Replace(PreviewUrl, ProductionUrl);
+    }
     viewModel.Category = new ViewPostViewModel.CategoryInfo
     {
       Id = post.Category.Id,

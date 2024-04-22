@@ -24,11 +24,15 @@ public sealed class ExternalController : Controller
   }
 
   [HttpGet("/external")]
-  public async Task<IActionResult> Index([FromQuery]string link)
+  public async Task<IActionResult> Index([FromQuery]string? link)
   {
-    if (link == null)
+    if (link is null)
     {
       return NotFound();
+    }
+    if (link.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+    {
+      link = $"https://{link.Remove(0,7)}";
     }
     if (!(await _externalUrlsService.IsUrlRegisteredAsync(link)))
     {

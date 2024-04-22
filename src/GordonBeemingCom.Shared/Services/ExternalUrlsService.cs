@@ -84,6 +84,11 @@ public sealed class ExternalUrlsService : IExternalUrlsService
       {
         await AddAcceptedExternalUrlAsync(url);
       }
+      else if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+      {
+        url = $"https://{url.Remove(0, 7)}";
+        await AddAcceptedExternalUrlAsync(url);
+      }
     }
   }
 

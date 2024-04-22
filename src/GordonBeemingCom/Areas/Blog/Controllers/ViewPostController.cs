@@ -71,7 +71,7 @@ public sealed class ViewPostController : BaseController
     }, HttpContext.Request.Scheme)!;
     if (viewModel.CanonicalUrl.Contains(PreviewUrl, StringComparison.InvariantCultureIgnoreCase))
     {
-      viewModel.CanonicalUrl = viewModel.CanonicalUrl.Replace(PreviewUrl, ProductionUrl);
+      viewModel.CanonicalUrl = viewModel.CanonicalUrl.Replace(PreviewUrl, ProductionUrl, StringComparison.InvariantCultureIgnoreCase);
     }
     viewModel.Category = new ViewPostViewModel.CategoryInfo
     {

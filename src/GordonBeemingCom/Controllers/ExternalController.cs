@@ -15,7 +15,8 @@ public sealed class ExternalController : Controller
   private readonly IHttpContextAccessor _httpContextAccessor;
   private readonly IExternalUrlsService _externalUrlsService;
 
-  public ExternalController(ILogger<ExternalController> logger, AppDbContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IExternalUrlsService externalUrlsService)
+  public ExternalController(ILogger<ExternalController> logger, AppDbContext context, IConfiguration configuration,
+    IHttpContextAccessor httpContextAccessor, IExternalUrlsService externalUrlsService)
   {
     _logger = logger;
     _context = context;
@@ -25,22 +26,33 @@ public sealed class ExternalController : Controller
   }
 
   [HttpGet("/external")]
-  public async Task<IActionResult> Index([FromQuery]string? link)
+  public async Task<IActionResult> Index([FromQuery] string? link)
   {
     if (link is null)
     {
       return NotFound();
     }
+
     if (link.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
     {
-      link = $"https://{link.Remove(0,7)}";
+      link = $"https://{link.Remove(0, 7)}";
     }
+
     var urlFromDb = await _externalUrlsService.GetRegisteredUrlAsync(link);
     if (urlFromDb is null)
     {
       _logger.LogWarning("External link not registered {link}", link.Replace(Environment.NewLine, ""));
-      return NotFound();
+      if (link.StartsWith("https://github.com/GordonBeeming/GordonBeemingCom", StringComparison.OrdinalIgnoreCase))
+      {
+        await _externalUrlsService.AddAcceptedExternalUrlAsync(link);
+        urlFromDb = await _externalUrlsService.GetRegisteredUrlAsync(link);
+      }
+      if (urlFromDb is null)
+      {
+        return NotFound();
+      }
     }
+
     _logger.LogInformation("External link clicked {urlFromDb}", urlFromDb);
 
     // later we could track this and potentially handle redirects here instead of updating content
@@ -50,29 +62,16 @@ public sealed class ExternalController : Controller
 
   const string ContributionId = "DT-MVP-5000879";
 
-  static readonly string[] _docsAndLearnChampionDomains =  {
-    "docs.microsoft.com",
-    "learn.microsoft.com",
-    "social.technet.microsoft.com",
-    "azure.microsoft.com",
-    "techcommunity.microsoft.com",
-    "social.msdn.microsoft.com",
-    "devblogs.microsoft.com",
-    "developer.microsoft.com",
-    "channel9.msdn.com",
-    "gallery.technet.microsoft.com",
-    "cloudblogs.microsoft.com",
-    "technet.microsoft.com",
-    "docs.azure.cn",
-    "www.azure.cn",
-    "msdn.microsoft.com",
-    "blogs.msdn.microsoft.com",
-    "blogs.technet.microsoft.com",
+  static readonly string[] _docsAndLearnChampionDomains =
+  {
+    "docs.microsoft.com", "learn.microsoft.com", "social.technet.microsoft.com", "azure.microsoft.com",
+    "techcommunity.microsoft.com", "social.msdn.microsoft.com", "devblogs.microsoft.com", "developer.microsoft.com",
+    "channel9.msdn.com", "gallery.technet.microsoft.com", "cloudblogs.microsoft.com", "technet.microsoft.com",
+    "docs.azure.cn", "www.azure.cn", "msdn.microsoft.com", "blogs.msdn.microsoft.com", "blogs.technet.microsoft.com",
     "microsoft.com/handsonlabs",
 
     // added from https://github.com/mjisaak/skilling-champion-extension/blob/main/src/main.js
-    "csc.docs.microsoft.com",
-    "code.visualstudio.com",
+    "csc.docs.microsoft.com", "code.visualstudio.com",
   };
 
   /// <summary>
@@ -87,11 +86,15 @@ public sealed class ExternalController : Controller
     {
       Uri linkUri = new Uri(link, UriKind.Absolute);
 
-      bool match = _docsAndLearnChampionDomains.Select(domain => new Uri("https://" + domain, UriKind.Absolute)).Any(y => string.Equals(linkUri.Host, y.Host, StringComparison.OrdinalIgnoreCase) && linkUri.AbsolutePath.StartsWith(y.AbsolutePath, StringComparison.OrdinalIgnoreCase));
+      bool match = _docsAndLearnChampionDomains.Select(domain => new Uri("https://" + domain, UriKind.Absolute)).Any(
+        y => string.Equals(linkUri.Host, y.Host, StringComparison.OrdinalIgnoreCase) &&
+             linkUri.AbsolutePath.StartsWith(y.AbsolutePath, StringComparison.OrdinalIgnoreCase));
 
       if (match)
       {
-        linkUri = linkUri.Query?.Length > 0 ? new Uri(linkUri.GetLeftPart(UriPartial.Query) + $"&WT.mc_id={ContributionId}{linkUri.Fragment}") : new Uri(linkUri.GetLeftPart(UriPartial.Path) + $"?WT.mc_id={ContributionId}{linkUri.Fragment}");
+        linkUri = linkUri.Query?.Length > 0
+          ? new Uri(linkUri.GetLeftPart(UriPartial.Query) + $"&WT.mc_id={ContributionId}{linkUri.Fragment}")
+          : new Uri(linkUri.GetLeftPart(UriPartial.Path) + $"?WT.mc_id={ContributionId}{linkUri.Fragment}");
         link = linkUri.AbsoluteUri;
       }
 
@@ -100,6 +103,7 @@ public sealed class ExternalController : Controller
       link = Regex.Replace(link, pattern, replacement);
     }
     catch (UriFormatException) { }
+
     return link;
   }
 }

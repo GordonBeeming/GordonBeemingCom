@@ -9,15 +9,23 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "⬆️ nuget"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "⬆️ github-actions"
   - package-ecosystem: "terraform"
     directory: "/infrastructure/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "⬆️ terraform"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "⬆️ npm"

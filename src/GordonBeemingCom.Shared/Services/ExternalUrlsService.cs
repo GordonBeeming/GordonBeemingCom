@@ -19,7 +19,7 @@ public sealed class ExternalUrlsService : IExternalUrlsService
 {
   private readonly HashHelper _hashHelper;
   private readonly AppDbContext _context;
-  private static readonly ConcurrentBag<string> _urlCache = new();
+  private static readonly ConcurrentDictionary<string, string> _urlCache = new();
 
   public ExternalUrlsService(HashHelper hashHelper, AppDbContext context)
   {
@@ -34,38 +34,41 @@ public sealed class ExternalUrlsService : IExternalUrlsService
     {
       return;
     }
-    if (_urlCache.Contains(url))
+
+    var urlHash = await _hashHelper.GetHashOfString(url, HashHelper.Algorithms.SHA1);
+    if (_urlCache.ContainsKey(urlHash))
     {
       return;
     }
-    var urlHash = await _hashHelper.GetHashOfString(url, HashHelper.Algorithms.SHA1);
-    var urlFromDb =await GetUrlForHashAsync(urlHash);
+
+    var urlFromDb = await GetUrlForHashAsync(urlHash);
     if (urlFromDb is not null)
     {
-      _urlCache.Add(urlFromDb);
+      _urlCache.AddOrUpdate(urlHash, urlFromDb, (key, oldValue) => urlFromDb);
       return;
     }
-    var acceptedExternalUrl = new AcceptedExternalUrls
-    {
-      UrlHash = urlHash,
-      Url = url,
-    };
+
+    var acceptedExternalUrl = new AcceptedExternalUrls { UrlHash = urlHash, Url = url, };
     _context.AcceptedExternalUrls.Add(acceptedExternalUrl);
-    _urlCache.Add(url);
+    _urlCache.AddOrUpdate(acceptedExternalUrl.UrlHash, acceptedExternalUrl.Url,
+      (key, oldValue) => acceptedExternalUrl.Url);
   }
 
   public async Task<string?> GetRegisteredUrlAsync(string url)
   {
-    if (_urlCache.Contains(url))
-    {
-      return url;
-    }
     var urlHash = await _hashHelper.GetHashOfString(url, HashHelper.Algorithms.SHA1);
+
+    if (_urlCache.TryGetValue(urlHash, out var cachedUrl))
+    {
+      return cachedUrl;
+    }
+
     var urlFromDb = await GetUrlForHashAsync(urlHash);
     if (urlFromDb is not null)
     {
-      _urlCache.Add(urlFromDb);
+      _urlCache.AddOrUpdate(urlHash, urlFromDb, (key, oldValue) => urlFromDb);
     }
+
     return urlFromDb;
   }
 
@@ -100,6 +103,6 @@ public sealed class ExternalUrlsService : IExternalUrlsService
 
   public Task<List<string>> GetUrlsCacheAsync()
   {
-    return Task.FromResult(_urlCache.ToList());
+    return Task.FromResult(_urlCache.Select(o => o.Value).ToList());
   }
 }

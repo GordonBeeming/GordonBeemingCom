@@ -35,16 +35,17 @@ public sealed class ExternalController : Controller
     {
       link = $"https://{link.Remove(0,7)}";
     }
-    if (!(await _externalUrlsService.IsUrlRegisteredAsync(link)))
+    var urlFromDb = await _externalUrlsService.GetRegisteredUrlAsync(link);
+    if (urlFromDb is null)
     {
       _logger.LogWarning("External link not registered {link}", link.Replace(Environment.NewLine, ""));
       return NotFound();
     }
-    _logger.LogInformation("External link clicked {link}", link.Replace(Environment.NewLine, ""));
+    _logger.LogInformation("External link clicked {urlFromDb}", urlFromDb);
 
     // later we could track this and potentially handle redirects here instead of updating content
-    link = AttachMvpContributorId(link);
-    return Redirect(link);
+    urlFromDb = AttachMvpContributorId(urlFromDb);
+    return Redirect(urlFromDb);
   }
 
   const string ContributionId = "DT-MVP-5000879";

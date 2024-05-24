@@ -56,16 +56,17 @@
   private List<string> validationIssues = new();
   private List<string> discoveredLinks = new();
   
-  private HtmlContentBlockContext? htmlContext;
+  private HtmlContentBlockContext htmlContext = new HtmlContentBlockContext();
 
-  protected override async Task OnInitializedAsync()
+  protected override Task OnInitializedAsync()
   {
     if (httpContextAccessor?.HttpContext?.User?.Identity?.Name?.Equals(configuration["Blog:Username"]) == false)
     {
-      return;
+      return Task.CompletedTask;
     }
 
     htmlContext = new();
+    return Task.CompletedTask;
   }
 
   private async Task ScanAllPosts()
@@ -85,15 +86,7 @@
         ScanCount++;
         scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
         StateHasChanged();
-        HtmlContentBlockContext htmlContext;
-        if (contentBlock.ContextInfo == null)
-        {
-          htmlContext = new HtmlContentBlockContext();
-        }
-        else
-        {
-          htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
-        }
+        htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
 
         await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
         await externalUrlsService.CommitChangesAsync();
@@ -124,6 +117,10 @@
 
   private async Task ScanHtmlForUrls()
   {
+    if (htmlContext is null)
+    {
+      return;
+    }
     try
     {
       scanHtmlButtonText = "Scanning...";

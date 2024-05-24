@@ -58,14 +58,15 @@
   
   private HtmlContentBlockContext? htmlContext;
 
-  protected override async Task OnInitializedAsync()
+  protected override Task OnInitializedAsync()
   {
     if (httpContextAccessor?.HttpContext?.User?.Identity?.Name?.Equals(configuration["Blog:Username"]) == false)
     {
-      return;
+      return Task.CompletedTask;
     }
 
     htmlContext = new();
+    return Task.CompletedTask;
   }
 
   private async Task ScanAllPosts()

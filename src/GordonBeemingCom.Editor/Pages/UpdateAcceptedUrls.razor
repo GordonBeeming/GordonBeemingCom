@@ -56,7 +56,7 @@
   private List<string> validationIssues = new();
   private List<string> discoveredLinks = new();
   
-  private HtmlContentBlockContext? htmlContext;
+  private HtmlContentBlockContext htmlContext = new HtmlContentBlockContext();
 
   protected override Task OnInitializedAsync()
   {
@@ -86,15 +86,7 @@
         ScanCount++;
         scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
         StateHasChanged();
-        HtmlContentBlockContext htmlContext;
-        if (contentBlock.ContextInfo == null)
-        {
-          htmlContext = new HtmlContentBlockContext();
-        }
-        else
-        {
-          htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
-        }
+        htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
 
         await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
         await externalUrlsService.CommitChangesAsync();
@@ -125,6 +117,10 @@
 
   private async Task ScanHtmlForUrls()
   {
+    if (htmlContext is null)
+    {
+      return;
+    }
     try
     {
       scanHtmlButtonText = "Scanning...";

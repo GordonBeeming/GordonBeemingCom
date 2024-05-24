@@ -9,7 +9,7 @@ namespace GordonBeemingCom.Shared.Services;
 public interface IExternalUrlsService
 {
   Task AddAcceptedExternalUrlAsync(string url);
-  Task<bool> IsUrlRegisteredAsync(string url);
+  Task<string?> GetRegisteredUrlAsync(string url);
   Task RegisterUrlsAsync(string html);
   Task CommitChangesAsync();
   Task<List<string>> GetUrlsCacheAsync();
@@ -39,9 +39,10 @@ public sealed class ExternalUrlsService : IExternalUrlsService
       return;
     }
     var urlHash = await _hashHelper.GetHashOfString(url, HashHelper.Algorithms.SHA1);
-    if (await IsUrlHashRegisteredAsync(urlHash))
+    var urlFromDb =await GetUrlForHashAsync(urlHash);
+    if (urlFromDb is not null)
     {
-      _urlCache.Add(url);
+      _urlCache.Add(urlFromDb);
       return;
     }
     var acceptedExternalUrl = new AcceptedExternalUrls
@@ -53,24 +54,24 @@ public sealed class ExternalUrlsService : IExternalUrlsService
     _urlCache.Add(url);
   }
 
-  public async Task<bool> IsUrlRegisteredAsync(string url)
+  public async Task<string?> GetRegisteredUrlAsync(string url)
   {
     if (_urlCache.Contains(url))
     {
-      return true;
+      return url;
     }
     var urlHash = await _hashHelper.GetHashOfString(url, HashHelper.Algorithms.SHA1);
-    var exists = await IsUrlHashRegisteredAsync(urlHash);
-    if (exists)
+    var urlFromDb = await GetUrlForHashAsync(urlHash);
+    if (urlFromDb is not null)
     {
-      _urlCache.Add(url);
+      _urlCache.Add(urlFromDb);
     }
-    return exists;
+    return urlFromDb;
   }
 
-  private async Task<bool> IsUrlHashRegisteredAsync(string urlHash)
+  private async Task<string?> GetUrlForHashAsync(string urlHash)
   {
-    return await _context.AcceptedExternalUrls.AnyAsync(x => x.UrlHash == urlHash);
+    return (await _context.AcceptedExternalUrls.FirstOrDefaultAsync(x => x.UrlHash == urlHash))?.Url;
   }
 
   public async Task RegisterUrlsAsync(string html)

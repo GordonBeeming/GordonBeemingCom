@@ -8,6 +8,7 @@
 @inject IFileService fileService
 @inject IHttpContextAccessor httpContextAccessor
 @inject IExternalUrlsService externalUrlsService
+@inject TwitterService twitterService
 @attribute [Authorize]
 
 <PageTitle>@blogName | Posts</PageTitle>
@@ -75,6 +76,10 @@ else
       <div class="form-group col-lg-4 col-sm-12">
         <InputFile id="heroImage" class="form-control" OnChange="OnHeroImageSelected" />
       </div>
+      <div class="form-group col-lg-12 col-sm-12">
+        <label for="tweetPost">Tweet this post:</label>
+        <InputCheckbox id="tweetPost" @bind-Value="@shouldTweet" />
+      </div>
     </div>
 
     @if (validationIssues.Count > 0)
@@ -139,6 +144,7 @@ else
 
   private bool formSumitting = false;
   private bool fileUploadTooBig = false;
+  private bool shouldTweet = false;
 
   protected override async Task OnInitializedAsync()
   {
@@ -267,6 +273,14 @@ else
           }
           await externalUrlsService.RegisterUrlsAsync(htmlContext.Html);
           await externalUrlsService.CommitChangesAsync();
+        }
+      }
+      if (shouldTweet && !string.IsNullOrWhiteSpace(blog.BlogSlug))
+      {
+        var tweetResult = await twitterService.TweetBlogPostAsync($"New blog post: {blog.BlogTitle}", $"{configuration["WebSiteUrl"]}/blog/{blog.BlogSlug}");
+        if (!tweetResult)
+        {
+            Console.WriteLine("Failed to tweet the blog post.");
         }
       }
       await Task.Delay(1000);

@@ -14,6 +14,7 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 FROM mcr.microsoft.com/dotnet/sdk:9.0-preview-alpine AS build
 WORKDIR /src
 COPY ["global.json", "GordonBeemingCom.Editor/global.json"]
+COPY ["Directory.*.props", "./"]
 COPY ["src/GordonBeemingCom.Shared/GordonBeemingCom.Shared.csproj", "GordonBeemingCom.Shared/"]
 COPY ["src/GordonBeemingCom.Database/GordonBeemingCom.Database.csproj", "GordonBeemingCom.Database/"]
 COPY ["src/GordonBeemingCom.Editor/GordonBeemingCom.Editor.csproj", "GordonBeemingCom.Editor/"]

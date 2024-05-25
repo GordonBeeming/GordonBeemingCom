@@ -43,7 +43,8 @@ public sealed class ExternalController : Controller
     {
       _logger.LogWarning("External link not registered {link}", link.Replace(Environment.NewLine, ""));
       if (link.StartsWith("https://github.com/GordonBeeming/GordonBeemingCom/commit/", StringComparison.OrdinalIgnoreCase) ||
-          link.StartsWith("https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch", StringComparison.OrdinalIgnoreCase))
+          link.StartsWith("https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch", StringComparison.OrdinalIgnoreCase) ||
+          link.StartsWith("https://dotnet.microsoft.com/en-us/download/dotnet/", StringComparison.OrdinalIgnoreCase))
       {
         await _externalUrlsService.AddAcceptedExternalUrlAsync(link);
         urlFromDb = await _externalUrlsService.GetRegisteredUrlAsync(link);

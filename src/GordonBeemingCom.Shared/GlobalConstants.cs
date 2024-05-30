@@ -7,6 +7,7 @@ public static class GlobalConstants
   public const string HomeControllerName = "Home";
   public const string BlogControllerName = "Blog";
   public const string ViewPostControllerName = "ViewPost";
+  public const string TagPostsControllerName = "TagPosts";
 
 
   public const string IndexAction = "Index";

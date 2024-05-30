@@ -50,7 +50,7 @@ public sealed class TagPostsController : BaseController
     }
     viewModel.Title = tag.TagName;
     viewModel.SubTitle = string.Empty;
-    viewModel.CanonicalUrl = Url.Action(IndexAction, ViewPostControllerName, new
+    viewModel.CanonicalUrl = Url.Action(IndexAction, TagPostsControllerName, new
     {
       slug = tag.TagSlug,
     }, HttpContext.Request.Scheme)!;

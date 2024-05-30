@@ -48,6 +48,9 @@ public sealed class ViewPostController : BaseController
   [HttpGet("blogs/{year}/{month}/{slug}")]
   public IActionResult RedirectPathIndex(int year, int month, string slug) => RedirectToActionPermanent(nameof(Index), new { slug });
 
+  [HttpGet("/blog/post/{postSlug}")]
+  public IActionResult RedirectPathPostsArticle(string postSlug) => RedirectToActionPermanent(IndexAction, ViewPostControllerName, new { slug=postSlug });
+
   [HttpGet("{slug}")]
   public async Task<IActionResult> Index(string slug)
   {

@@ -44,7 +44,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
   options.UseLoggerFactory(debugLoggerFactory);
   options.EnableSensitiveDataLogging(true);
 #endif
-});
+}, ServiceLifetime.Transient);
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 

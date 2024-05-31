@@ -2,12 +2,13 @@
 @inject DeploymentInfo DeploymentInfo
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0FD111Z7V"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-W0FD111Z7V');
@@ -39,12 +40,15 @@
   <meta name="theme-color" content="#ffffff">
   <meta name="application-name" content="Gordon Beeming" />
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   @await RenderSectionAsync("Head", required: false)
 
   @Html.Raw(JavaScriptSnippet.FullScript)
-  
+
 </head>
+
 <body>
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg" id="mainNav">
@@ -53,7 +57,8 @@
       {
         <a class="navbar-brand" asp-controller="@(HomeControllerName)" asp-action="@(IndexAction)">Gordon Beeming</a>
       }
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
         <i class="fas fa-bars"></i>
       </button>
@@ -61,12 +66,17 @@
         <ul class="navbar-nav align-items-center ms-auto py-4 py-lg-0">
           <li class="nav-item">
             <span class="nav-link px-lg-3 py-3 py-lg-4">
-              <div class="g-ytsubscribe" data-channelid="UCMtMOwghQqwKFz3Xx1rd18Q" data-layout="default" data-theme="dark" data-count="hidden"></div>
+              <div class="g-ytsubscribe" data-channelid="UCMtMOwghQqwKFz3Xx1rd18Q" data-layout="default"
+                data-theme="dark" data-count="hidden"></div>
             </span>
           </li>
-          <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="@(BlogArea)" asp-controller="Home" asp-action="Index">Blog</a></li>
-          <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="https://feedly.com/i/subscription/feed/@(ProductionBlogUrl)rss-full" target="_blank" rel="noopener">RSS</a></li>
-          <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Index">About</a></li>
+          <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="@(BlogArea)" asp-controller="Home"
+              asp-action="Index">Blog</a></li>
+          <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
+              href="https://feedly.com/i/subscription/feed/@(ProductionBlogUrl)rss-full" target="_blank"
+              rel="noopener">RSS</a></li>
+          <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home"
+              asp-action="Index">About</a></li>
         </ul>
       </div>
     </div>
@@ -78,44 +88,63 @@
     <div class="container px-4 px-lg-5">
       <div class="row footer-socials">
         <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2">
-          <a title='LinkedIn (gordon-beeming)' target="_blank" href="https://www.linkedin.com/in/gordon-beeming" rel="nofollow"><img src="~/images/linkedin.svg" border="0" /></a>
+          <a title='LinkedIn (gordon-beeming)' target="_blank" href="https://www.linkedin.com/in/gordon-beeming"
+            rel="nofollow"><img src="~/images/linkedin.svg" border="0" /></a>
         </div>
         <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2">
-          <a title='X (GordonBeeming)' target="_blank" href="https://twitter.com/GordonBeeming" rel="nofollow"><img src="~/images/X.svg" border="0" /></a>
+          <a title='X (GordonBeeming)' target="_blank" href="https://twitter.com/GordonBeeming" rel="nofollow"><img
+              src="~/images/X.svg" border="0" /></a>
         </div>
         <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2">
-          <a title='GitHub (gordonbeeming)' target="_blank" href="https://github.com/gordonbeeming" rel="nofollow"><img src="~/images/github-mark.svg" border="0" /></a>
+          <a title='GitHub (gordonbeeming)' target="_blank" href="https://github.com/gordonbeeming" rel="nofollow"><img
+              src="~/images/github-mark.svg" border="0" /></a>
         </div>
         <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2">
-          <a title='youtube' target="_blank" href="https://www.youtube.com/@@gordonbeeming" rel="nofollow"><img src="~/images/youtube.svg" border="0" /></a>
+          <a title='youtube' target="_blank" href="https://www.youtube.com/@@gordonbeeming" rel="nofollow"><img
+              src="~/images/youtube.svg" border="0" /></a>
         </div>
         <div class="col-xl-2 col-lg-4 col-md-4 col-sm-4">
-          <a title='Microsoft MVP (Azure DevOps &AMP; GitHub)' target="_blank" href="https://mvp.microsoft.com/en-us/PublicProfile/5000879" rel="nofollow"><img src="~/images/mvp.jpg" border="0" /></a>
+          <a title='Microsoft MVP (Azure DevOps &AMP; GitHub)' target="_blank"
+            href="https://mvp.microsoft.com/en-us/PublicProfile/5000879" rel="nofollow"><img src="~/images/mvp.jpg"
+              border="0" /></a>
         </div>
         <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2">
-          <a title='Microsoft MCP' target="_blank" href="https://learn.microsoft.com/en-us/users/gordonbeeming/transcript/vpp5bxoop636z0v?source=docs" rel="nofollow"><img src="~/images/mcp.jpg" border="0" /></a>
+          <a title='Microsoft MCP' target="_blank"
+            href="https://learn.microsoft.com/en-us/users/gordonbeeming/transcript/vpp5bxoop636z0v?source=docs"
+            rel="nofollow"><img src="~/images/mcp.jpg" border="0" /></a>
         </div>
         <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2">
-          <a title='stackoverflow' target="_blank" href="https://stackoverflow.com/story/gordon-beeming" rel="nofollow"><img src="~/images/stackoverflow.svg" border="0" /></a>
+          <a title='stackoverflow' target="_blank" href="https://stackoverflow.com/users/579830/gordon-beeming"
+            rel="nofollow"><img src="~/images/stackoverflow.svg" border="0" /></a>
         </div>
         <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2">
-          <a title='Strava (gordonbeeming)' target="_blank" href="https://www.strava.com/athletes/gordonbeeming" rel="nofollow"><img src="~/images/strava.svg" border="0" /></a>
+          <a title='Strava (gordonbeeming)' target="_blank" href="https://www.strava.com/athletes/gordonbeeming"
+            rel="nofollow"><img src="~/images/strava.svg" border="0" /></a>
         </div>
         <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2">
-          <a title='Unsplash (@@gordonbeeming)' target="_blank" href="https://unsplash.com/@@gordonbeeming" rel="nofollow"><img src="~/images/Unsplash.svg" border="0" /></a>
+          <a title='Unsplash (@@gordonbeeming)' target="_blank" href="https://unsplash.com/@@gordonbeeming"
+            rel="nofollow"><img src="~/images/Unsplash.svg" border="0" /></a>
         </div>
         <div class="col-xl-2 col-lg-4 col-md-4 col-sm-4">
-          <a title='SSW Solution Architect' target="_blank" href="https://ssw.com.au/people/gordon-beeming" rel="nofollow"><img src="~/images/ssw-logo-light.png" border="0" /></a>
+          <a title='SSW Solution Architect' target="_blank" href="https://ssw.com.au/people/gordon-beeming"
+            rel="nofollow"><img src="~/images/ssw-logo-light.png" border="0" /></a>
         </div>
       </div>
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
           <div class="small text-center text-muted fst-italic">
-            &copy; 2013 - @(DateTime.UtcNow.Year) - Gordon Beeming - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">Some Rights Reserved</a>
+            &copy; 2013 - @(DateTime.UtcNow.Year) - Gordon Beeming - <a asp-area="" asp-controller="Home"
+              asp-action="Privacy">Privacy</a> - <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"
+              rel="external nofollow">Some Rights Reserved</a>
             <br />
             <strong>Disclaimer</strong>: Opinions are my own and not that of my company or anyone I engage with<br />
             <span>
-              Powered by ASP.NET <a href="@(DeploymentInfo.DotNetLink)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.AspNetVersion)</a> | Branch: <a href="https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch%3A@(DeploymentInfo.BranchName)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.BranchName)</a> | Commit: <a href="https://github.com/GordonBeeming/GordonBeemingCom/commit/@(DeploymentInfo.CommitHash)" target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.CommitHashText)</a>.
+              Powered by ASP.NET <a href="@(DeploymentInfo.DotNetLink)" target="_blank"
+                rel="nofollow noreferrer">@(DeploymentInfo.AspNetVersion)</a> | Branch: <a
+                href="https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch%3A@(DeploymentInfo.BranchName)"
+                target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.BranchName)</a> | Commit: <a
+                href="https://github.com/GordonBeeming/GordonBeemingCom/commit/@(DeploymentInfo.CommitHash)"
+                target="_blank" rel="nofollow noreferrer">@(DeploymentInfo.CommitHashText)</a>.
             </span>
           </div>
         </div>
@@ -123,15 +152,23 @@
     </div>
   </footer>
   <!-- Bootstrap core JS-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"
+    integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="~/js/scripts.js" asp-append-version="true"></script>
   @await RenderSectionAsync("Scripts", required: false)
   <script src="https://apis.google.com/js/platform.js"></script>
   <script src="~/js/site.js" asp-append-version="true"></script>
   <!-- Font Awesome icons (free version)-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
+    integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Google fonts-->
-  <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet"
+    type="text/css" />
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+    rel="stylesheet" type="text/css" />
 </body>
+
 </html>

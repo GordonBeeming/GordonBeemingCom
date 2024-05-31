@@ -7,7 +7,7 @@ public partial class AppDbContext : DbContext
 {
 #pragma warning disable CS8618
   public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
+    : base(options)
   {
   }
 
@@ -30,6 +30,7 @@ public partial class AppDbContext : DbContext
     modelBuilder.Entity<AcceptedExternalUrls>(entity =>
     {
       entity.Property(e => e.DateTimeStamp).HasDefaultValueSql("(sysutcdatetime())");
+      entity.Property(e => e.LastCheckedDate).HasDefaultValue(new DateTime(2000, 1, 1));
 
       entity.HasQueryFilter(b => EF.Property<DateTime?>(b, "CancelledDate") == null);
     });
@@ -40,8 +41,8 @@ public partial class AppDbContext : DbContext
       entity.Property(e => e.DateTimeStamp).HasDefaultValueSql("(sysutcdatetime())");
 
       entity.HasOne(d => d.Blog).WithMany(p => p.BlogContentBlocks)
-              .OnDelete(DeleteBehavior.ClientSetNull)
-              .HasConstraintName("FK_BlogContentBlocks_Blogs");
+        .OnDelete(DeleteBehavior.ClientSetNull)
+        .HasConstraintName("FK_BlogContentBlocks_Blogs");
 
       entity.HasQueryFilter(b => EF.Property<DateTime?>(b, "CancelledDate") == null);
     });
@@ -51,12 +52,12 @@ public partial class AppDbContext : DbContext
       entity.Property(e => e.DateTimeStamp).HasDefaultValueSql("(sysutcdatetime())");
 
       entity.HasOne(d => d.Blog).WithMany(p => p.BlogTags)
-              .OnDelete(DeleteBehavior.ClientSetNull)
-              .HasConstraintName("FK_BlogTags_Blogs");
+        .OnDelete(DeleteBehavior.ClientSetNull)
+        .HasConstraintName("FK_BlogTags_Blogs");
 
       entity.HasOne(d => d.Tag).WithMany(p => p.BlogTags)
-              .OnDelete(DeleteBehavior.ClientSetNull)
-              .HasConstraintName("FK_BlogTags_Tags");
+        .OnDelete(DeleteBehavior.ClientSetNull)
+        .HasConstraintName("FK_BlogTags_Tags");
     });
 
     modelBuilder.Entity<Blogs>(entity =>
@@ -65,8 +66,8 @@ public partial class AppDbContext : DbContext
       entity.Property(e => e.DateTimeStamp).HasDefaultValueSql("(sysutcdatetime())");
 
       entity.HasOne(d => d.Category).WithMany(p => p.Blogs)
-              .OnDelete(DeleteBehavior.ClientSetNull)
-              .HasConstraintName("FK_Blogs_Categories");
+        .OnDelete(DeleteBehavior.ClientSetNull)
+        .HasConstraintName("FK_Blogs_Categories");
 
       entity.HasQueryFilter(b => EF.Property<DateTime?>(b, "CancelledDate") == null);
     });
@@ -77,8 +78,8 @@ public partial class AppDbContext : DbContext
       entity.Property(e => e.DateTimeStamp).HasDefaultValueSql("(getutcdate())");
 
       entity.HasOne(d => d.Blogs).WithMany(p => p.BlogsRedirectUrl)
-              .OnDelete(DeleteBehavior.ClientSetNull)
-              .HasConstraintName("FK_BlogsRedirectUrl_Blogs");
+        .OnDelete(DeleteBehavior.ClientSetNull)
+        .HasConstraintName("FK_BlogsRedirectUrl_Blogs");
     });
 
     modelBuilder.Entity<Categories>(entity =>

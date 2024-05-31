@@ -2,10 +2,12 @@
 using GordonBeemingCom.Database.Tables;
 using GordonBeemingCom.Editor.Areas.Identity;
 using GordonBeemingCom.Editor.Data;
+using GordonBeemingCom.Editor.Endpoints;
 using GordonBeemingCom.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -53,6 +55,20 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
   })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddAntiforgery(o =>
+{
+  o.HeaderName = "XSRF-TOKEN";
+  o.Cookie.HttpOnly = true;
+  o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+});
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+  options.MinimumSameSitePolicy = SameSiteMode.Strict;
+  options.HttpOnly = HttpOnlyPolicy.Always;
+  options.Secure = CookieSecurePolicy.Always;
+});
+
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
   options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -76,6 +92,8 @@ builder.Services.AddSingleton<HashHelper>();
 builder.Services.AddSingleton<DeploymentInfo>();
 builder.Services.AddScoped<IExternalUrlsService, ExternalUrlsService>();
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 var serviceScopeFactory = app.Services.GetService<IServiceScopeFactory>();
@@ -87,9 +105,9 @@ using (var scope = serviceScopeFactory!.CreateScope())
   {
     appDbContext.Categories.Add(new Categories() { Id = Guid.NewGuid(), CategoryName = "Developer", CategorySlug = "developer", DisplayIndex = 1, HexColour = "00FF00",});
     appDbContext.SaveChanges();
-
   }
 }
+app.RegisterUpdateDeadLinksEndpoint();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -110,6 +128,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 app.MapBlazorHub();

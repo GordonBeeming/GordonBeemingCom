@@ -58,8 +58,8 @@ public sealed class ExternalController : Controller
     _logger.LogInformation("External link clicked {urlFromDb}", urlFromDb);
 
     // later we could track this and potentially handle redirects here instead of updating content
-    urlFromDb = AttachMvpContributorId(urlFromDb);
-    return Redirect(urlFromDb);
+    var url = AttachMvpContributorId(urlFromDb.Url);
+    return Redirect(url);
   }
 
   const string ContributionId = "DT-MVP-5000879";

@@ -9,11 +9,11 @@
 <PageTitle>Accepted Urls</PageTitle>
 
 <h1>Accepted Urls</h1>
-  
+
 <button type="submit" class="btn btn-primary" @onclick="ScanAllPosts">@(scanButtonText)</button>
 
 <EditForm Model="htmlContext">
-    
+
   <div class="row">
     <div class="form-group col-lg-12 col-sm-12">
       <label for="htmlInput">Html:</label>
@@ -55,7 +55,7 @@
   private int ScanCount { get; set; }
   private List<string> validationIssues = new();
   private List<string> discoveredLinks = new();
-  
+
   private HtmlContentBlockContext htmlContext = new HtmlContentBlockContext();
 
   protected override Task OnInitializedAsync()
@@ -110,17 +110,20 @@
   private async Task LoadDiscoveredLinks()
   {
     discoveredLinks = (await externalUrlsService.GetUrlsCacheAsync())
-      .OrderBy(o=>o)
+      .OrderBy(o => o.Url)
+      .Select(o => o.Url)
       .ToList();
     StateHasChanged();
   }
 
   private async Task ScanHtmlForUrls()
   {
+    // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
     if (htmlContext is null)
     {
       return;
     }
+
     try
     {
       scanHtmlButtonText = "Scanning...";
@@ -141,4 +144,5 @@
       }
     }
   }
+
 }

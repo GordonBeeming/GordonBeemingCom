@@ -2,11 +2,13 @@
 using System.Globalization;
 using GordonBeemingCom.Data;
 using GordonBeemingCom.Services;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Debug;
 using Microsoft.Net.Http.Headers;
+using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 var culture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
 var cultureNumberFormat = (NumberFormatInfo)culture.NumberFormat.Clone();
@@ -45,6 +47,20 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddAntiforgery(o =>
+{
+  o.HeaderName = "XSRF-TOKEN";
+  o.Cookie.HttpOnly = true;
+  o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+});
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+  options.MinimumSameSitePolicy = SameSiteMode.Strict;
+  options.HttpOnly = HttpOnlyPolicy.Always;
+  options.Secure = CookieSecurePolicy.Always;
+});
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {

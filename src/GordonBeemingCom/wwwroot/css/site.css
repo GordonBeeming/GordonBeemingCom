@@ -12,7 +12,7 @@ p a {
 }
 
 .profile-row {
-  border-top: 2px solid #CC4141;
+  border-top: 2px solid #00BBFF;
 }
 
   .profile-row .profile-image {
@@ -32,7 +32,7 @@ p a {
   }
 
 .highlight {
-  color: #CC4141;
+  color: #00BBFF;
 }
 
 .icons-social {
@@ -59,7 +59,7 @@ a.tag-badge {
 }
 
   a.tag-badge:hover {
-    background-color: #CC4141 !important;
+    background-color: #00BBFF !important;
   }
 
 .tag-list {

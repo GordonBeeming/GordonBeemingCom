@@ -15,6 +15,7 @@ public interface IExternalUrlsService
   Task<List<ExternalLinkDetails>> GetUrlsCacheAsync();
   Task<List<ExternalLink>> GetActiveLinks(int? top = null);
   Task UpdateLinkDetails(ExternalLinkDetails externalLinkDetails);
+  Task<ExternalLinkDetails?> GetRegisteredUrlByHashAsync(string hashId);
 }
 
 public sealed class ExternalUrlsService : IExternalUrlsService
@@ -109,6 +110,9 @@ public sealed class ExternalUrlsService : IExternalUrlsService
       UrlHash = link.UrlHash,
       HttpStatusCode = link.HttpStatusCode,
       IsSuccessStatusCode = link.IsSuccessStatusCode,
+      DisableReason = link.DisableReason,
+      FirstUsed = link.DateTimeStamp.Date,
+      LastUsed = link.LastCheckedDate.Date,
     };
   }
 
@@ -180,5 +184,10 @@ public sealed class ExternalUrlsService : IExternalUrlsService
     }
 
     await _context.SaveChangesAsync();
+  }
+
+  public Task<ExternalLinkDetails?> GetRegisteredUrlByHashAsync(string hashId)
+  {
+    return GetUrlForHashAsync(hashId);
   }
 }

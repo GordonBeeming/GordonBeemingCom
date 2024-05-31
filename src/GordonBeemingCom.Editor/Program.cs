@@ -93,6 +93,7 @@ builder.Services.AddSingleton<DeploymentInfo>();
 builder.Services.AddScoped<IExternalUrlsService, ExternalUrlsService>();
 
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

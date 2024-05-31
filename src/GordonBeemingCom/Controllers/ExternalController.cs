@@ -2,11 +2,14 @@
 using System.Text.RegularExpressions;
 using GordonBeemingCom.Areas.Blog.ViewModels;
 using GordonBeemingCom.Data;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 
 namespace GordonBeemingCom.Controllers;
 
+[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+[OutputCache(Duration = 0, NoStore = true)]
 public sealed class ExternalController : Controller
 {
   private readonly ILogger<ExternalController> _logger;
@@ -42,24 +45,54 @@ public sealed class ExternalController : Controller
     if (urlFromDb is null)
     {
       _logger.LogWarning("External link not registered {link}", link.Replace(Environment.NewLine, ""));
-      if (link.StartsWith("https://github.com/GordonBeeming/GordonBeemingCom/commit/", StringComparison.OrdinalIgnoreCase) ||
-          link.StartsWith("https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch", StringComparison.OrdinalIgnoreCase) ||
+      if (link.StartsWith("https://github.com/GordonBeeming/GordonBeemingCom/commit/",
+            StringComparison.OrdinalIgnoreCase) ||
+          link.StartsWith("https://github.com/GordonBeeming/GordonBeemingCom/actions?query=branch",
+            StringComparison.OrdinalIgnoreCase) ||
           link.StartsWith("https://dotnet.microsoft.com/en-us/download/dotnet/", StringComparison.OrdinalIgnoreCase))
       {
         await _externalUrlsService.AddAcceptedExternalUrlAsync(link);
         urlFromDb = await _externalUrlsService.GetRegisteredUrlAsync(link);
       }
+
       if (urlFromDb is null)
       {
         return NotFound();
       }
     }
 
-    _logger.LogInformation("External link clicked {urlFromDb}", urlFromDb);
+    if (urlFromDb.DisableReason?.Length > 0)
+    {
+      _logger.LogWarning("External disabled link clicked {urlFromDb}", urlFromDb.Url);
+      ViewBag.PermUrl = Url.Action(nameof(Hash), ExternalControllerName, new { hashId = urlFromDb.UrlHash, },
+        HttpContext.Request.Scheme)!;
+      return View("Hash", urlFromDb);
+    }
 
+    _logger.LogInformation("External link clicked {urlFromDb}", urlFromDb);
     // later we could track this and potentially handle redirects here instead of updating content
     var url = AttachMvpContributorId(urlFromDb.Url);
     return Redirect(url);
+  }
+
+  [HttpGet("/external/hash/{hashId}")]
+  public async Task<IActionResult> Hash(string? hashId)
+  {
+    if (hashId is null)
+    {
+      return NotFound();
+    }
+
+    var urlFromDb = await _externalUrlsService.GetRegisteredUrlByHashAsync(hashId);
+    if (urlFromDb is null)
+    {
+      return NotFound();
+    }
+
+    ViewBag.PermUrl = Url.Action(nameof(Hash), ExternalControllerName, new { hashId = urlFromDb.UrlHash, },
+      HttpContext.Request.Scheme)!;
+    ViewBag.ArchivesUrl = _httpContextAccessor.HttpContext!.Request.GetEncodedUrl();
+    return View("Hash", urlFromDb);
   }
 
   const string ContributionId = "DT-MVP-5000879";

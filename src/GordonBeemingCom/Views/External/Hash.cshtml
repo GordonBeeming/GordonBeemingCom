@@ -1,0 +1,61 @@
+﻿@model ExternalLinkDetails
+@{
+  Layout = "_PageHeading";
+  ViewData["Title"] = "Broken link";
+  ViewData["HeadingImage"] = "/images/broken-link.jpg";
+  ViewData["Heading"] = "Broken link";
+  ViewData["SubHeading"] = string.Empty;
+}
+
+@section Head {
+  <meta name="robots" content="noindex nofollow"/>
+}
+
+@section SubHeading {
+  <p>So when I added this link, it worked. I promise! But now it's broken. I'm sorry.</p>
+  <p>I can try fix it... <a href="#" onclick="window.location.href='https://x.com/intent/post?url=Hey+%40GordonBeeming%2C+I+found+a+broken+link+on+your+site+@(ViewBag.PermUrl)+Can+you+fix+it%3F'">Tweet me?</a></p>
+  <p>or you can try the <a href="#" onclick="window.location.href='https://archive.org/search?query=@(ViewBag.ArchivesUrl)&sin=WEB'">internet archives</a> for what it last looked like when it last worked. The last information I know of the url is below... maybe it will help.</p>
+  <p>You can also go to the <a asp-controller="Home" asp-action="Index">home page</a> and start a fresh journey from there.</p>
+}
+
+<h3>Details</h3>
+<table class="table table-bordered">
+  <tr>
+    <td>Url</td>
+    <td>
+      @Model.Url
+      <br/>
+      <a href="#" onclick="window.location.href='@(Model.Url)'">try it anyway</a>
+    </td>
+  </tr>
+  <tr>
+    <td>Http Status Code</td>
+    <td>@Model.HttpStatusCode</td>
+  </tr>
+  <tr>
+    <td>Disable Reason</td>
+    <td>@Model.DisableReason</td>
+  </tr>
+  <tr>
+    <td>First used</td>
+    <td>@($"{Model.FirstUsed:dd MMM yyyy}")</td>
+  </tr>
+  <tr>
+    <td>Last used</td>
+    <td>@($"{Model.LastUsed:dd MMM yyyy}")</td>
+  </tr>
+</table>
+<h3>Headers</h3>
+<table id="headers" class="table table-bordered">
+  <tr>
+    <th>Name</th>
+    <th>Value</th>
+  </tr>
+  @foreach (var item in Model.Headers)
+  {
+    <tr>
+      <td>@item.Key</td>
+      <td>@Html.Raw(string.Join("<br/>", item.Value.Select(o => Html.Encode(o))))</td>
+    </tr>
+  }
+</table>

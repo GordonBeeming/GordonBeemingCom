@@ -21,12 +21,12 @@ public static class ExternalUrlsServiceExtensions
 public sealed class UpdateDeadLinks
 {
   public static async Task<IResult> EndPoint(IExternalUrlsService externalUrlsService, ILogger<UpdateDeadLinks> logger,
-    IHttpClientFactory httpClientFactory)
+    IHttpClientFactory httpClientFactory, CancellationToken cancellationToken)
   {
     var httpClient = httpClientFactory.CreateClient("link-checker");
     var activeLinks = await externalUrlsService.GetActiveLinks(100);
     var linksUpdated = 0;
-    foreach (var link in activeLinks)
+    await Parallel.ForEachAsync(activeLinks, cancellationToken, async (link, token) =>
     {
       try
       {
@@ -35,14 +35,12 @@ public sealed class UpdateDeadLinks
         // Some sites... like unsplashed block bots, so we're pretend to be the Googlebot ??... surprisingly this works
         // https://unsplash.com/@gordonbeeming
         request.Headers.UserAgent.Add(new ProductInfoHeaderValue("Googlebot", "1.0"));
-        var response = await httpClient.SendAsync(request);
+        var response = await httpClient.SendAsync(request, token);
 
-        if (response.StatusCode == HttpStatusCode.Forbidden ||
-            response.StatusCode == HttpStatusCode.MethodNotAllowed ||
-            response.StatusCode == HttpStatusCode.TooManyRequests)
+        if (response.StatusCode is HttpStatusCode.Forbidden or HttpStatusCode.MethodNotAllowed or HttpStatusCode.TooManyRequests)
         {
           request = new HttpRequestMessage(HttpMethod.Get, link.Url);
-          response = await httpClient.SendAsync(request);
+          response = await httpClient.SendAsync(request, token);
         }
 
         using var enumerator = response.Headers.GetEnumerator();
@@ -60,8 +58,8 @@ public sealed class UpdateDeadLinks
         logger.LogError(e, "Error updating link [{Hash}] {Link}", link.UrlHash, link.Url);
       }
 
-      linksUpdated++;
-    }
+      Interlocked.Increment(ref linksUpdated);
+    });
 
     return Results.Ok(linksUpdated);
   }

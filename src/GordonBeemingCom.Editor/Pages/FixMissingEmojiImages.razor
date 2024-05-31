@@ -82,18 +82,30 @@
         {
           var emoticon = match.Groups[1].Value;
           var url = match.Groups[2].Value;
+          if (!url.Contains("binaries", StringComparison.OrdinalIgnoreCase))
+          {
+            continue;
+          }
           switch (emoticon)
           {
             case "smile":
-              htmlContext.Html.Replace(url, "https://preview.gordonbeeming.com/images/emoticons/smile.svg");
+              htmlContext.Html = htmlContext.Html.Replace(url, "https://gordonbeeming.com/images/emoticons/smile.svg\" width=\"32");
               changesMade = true;
               break;
             case "smilewithtongueout":
-              htmlContext.Html.Replace(url, "https://preview.gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg");
+              htmlContext.Html = htmlContext.Html.Replace(url, "https://gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg\" width=\"32");
               changesMade = true;
               break;
             case "openmouthedsmile":
-              htmlContext.Html.Replace(url, "https://preview.gordonbeeming.com/images/emoticons/open-mouthed-smile.svg");
+              htmlContext.Html = htmlContext.Html.Replace(url, "https://gordonbeeming.com/images/emoticons/open-mouthed-smile.svg\" width=\"32");
+              changesMade = true;
+              break;
+            case "sadsmile":
+              htmlContext.Html = htmlContext.Html.Replace(url, "https://gordonbeeming.com/images/emoticons/sad.svg\" width=\"32");
+              changesMade = true;
+              break;
+            case "embarrassedsmile":
+              htmlContext.Html = htmlContext.Html.Replace(url, "https://gordonbeeming.com/images/emoticons/embarrassed.svg\" width=\"32");
               changesMade = true;
               break;
               default:
@@ -104,6 +116,7 @@
 
         if (changesMade)
         {
+          contentBlock.ContextInfo = JsonConvert.SerializeObject(htmlContext);
           alteredPosts++;
           await context.SaveChangesAsync();
         }

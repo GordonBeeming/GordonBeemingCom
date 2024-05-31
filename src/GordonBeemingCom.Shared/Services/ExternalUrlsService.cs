@@ -112,7 +112,7 @@ public sealed class ExternalUrlsService : IExternalUrlsService
       IsSuccessStatusCode = link.IsSuccessStatusCode,
       DisableReason = link.DisableReason,
       FirstUsed = link.DateTimeStamp.Date,
-      LastUsed = link.LastCheckedDate.Date,
+      LastUsed = link.LastCheckedDate.Date < link.DateTimeStamp.Date ? link.DateTimeStamp.Date : link.LastCheckedDate.Date,
     };
   }
 

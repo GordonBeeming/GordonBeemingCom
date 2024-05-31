@@ -1,0 +1,126 @@
+﻿@page "/fix-emoji-images"
+@using System.Text.RegularExpressions
+@using BlazorMonaco.Languages
+
+@inject IExternalUrlsService externalUrlsService
+@inject AppDbContext context
+@inject IConfiguration configuration
+@inject IHttpContextAccessor httpContextAccessor
+@attribute [Authorize]
+
+<PageTitle>Fix Emoji Images</PageTitle>
+
+<h1>Fix Emoji Images</h1>
+
+<button type="submit" class="btn btn-primary" @onclick="ScanAllPosts">@(scanButtonText)</button>
+
+@if (validationIssues.Count > 0)
+{
+  <ul class="validation-message">
+    @for (int i = 0; i < validationIssues.Count; i++)
+    {
+      <li>@($"{validationIssues[i]}")</li>
+    }
+  </ul>
+}
+
+@if (discoveredLinks.Count > 0)
+{
+  <h3>Discovered Urls</h3>
+  <ul>
+    @for (int i = 0; i < discoveredLinks.Count; i++)
+    {
+      <li>@($"{discoveredLinks[i]}")</li>
+    }
+  </ul>
+}
+
+@code {
+  private const string scanButtonTextDefault = "Scan existing posts for image images";
+  private string scanButtonText { get; set; } = scanButtonTextDefault;
+  private const string scanHtmlButtonTextDefault = "Scan";
+  private string scanHtmlButtonText { get; set; } = scanHtmlButtonTextDefault;
+  private int ScanCount { get; set; }
+  private List<string> validationIssues = new();
+  private List<string> discoveredLinks = new();
+
+  private HtmlContentBlockContext htmlContext = new HtmlContentBlockContext();
+
+  protected override Task OnInitializedAsync()
+  {
+    if (httpContextAccessor?.HttpContext?.User?.Identity?.Name?.Equals(configuration["Blog:Username"]) == false)
+    {
+      return Task.CompletedTask;
+    }
+
+    htmlContext = new();
+    return Task.CompletedTask;
+  }
+
+  private async Task ScanAllPosts()
+  {
+    try
+    {
+      var blocks = await context.BlogContentBlocks
+        .Where(o => o.BlockType == ContentBlockTypes.Html && o.ContextInfo.Contains("wlEmoticon"))
+        .ToListAsync();
+      ScanCount = 0;
+      scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
+      StateHasChanged();
+      await Task.Delay(1000);
+      var alteredPosts = 0;
+      foreach (var contentBlock in blocks)
+      {
+        ScanCount++;
+        scanButtonText = $"{scanButtonTextDefault} ({ScanCount}/{blocks.Count})";
+        StateHasChanged();
+        htmlContext = JsonConvert.DeserializeObject<HtmlContentBlockContext>(contentBlock.ContextInfo) ?? new HtmlContentBlockContext();
+
+        bool changesMade = false;
+        var matches = RegexHelpers.WlEmoticonPattern().Matches(htmlContext.Html);
+        foreach (Match match in matches)
+        {
+          var emoticon = match.Groups[1].Value;
+          var url = match.Groups[2].Value;
+          switch (emoticon)
+          {
+            case "smile":
+              htmlContext.Html.Replace(url, "https://preview.gordonbeeming.com/images/emoticons/smile.svg");
+              changesMade = true;
+              break;
+            case "smilewithtongueout":
+              htmlContext.Html.Replace(url, "https://preview.gordonbeeming.com/images/emoticons/smile-with-tongue-out.svg");
+              changesMade = true;
+              break;
+            case "openmouthedsmile":
+              htmlContext.Html.Replace(url, "https://preview.gordonbeeming.com/images/emoticons/open-mouthed-smile.svg");
+              changesMade = true;
+              break;
+              default:
+              validationIssues.Add($"Missing wlEmoticon: {emoticon}");
+              break;
+          }
+        }
+
+        if (changesMade)
+        {
+          alteredPosts++;
+          await context.SaveChangesAsync();
+        }
+      }
+
+      ScanCount = 0;
+      scanButtonText = $"{scanButtonTextDefault} (done) - {alteredPosts} posts altered";
+      StateHasChanged();
+    }
+    catch (Exception ex)
+    {
+      validationIssues.Add(ex.Message);
+      if (ex.InnerException != null)
+      {
+        validationIssues.Add(ex.InnerException.Message);
+      }
+    }
+  }
+
+}

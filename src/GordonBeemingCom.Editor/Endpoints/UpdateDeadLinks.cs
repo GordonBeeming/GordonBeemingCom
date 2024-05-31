@@ -29,7 +29,7 @@ public sealed class UpdateDeadLinks
     await Parallel.ForEachAsync(activeLinks, cancellationToken, async (link, token) =>
     {
       // Create a CancellationTokenSource for the timeout
-      using var timeoutTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+      using var timeoutTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
       try
       {
         // Use HEAD request to retrieve headers only

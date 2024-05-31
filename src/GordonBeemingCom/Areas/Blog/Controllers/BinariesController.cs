@@ -20,7 +20,8 @@ public sealed class BinariesController : BaseController
     var file = await _fileService.ReadFile(container, blobName);
     if (file == null)
     {
-      return NotFound();
+      //return NotFound();
+      return RedirectPermanent("https://gordonbeeming.com/404-file.png");
     }
     HttpContext.Response.Headers[HeaderNames.CacheControl] = "public,max-age=31536000";
     return File(file.Binary, file.ContentType, file.FileName);
@@ -34,7 +35,8 @@ public sealed class BinariesController : BaseController
     var file = await _fileService.ReadFile(container, blobName);
     if (file == null)
     {
-      return NotFound();
+      //return NotFound();
+      return RedirectPermanent("https://gordonbeeming.com/404-file.png");
     }
     HttpContext.Response.Headers[HeaderNames.CacheControl] = "public,max-age=31536000";
     return File(file.Binary, file.ContentType);

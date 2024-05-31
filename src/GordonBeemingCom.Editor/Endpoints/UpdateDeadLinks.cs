@@ -20,10 +20,11 @@ public static class ExternalUrlsServiceExtensions
 
 public sealed class UpdateDeadLinks
 {
-  public static async Task<IResult> EndPoint(IExternalUrlsService externalUrlsService, ILogger<UpdateDeadLinks> logger,
+  public static async Task<IResult> EndPoint(IServiceProvider serviceProvider, ILogger<UpdateDeadLinks> logger,
     IHttpClientFactory httpClientFactory, CancellationToken cancellationToken)
   {
     var httpClient = httpClientFactory.CreateClient("link-checker");
+    var externalUrlsService = serviceProvider.GetRequiredService<IExternalUrlsService>();
     var activeLinks = await externalUrlsService.GetActiveLinks(100);
     var linksUpdated = 0;
     await Parallel.ForEachAsync(activeLinks, cancellationToken, async (link, token) =>
@@ -49,7 +50,8 @@ public sealed class UpdateDeadLinks
           response = await httpClient.SendAsync(request, timeoutTokenSource.Token);
         }
         using var enumerator = response.Headers.GetEnumerator();
-        await externalUrlsService.UpdateLinkDetails(new ExternalLinkDetails
+        var localExternalUrlsService = serviceProvider.GetRequiredService<IExternalUrlsService>();
+        await localExternalUrlsService.UpdateLinkDetails(new ExternalLinkDetails
         {
           UrlHash = link.UrlHash,
           Url = link.Url,
@@ -61,7 +63,8 @@ public sealed class UpdateDeadLinks
       catch (OperationCanceledException ex) when (ex.CancellationToken == timeoutTokenSource.Token)
       {
         logger.LogWarning("Request timed out for link [{Hash}] {Link}", link.UrlHash, link.Url);
-        await externalUrlsService.UpdateLinkDetails(new ExternalLinkDetails
+        var localExternalUrlsService = serviceProvider.GetRequiredService<IExternalUrlsService>();
+        await localExternalUrlsService.UpdateLinkDetails(new ExternalLinkDetails
         {
           UrlHash = link.UrlHash,
           Url = link.Url,

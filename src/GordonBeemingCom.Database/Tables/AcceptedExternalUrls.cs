@@ -18,7 +18,7 @@ public partial class AcceptedExternalUrls
 
   public DateTime? CancelledDate { get; set; }
 
-  [StringLength(50)] public string? DisableReason { get; set; }
+  [StringLength(250)] public string? DisableReason { get; set; }
 
   [Required] public required DateTime LastCheckedDate { get; set; }
   [Required] public required int ErrorCount { get; set; }

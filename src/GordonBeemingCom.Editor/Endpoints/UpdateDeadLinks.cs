@@ -24,7 +24,7 @@ public sealed class UpdateDeadLinks
     IHttpClientFactory httpClientFactory, CancellationToken cancellationToken)
   {
     var httpClient = httpClientFactory.CreateClient("link-checker");
-    var activeLinks = await externalUrlsService.GetActiveLinks(50);
+    var activeLinks = await externalUrlsService.GetActiveLinks(25);
     var linksUpdated = 0;
     await Parallel.ForEachAsync(activeLinks, cancellationToken, async (link, token) =>
     {

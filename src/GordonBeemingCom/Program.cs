@@ -48,13 +48,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddAntiforgery(o =>
-{
-  o.HeaderName = "XSRF-TOKEN";
-  o.Cookie.HttpOnly = true;
-  o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-});
-
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
   options.MinimumSameSitePolicy = SameSiteMode.Strict;

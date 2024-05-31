@@ -2,11 +2,11 @@ name: publish
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: ["v*.*.*"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -17,7 +17,6 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -138,21 +137,21 @@ jobs:
         uses: Azure/cli@v2
         with:
           inlineScript: |
-              TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.EDITOR_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
-              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
+            TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.EDITOR_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
+            az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
 
       - name: Deploy Web App to Preview (site)
         uses: Azure/cli@v2
         with:
           inlineScript: |
-              TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.SITE_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
-              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
+            TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.SITE_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
+            az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
 
       - name: Check deployed version endpoint
         shell: pwsh
         run: |
           $tries = 0
-          $maxTries = 12
+          $maxTries = 24
           $apiDeployed = $false
           $returnedVersion = ""
           $expectedCommitHash = $env:COMMIT_HASH
@@ -203,7 +202,6 @@ jobs:
         with:
           inlineScript: |
             az logout
-              
 
   deployLive:
     name: "Deploy to live"
@@ -221,7 +219,7 @@ jobs:
     env:
       API_URL: "https://gordonbeeming.com"
 
-    steps:    
+    steps:
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -240,21 +238,21 @@ jobs:
         uses: Azure/cli@v2
         with:
           inlineScript: |
-              TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.EDITOR_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
-              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
-              
+            TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.EDITOR_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
+            az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.EDITOR_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
+
       - name: Deploy Web App to Live (site)
         uses: Azure/cli@v2
         with:
           inlineScript: |
-              TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.SITE_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
-              az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
+            TAG=$(echo 'https://${{ env.REGISTRY }}/${{ env.SITE_IMAGE_NAME }}:${{ github.sha }}' | tr '[:upper:]' '[:lower:]')
+            az webapp config container set --resource-group ${{ secrets.AZURE_WEBAPP_RG }} --name ${{ secrets.SITE_AZURE_WEBAPP_NAME }} --docker-custom-image-name $TAG
 
       - name: Check deployed version endpoint
         shell: pwsh
         run: |
           $tries = 0
-          $maxTries = 12
+          $maxTries = 24
           $apiDeployed = $false
           $returnedVersion = ""
           $expectedCommitHash = $env:COMMIT_HASH
@@ -305,4 +303,3 @@ jobs:
         with:
           inlineScript: |
             az logout
-              

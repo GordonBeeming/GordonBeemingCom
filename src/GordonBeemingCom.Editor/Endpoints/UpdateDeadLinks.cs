@@ -73,6 +73,20 @@ public sealed class UpdateDeadLinks
           HttpStatusCode = 408,// Request Timeout
         });
       }
+      catch (HttpRequestException ex)
+      {
+        logger.LogWarning("Http Request Exception for link [{Hash}] {Link}", link.UrlHash, link.Url);
+        var localExternalUrlsService = serviceProvider.GetRequiredService<IExternalUrlsService>();
+        await localExternalUrlsService.UpdateLinkDetails(new ExternalLinkDetails
+        {
+          UrlHash = link.UrlHash,
+          Url = link.Url,
+          Headers = [],
+          IsSuccessStatusCode = false,
+          HttpStatusCode = 500,
+          DisableReason = ex.Message,
+        });
+      }
       catch (Exception e)
       {
         logger.LogError(e, "Error updating link [{Hash}] {Link}", link.UrlHash, link.Url);

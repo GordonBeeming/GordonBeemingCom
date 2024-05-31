@@ -173,7 +173,7 @@ public sealed class ExternalUrlsService : IExternalUrlsService
       link.ErrorCount++;
       if (link.ErrorCount >= 5)
       {
-        link.DisableReason = $"HTTP Status Code: {externalLinkDetails.HttpStatusCode}";
+        link.DisableReason = externalLinkDetails.DisableReason ?? $"HTTP Status Code: {externalLinkDetails.HttpStatusCode}";
       }
     }
     else

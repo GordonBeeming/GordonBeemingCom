@@ -1,0 +1,19 @@
+name: Check for dead links
+
+on:
+  schedule:
+    # Run every day at 8pm UTC
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-display-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for dead links once
+        run: |
+          curl --location --request POST 'https://editor.gordonbeeming.com/api/update-dead-links'
+
+      - name: Check for dead links twice
+        run: |
+          curl --location --request POST 'https://editor.gordonbeeming.com/api/update-dead-links'

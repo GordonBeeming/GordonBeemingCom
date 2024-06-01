@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using GordonBeemingCom.Database;
 using GordonBeemingCom.Database.Tables;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GordonBeemingCom.Shared.Services;
 
@@ -22,12 +23,14 @@ public sealed class ExternalUrlsService : IExternalUrlsService
 {
   private readonly HashHelper _hashHelper;
   private readonly AppDbContext _context;
+  private readonly IServiceScopeFactory _serviceScopeFactory;
   private static readonly ConcurrentDictionary<string, ExternalLinkDetails> _urlCache = new();
 
-  public ExternalUrlsService(HashHelper hashHelper, AppDbContext context)
+  public ExternalUrlsService(HashHelper hashHelper, AppDbContext context,IServiceScopeFactory serviceScopeFactory)
   {
     _hashHelper = hashHelper;
     _context = context;
+    _serviceScopeFactory = serviceScopeFactory;
   }
 
   public async Task AddAcceptedExternalUrlAsync(string url)
@@ -159,12 +162,13 @@ public sealed class ExternalUrlsService : IExternalUrlsService
 
   public async Task UpdateLinkDetails(ExternalLinkDetails externalLinkDetails)
   {
-    var link = await _context.AcceptedExternalUrls.FirstOrDefaultAsync(o => o.UrlHash == externalLinkDetails.UrlHash);
+    using var scope = _serviceScopeFactory.CreateScope();
+    var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var link = await appDbContext.AcceptedExternalUrls.FirstOrDefaultAsync(o => o.UrlHash == externalLinkDetails.UrlHash);
     if (link is null)
     {
       return;
     }
-
     link.HttpStatusCode = externalLinkDetails.HttpStatusCode;
     link.Headers = JsonConvert.SerializeObject(externalLinkDetails.Headers.OrderBy(o => o.Key));
     link.IsSuccessStatusCode = externalLinkDetails.IsSuccessStatusCode;
@@ -173,10 +177,11 @@ public sealed class ExternalUrlsService : IExternalUrlsService
       link.ErrorCount++;
       if (link.ErrorCount >= 5)
       {
-        link.DisableReason = externalLinkDetails.DisableReason ?? $"HTTP Status Code: {externalLinkDetails.HttpStatusCode}";
+        link.DisableReason = externalLinkDetails.DisableReason ??
+                             $"HTTP Status Code: {externalLinkDetails.HttpStatusCode}";
         if (link.DisableReason.Length > 250)
         {
-          link.DisableReason = link.DisableReason.Substring(0, 250);
+          link.DisableReason = link.DisableReason[..250];
         }
       }
     }
@@ -186,8 +191,7 @@ public sealed class ExternalUrlsService : IExternalUrlsService
       link.DisableReason = null;
       link.ErrorCount = 0;
     }
-
-    await _context.SaveChangesAsync();
+    await appDbContext.SaveChangesAsync();
   }
 
   public Task<ExternalLinkDetails?> GetRegisteredUrlByHashAsync(string hashId)

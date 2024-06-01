@@ -79,7 +79,7 @@ builder.Services.AddSingleton<DeploymentInfo>();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-builder.Services.AddScoped<IExternalUrlsService, ExternalUrlsService>();
+builder.Services.AddTransient<IExternalUrlsService, ExternalUrlsService>();
 
 builder.Services.AddControllers();
 

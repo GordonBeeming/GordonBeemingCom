@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-display-name:
+  check-for-dead-links:
     runs-on: ubuntu-latest
     steps:
       - name: Check for dead links once

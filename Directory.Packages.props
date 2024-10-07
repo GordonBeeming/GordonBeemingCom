@@ -27,7 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageVersion>
 
-    <PackageVersion Include="Azure.Identity" Version="1.11.3" />
+    <PackageVersion Include="Azure.Identity" Version="1.12.1" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0-preview.4.24266.19" />
     
     <PackageVersion Include="BlazorMonaco" Version="3.2.0" />

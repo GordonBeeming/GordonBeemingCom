@@ -7,7 +7,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0-preview.4.24267.6" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0-preview.4.24267.6" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0-preview.4.24267.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-preview.4.24267.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-rc.2.24474.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0-preview.4.24267.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,8 +27,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageVersion>
 
-    <PackageVersion Include="Azure.Identity" Version="1.11.3" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0-preview.4.24266.19" />
+    <PackageVersion Include="Azure.Identity" Version="1.11.4" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0-rc.2.24473.5" />
     
     <PackageVersion Include="BlazorMonaco" Version="3.2.0" />
     <PackageVersion Include="TinyMCE.Blazor" Version="1.0.4" />

@@ -11,7 +11,7 @@ ENV BRANCH_NAME=$A_BRANCH_NAME
 RUN apk add icu-libs
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
 WORKDIR /src
 COPY ["global.json", "GordonBeemingCom.Editor/global.json"]
 COPY ["Directory.*.props", "./"]

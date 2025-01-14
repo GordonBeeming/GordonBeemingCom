@@ -10,3 +10,7 @@ Once new tables are added to the database context, you will need to run the foll
     cd src
     dotnet dotnet-ef migrations add {{ NAME OF MIGRATION }} --context AppDbContext --project 'GordonBeemingCom.Database' --startup-project 'GordonBeemingCom'
 
+
+
+
+more text
